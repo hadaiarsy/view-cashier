@@ -78,6 +78,40 @@
         </div>
     </div>
     <script type="text/javascript" src="{{ asset('assets/vendor/architectui/assets/scripts/main.js') }}"></script>
+    <script>
+        function currentTime() {
+            var date = new Date();
+            var day = date.getDay();
+            var hour = date.getHours();
+            var min = date.getMinutes();
+            var sec = date.getSeconds();
+            day = updateDay(day);
+            hour = updateTime(hour);
+            min = updateTime(min);
+            sec = updateTime(sec);
+            document.getElementById("clockZone").innerText = hour + " : " + min + " : " +
+                sec + " - " + day;
+            var t = setTimeout(function() {
+                currentTime()
+            }, 1000);
+        }
+
+        function updateTime(k) {
+            if (k < 10) {
+                return "0" + k;
+            } else {
+                return k;
+            }
+        }
+
+        function updateDay(k) {
+            let dayName = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
+            return dayName[(Number(k) - 1)];
+        }
+
+        currentTime();
+
+    </script>
 </body>
 
 </html>
