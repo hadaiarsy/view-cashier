@@ -1,4 +1,4 @@
-<div class="app-sidebar sidebar-shadow">
+<div id="appSidebar" class="app-sidebar sidebar-shadow">
     <div class="app-header__logo">
         <div class="logo-src"></div>
         <div class="header__pane ml-auto">
@@ -35,18 +35,25 @@
             <ul class="vertical-nav-menu">
                 <li class="app-sidebar__heading">Dashboards</li>
                 <li>
-                    <a href="index.html" class="mm-active">
+                    <a href="javascript:void(0);" class="">
                         <i class="metismenu-icon pe-7s-rocket"></i>
                         Dashboard Info
                     </a>
                 </li>
-            </ul>
+                <li class="app-sidebar__heading">Transaksi</li>
+                <li>
+                    <a href="{{ route('transaksi') }}" class="mm-active">
+                        <i class="metismenu-icon pe-7s-cart"></i>
+                        Penjualan
+                    </a>
+                </li>
         </div>
     </div>
 </div>
 
 <script>
-    let sideBar = document.getElementById('app-container');
-    sideBar.classList.add('closed-sidebar');
+    let sideBarStyle = document.getElementById('appSidebar');
+    sideBarStyle.classList.add('bg-deep-blue');
+    sideBarStyle.classList.add('sidebar-text-dark');
 
 </script>
