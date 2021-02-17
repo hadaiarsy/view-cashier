@@ -108,7 +108,7 @@
                                 <ul class="nav">
                                     <li class="nav-item">
                                         <a href="https://dashboardpack.com" class="nav-link" target="_blank">
-                                            &#169; Copyright 2019 DashboardPack
+                                            <span id="footerYearCopy"></span>
                                         </a>
                                     </li>
                                 </ul>
@@ -187,6 +187,11 @@
         function replaceCurrency(angka) {
             return Number(angka.split(".").join("").split("Rp").join(""));
         }
+
+        $('#footerYearCopy').html(function() {
+            let date = new Date();
+            return '&#169; ' + String(date.getFullYear()) + ' Design by DashboardPack';
+        })
 
     </script>
 </body>
