@@ -165,9 +165,12 @@
 
         currentTime();
 
-        // sidebar is close
+        // sidebar
         let sideBar = document.getElementById('appContainer');
         sideBar.classList.add('closed-sidebar');
+        let sideBarStyle = document.getElementById('appSidebar');
+        // sideBarStyle.classList.add('bg-deep-blue');
+        // sideBarStyle.classList.add('sidebar-text-dark');
 
         // currency IDR
         function currencyIdr(angka, prefix) {

@@ -50,10 +50,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    let sideBarStyle = document.getElementById('appSidebar');
-    sideBarStyle.classList.add('bg-deep-blue');
-    sideBarStyle.classList.add('sidebar-text-dark');
-
-</script>

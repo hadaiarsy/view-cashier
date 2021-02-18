@@ -30,7 +30,8 @@
                                     <div class="input-group">
                                         <input name="email" id="exampleEmail22" placeholder="" type="text"
                                             class="form-control" autofocus autocomplete="off">
-                                        <button type="button" class="input-group-text input-group-prepend btn btn-dark"
+                                        <button type="button" id="srcBtnItem"
+                                            class="input-group-text input-group-prepend btn btn-dark"
                                             id="inputGroupPrepend"><i class="fas fa-search"></i></button>
                                     </div>
                                 </div>
@@ -72,7 +73,12 @@
     </div>
 
     <script>
-
+        $(document).ready(function() {
+            $('#srcBtnItem').on('click', function(e) {
+                console.log('ok')
+                $('#fotoLogo').toggleClass('invert-img')
+            })
+        })
 
     </script>
 

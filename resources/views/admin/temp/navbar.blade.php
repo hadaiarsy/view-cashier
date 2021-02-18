@@ -1,6 +1,6 @@
 <div class="app-header header-shadow">
     <div class="app-header__logo">
-        <div class="logo-src"></div>
+        <div id="fotoLogo" class="logo-src"></div>
         <div class="header__pane ml-auto">
             <div>
                 <button type="button" class="hamburger close-sidebar-btn hamburger--elastic"
@@ -55,7 +55,7 @@
                         <div class="widget-content-left">
                             <div class="btn-group">
                                 <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="p-0 btn">
-                                    <img width="42" class="rounded-circle"
+                                    <img width="42" id="fotoUser" class="rounded-circle"
                                         src="{{ asset('assets/vendor/architectui/assets/images/avatars/admin.png') }}"
                                         alt="">
                                     <i class="fa fa-angle-down ml-2 opacity-8"></i>
@@ -84,3 +84,21 @@
         </div>
     </div>
 </div>
+<style>
+    .invert-img {
+        filter: invert(1);
+    }
+
+</style>
+
+<script>
+    $(document).ready(function() {
+        // $('#fotoLogo').css({
+        //     filter: "invert(1)"
+        // })
+        // $('#fotoLogo').css({
+        //     filter: ""
+        // })
+    })
+
+</script>
