@@ -75,6 +75,13 @@
     -->
     <link href="{{ asset('assets/vendor/architectui/main.css') }}" rel="stylesheet">
 
+    <style>
+        .invert-img {
+            filter: invert(1);
+        }
+
+    </style>
+
 </head>
 
 <body>

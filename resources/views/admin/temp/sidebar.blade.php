@@ -44,7 +44,7 @@
                 <li>
                     <a href="{{ route('transaksi') }}" class="mm-active">
                         <i class="metismenu-icon pe-7s-cart"></i>
-                        Penjualan
+                        Transaksi
                     </a>
                 </li>
         </div>

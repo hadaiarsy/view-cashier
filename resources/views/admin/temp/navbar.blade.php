@@ -84,21 +84,3 @@
         </div>
     </div>
 </div>
-<style>
-    .invert-img {
-        filter: invert(1);
-    }
-
-</style>
-
-<script>
-    $(document).ready(function() {
-        // $('#fotoLogo').css({
-        //     filter: "invert(1)"
-        // })
-        // $('#fotoLogo').css({
-        //     filter: ""
-        // })
-    })
-
-</script>
