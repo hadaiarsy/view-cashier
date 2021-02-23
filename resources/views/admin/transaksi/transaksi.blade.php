@@ -193,19 +193,7 @@
 
         <!-- transaksi pembelian -->
         @if ($level != 2)
-            <div class="tab-pane tabs-animation fade" id="tab-content-pembelian" role="tabpanel">
-                <div class="row">
-                    <div class="col-lg">
-                        <div class="main-card mb-3 card">
-                            <div class="card-body">
-                                <h5 class="card-title">Data Pembelian</h5>
-                                <div class="row">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @include('admin.transaksi.penjualan')
         @endif
 
     </div>
