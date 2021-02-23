@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::group([''], function () {
+Route::middleware('auth')->group(function () {
     Route::get('/', function () {
         return redirect('/dashboard');
     });

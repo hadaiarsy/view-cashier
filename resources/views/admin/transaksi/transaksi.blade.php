@@ -11,11 +11,13 @@
                 <span>Penjualan</span>
             </a>
         </li>
-        <li class="nav-item">
-            <a role="tab" class="nav-link" id="tab-1" data-toggle="tab" href="#tab-content-pembelian">
-                <span>Pembelian</span>
-            </a>
-        </li>
+        @if ($level != 2)
+            <li class="nav-item">
+                <a role="tab" class="nav-link" id="tab-1" data-toggle="tab" href="#tab-content-pembelian">
+                    <span>Pembelian</span>
+                </a>
+            </li>
+        @endif
     </ul>
 
     <div class="tab-content">
@@ -27,11 +29,10 @@
                     <div class="main-card mb-3 card">
                         <div class="card-body">
                             <h5 class="card-title">Data Penjualan</h5>
-                            <div class="row" style="display: none">
+                            <div class="row alert-row" style="display: none">
                                 <div class="alert alert-danger alert-row" data-start="true" role="alert">
                                     Data Barang <strong>Tidak</strong> Tersedia! Harap cek kembali form
-                                    <strong>Transaksi</strong> di
-                                    atas!
+                                    <strong>Transaksi</strong> di bawah!
                                 </div>
                             </div>
                             <div class="row">
@@ -161,7 +162,7 @@
                                         </div>
                                         <label for="inputPassword3" class="col-4 col-form-label">Uang :</label>
                                     </div>
-                                    <div class="row flex-row-reverse mt-2" style="display: none">
+                                    <div class="row flex-row-reverse mt-2 text-alert-total" style="display: none">
                                         <div class="row mt-2 text-end">
                                             <p class="text-danger text-alert-total">Uang anda tidak cukup!</p>
                                         </div>
@@ -175,8 +176,10 @@
                                         <label for="inputPassword3" class="col-4 col-form-label">Kembalian :</label>
                                     </div>
                                     <div class="row d-flex justify-content-end mt-2">
-                                        <div class="col-4 d-flex justify-content-end">
-                                            <button class="btn btn-info text-light" id="slsPrintTransc"><i
+                                        <div class="col d-flex justify-content-end">
+                                            <button type="button" class="btn btn-warning btn-sm mr-2" id="batal"><i
+                                                    class="fas fa-times"></i> Batal</button>
+                                            <button class="btn btn-info btn-sm text-light" id="slsPrintTransc"><i
                                                     class="fas fa-save"></i> Selesai</button>
                                         </div>
                                     </div>
@@ -189,85 +192,31 @@
         </div>
 
         <!-- transaksi pembelian -->
-        <div class="tab-pane tabs-animation fade" id="tab-content-pembelian" role="tabpanel">
-            <div class="main-card mb-3 card" style="display: none">
-                <div class="card-body">
-                    <h5 class="card-title">Data Member</h5>
-                    <form class="needs-validation" novalidate>
-                        <div class="form-row">
-                            <div class="col-md-2 mb-3">
-                                <label for="kodeMemberPembelian">Kode Member</label>
-                                <input type="text" class="form-control" id="kodeMemberPembelian" placeholder="0.0000eg"
-                                    value="">
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg">
-                    <div class="main-card mb-3 card">
-                        <div class="card-body">
-                            <h5 class="card-title">Data Pembelian</h5>
-                            <div class="row mb-4">
-                                <div class="col">
-                                    <form class="form-inline">
-                                        <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
-                                            <label for="exampleEmail22" class="mr-sm-2">Kode Barang</label>
-                                            <div class="input-group">
-                                                <input name="email" id="exampleEmail22" placeholder="" type="text"
-                                                    class="form-control" autofocus autocomplete="off">
-                                                <button type="button" id="srcBtnItem"
-                                                    class="input-group-text input-group-prepend btn btn-dark"
-                                                    id="inputGroupPrepend"><i class="fas fa-search"></i></button>
-                                            </div>
-                                        </div>
-                                        <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
-                                            <input name="password" id="examplePassword22" placeholder="Nama Barang"
-                                                type="text" class="form-control" disabled>
-                                        </div>
-                                        <button type="button" class="btn btn-primary"><i class="fas fa-plus"></i></button>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-8">
-                                    <div class="scroll-area-sm">
-                                        <div class="scrollbar-container ps--active-y">
-                                            <table class="mb-0 table table-striped">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Kode</th>
-                                                        <th>Item</th>
-                                                        <th>Jumlah</th>
-                                                        <th>Harga</th>
-                                                        <th>#</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <h4>OK</h4>
+        @if ($level != 2)
+            <div class="tab-pane tabs-animation fade" id="tab-content-pembelian" role="tabpanel">
+                <div class="row">
+                    <div class="col-lg">
+                        <div class="main-card mb-3 card">
+                            <div class="card-body">
+                                <h5 class="card-title">Data Pembelian</h5>
+                                <div class="row">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        @endif
 
     </div>
 
-    {{-- Modal --}}
+@endsection
 
+@section('modals')
     {{-- Modal Data Barang --}}
-    <div style="z-index: 99999999999999999999999" class="modal fade" id="barangModal" data-bs-backdrop="static"
-        data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal fade" id="barangModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="barangModalLabel">Data Barang</h5>
@@ -326,8 +275,8 @@
     </div>
 
     {{-- Modal hapus item --}}
-    <div style="z-index: 99999999999999999999999" class="modal fade" id="hapusItemModal" data-bs-backdrop="static"
-        data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="hapusItemModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -345,7 +294,9 @@
             </div>
         </div>
     </div>
+@endsection
 
+@section('javascript')
     <script>
         $(document).ready(function() {
             $("#tableItems").DataTable();
@@ -415,7 +366,7 @@
                             .satuan[0].rasio + "' data-datasatuan='" + data[i].satuan[0].nama_satuan +
                             "' data-datarasio='" + data[i].satuan[0].rasio +
                             "' data-dataharga='" + data[i].satuan[0].harga +
-                            "'><i class='fas fa-plus'></i></button></td></tr>";
+                            "'><i class='fas fa-plus text-light'></i></button></td></tr>";
                         $('.table-data-barang').find('tbody').append(dataLoop);
                         btnModalTambah();
                     }
@@ -767,9 +718,7 @@
                     });
                 }
                 let data = {
-                    idKasir: idKasir,
                     outputDate: outputDate,
-                    noResi: noResi,
                     ttlSm: ttlSm,
                     isLunas: isLunas,
                     diskon: diskon,
@@ -797,16 +746,18 @@
                     })
                     .then((response) => {
                         console.log(response.data);
-                        printStruk(data);
+                        data['idKasir'] = response.data.id_kasir;
+                        data['noResi'] = response.data.no_resi;
                         getMember();
                         getBarang();
                         $('#batal').click();
-                        let noResi = $('#noResi').val();
-                        noResi = noResi.replace("INV-", "");
-                        $("#noResi").val("INV-" + (parseInt(noResi) + 1));
+                        printStruk(data);
+                        // let noResi = $('#noResi').val();
+                        // noResi = noResi.replace("INV-", "");
+                        // $("#noResi").val("INV-" + (parseInt(noResi) + 1));
                     })
                     .catch((error) => {
-                        console.log(error.response)
+                        console.log(error)
                     });
                 // end
             });
@@ -881,5 +832,4 @@
         });
 
     </script>
-
 @endsection

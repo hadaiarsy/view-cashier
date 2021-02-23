@@ -130,6 +130,12 @@
         </div>
     </div>
 
+    <!-- Modal -->
+    @yield('modals')
+
+    <!-- Javascript ekstra -->
+    @yield('javascript')
+
     <script type="text/javascript" src="{{ asset('assets/vendor/architectui/assets/scripts/main.js') }}"></script>
 
     <!-- Bootstrap Bundle with Popper -->
@@ -176,8 +182,8 @@
         let sideBar = document.getElementById('appContainer');
         sideBar.classList.add('closed-sidebar');
         let sideBarStyle = document.getElementById('appSidebar');
-        // sideBarStyle.classList.add('bg-deep-blue');
-        // sideBarStyle.classList.add('sidebar-text-dark');
+        sideBarStyle.classList.add('bg-deep-blue');
+        sideBarStyle.classList.add('sidebar-text-dark');
 
         // currency IDR
         function currencyIdr(angka, prefix) {

@@ -66,16 +66,25 @@
                                         Account</button>
                                     <button type="button" tabindex="0" class="dropdown-item">Settings</button>
                                     <div tabindex="-1" class="dropdown-divider"></div>
-                                    <button type="button" tabindex="0" class="dropdown-item">Logout</button>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                        class="d-none">
+                                        @csrf
+                                    </form>
+                                    <a tabindex="0" class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                                    document.getElementById('logout-form').submit();">Logout</a>
                                 </div>
                             </div>
                         </div>
                         <div class="widget-content-left  ml-3 header-user-info">
                             <div class="widget-heading">
-                                Admin
+                                {{ $username }}
                             </div>
                             <div class="widget-subheading">
-                                Administrasi
+                                @if ($level == 1)
+                                    Administrasi
+                                @elseif($level == 2)
+                                    Kasir
+                                @endif
                             </div>
                         </div>
                     </div>

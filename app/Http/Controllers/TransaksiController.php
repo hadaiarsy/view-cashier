@@ -7,6 +7,7 @@ use App\Models\DetailTransaksi;
 use App\Models\Barang;
 use App\Models\Member;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TransaksiController extends Controller
 {
@@ -19,9 +20,11 @@ class TransaksiController extends Controller
     {
         $noResi = Transaksi::incrementId();
         $barang = Barang::with('satuan')->get();
+        $sideTitle = "transaksi";
         return view('admin.transaksi.transaksi', [
             'noResi' => $noResi,
-            'barang' => $barang
+            'barang' => $barang,
+            'sideTitle' => $sideTitle
         ]);
     }
 
@@ -77,6 +80,8 @@ class TransaksiController extends Controller
     {
         $data = $request->all();
         $loopData = count(collect($request)->get('detail_transaksi'));
+        $noResi = Transaksi::incrementId();
+        $idKasir = Auth::user()->id;
 
         // Member
         if (Member::checkName($request->nama_member) == false) {
@@ -98,10 +103,10 @@ class TransaksiController extends Controller
 
         // Transaksi
         $transaksi = new Transaksi;
-        $transaksi->no_resi = $request->no_resi;
+        $transaksi->no_resi = $noResi;
         $transaksi->tanggal = now();
         $transaksi->jenis_transaksi = $request->jenis_transaksi;
-        $transaksi->kasir_id = $request->kasir_id;
+        $transaksi->kasir_id = $idKasir;
         $transaksi->member_id = $memberId;
         $transaksi->total = $request->total;
         $transaksi->diskon = $request->diskon;
@@ -118,7 +123,7 @@ class TransaksiController extends Controller
             // Detail Transaksi
             for ($i = 0; $i < $loopData; $i++) {
                 $detail = new DetailTransaksi;
-                $detail->transaksi_id = $request->no_resi;
+                $detail->transaksi_id = $noResi;
                 $detail->kode_barang = $request->detail_transaksi[$i]['kode'];
                 $detail->nama_barang = $request->detail_transaksi[$i]['nama'];
                 $detail->jumlah = $request->detail_transaksi[$i]['jumlah'];
@@ -139,6 +144,8 @@ class TransaksiController extends Controller
             return response()->json([
                 'message' => 'success',
                 'data' => $data,
+                'no_resi' => $noResi,
+                'id_kasir' => $idKasir
             ], 200);
         } else {
             return response()->json([

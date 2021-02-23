@@ -37,16 +37,39 @@
                 <li>
                     <a href="javascript:void(0);" class="">
                         <i class="metismenu-icon pe-7s-rocket"></i>
-                        Dashboard Info
+                        Dashboard
                     </a>
                 </li>
                 <li class="app-sidebar__heading">Transaksi</li>
                 <li>
-                    <a href="{{ route('transaksi') }}" class="mm-active">
+                    <a href="{{ route('transaksi') }}" class="{{ $sideTitle == 'transaksi' ? 'mm-active' : '' }}">
                         <i class="metismenu-icon pe-7s-cart"></i>
                         Transaksi
                     </a>
                 </li>
+                <li class="app-sidebar__heading">Barang</li>
+                <li>
+                    <a href="javascript:void(0);" class="">
+                        <i class="metismenu-icon pe-7s-box1"></i>
+                        Info Barang
+                    </a>
+                </li>
+                <li class="app-sidebar__heading">Member</li>
+                <li>
+                    <a href="javascript:void(0);" class="">
+                        <i class="metismenu-icon pe-7s-id"></i>
+                        Info Member
+                    </a>
+                </li>
+                @if ($level != 2)
+                    <li class="app-sidebar__heading">User</li>
+                    <li>
+                        <a href="javascript:void(0);" class="">
+                            <i class="metismenu-icon pe-7s-users"></i>
+                            Info User
+                        </a>
+                    </li>
+                @endif
         </div>
     </div>
 </div>
