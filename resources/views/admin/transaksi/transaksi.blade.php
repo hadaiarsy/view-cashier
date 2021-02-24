@@ -282,6 +282,8 @@
             </div>
         </div>
     </div>
+
+    @yield('modal-e')
 @endsection
 
 @section('javascript')
