@@ -7,77 +7,144 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <!-- Jquery cdn -->
-    <script src="https://code.jquery.com/jquery-3.5.1.js"
+    {{-- <script src="https://code.jquery.com/jquery-3.5.1.js"
         integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous">
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"
         integrity="sha512-NFUcDlm4V+a2sjPX7gREIXgCSFja9cHtKPOL1zj6QhnE0vcY695MODehqkaGYTLyL2wxe/wtr4Z49SvqXq12UQ=="
-        crossorigin="anonymous"></script>
+        crossorigin="anonymous"></script> --}}
+
+    <!-- Jquery cdn -->
+    <script src="{{ asset('assets/js/jquery-3.5.1.js') }}"></script>
+
+    <!-- Jquery QR Code -->
+    <script src="{{ asset('assets/js/jquery.qrcode.min.js') }}"></script>
 
     <title>Test Struk</title>
 </head>
 
-<body>
-    <table
-        style="font-size: 0.8rem; max-width: 184px; border-top: 1px dashed black; border-bottom; border-spacing: 8px">
-        <tr>
-            <td colspan="3" style="text-align: center">Cashier Shop</td>
-        </tr>
-        <tr>
-            <td colspan="3" style="text-align: center">Tgl: 06-01-2021</td>
-        </tr>
-        <tr>
-            <td style="border-bottom: 1px solid black;">IDC: 001</td>
-            <td colspan="2" style="border-bottom: 1px solid black; text-align: right">No. Resi: PJ-2001060001</td>
-        </tr>
-        {{-- <tr>
-            <th scope="col">Item</th>
-            <th scope="col">Jumlah</th>
-            <th scope="col">Harga</th>
-        </tr> --}}
-        <tr>
-            <td>Gula</td>
-            <td style="text-align: center">1 kg</td>
-            <td style="text-align: right">Rp 8000</td>
-        </tr>
-        <tr>
-            <td style="border-top: 1px solid black;">Total</td>
-            <td colspan="2" style="border-top: 1px solid black; text-align: right">Rp 8000</td>
-        </tr>
-        <tr>
-            <td>Uang</td>
-            <td colspan="2" style="text-align: right">Rp 10000</td>
-        </tr>
-        <tr>
-            <td>Kembali</td>
-            <td colspan="2" style="text-align: right">Rp 2000</td>
-        </tr>
-        <tr>
-            <td colspan="3" style="border-top: 1px solid black; text-align: center">Terima Kasih</td>
-        </tr>
-        <tr>
-            <td colspan="3" style="border-top: 1px solid black; text-align: center">
-                <div id="qrcode"></div>
-            </td>
-        </tr>
-    </table>
+<body style="width: 100%">
+
+    @foreach ($data as $transaksi)
+        <table id='printStruk'
+            style='align-items: center; justify-content: center; font-size: 11px; font-weight: bold; border-top: 1px dashed black; border-bottom: 1px dashed black; border-spacing: 8px; width: 178px'>
+            <tr>
+                <td colspan='3' style='text-align: center'>
+                    <img src='{{ asset('assets/img/icon/logo.png') }}' alt='yamughni img' style='width: 60px'>
+                </td>
+            </tr>
+            <tr>
+                <td colspan='3' style='text-align: center'>WAROENG YAMUGHNI</td>
+            </tr>
+            <tr>
+                <td colspan='3' style='text-align: center'>Tgl:
+                    {{ date('d-m-Y', strtotime($transaksi->tanggal)) }}</br>Unit:
+                    {{ $transaksi->member->unit == null ? '-' : $transaksi->member->unit }}
+                    | {{ $transaksi->member->kode_member }}
+                </td>
+            </tr>
+            <tr style='margin-bottom: 20px'>
+                <td style='border-bottom: 1px solid black;'>ID Kasir:</br>{{ $transaksi->kasir->id }}</td>
+                <td colspan='2' style='border-bottom: 1px solid black; text-align: right'>No.
+                    Resi:</br>{{ $transaksi->no_resi }}
+                </td>
+            </tr>
+            @foreach ($transaksi->detail as $detail)
+                <tr>
+                    <td>{{ $detail->nama_barang }}</td>
+                    <td style='text-align: center'>{{ $detail->jumlah . ' ' . $detail->satuan }}</td>
+                    <td class='harga-item-struk' style='text-align: right'>Rp {{ $detail->harga }}</td>
+                </tr>
+            @endforeach
+            @if ($transaksi->diskon > 0)
+                <tr>
+                    <td style='border-top: 1px solid black;'>Total</td>
+                    <td colspan='2' id='totalStruk' style='border-top: 1px solid black; text-align: right'>
+                        {{ $total }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Diskon</td>
+                    <td colspan='2' style='text-align: right'>{{ $transaksi->diskon }} %</td>
+                </tr>
+            @endif
+            <tr>
+                <td style='border-top: 1px solid black;'>Grand Total</td>
+                <td colspan='2' id='grandTotalStruk' style='border-top: 1px solid black; text-align: right'>
+                    {{ $transaksi->total }}
+                </td>
+            </tr>
+            <tr>
+                <td>Uang</td>
+                <td colspan='2' id='uangStruk' style='text-align: right'>{{ $uang }}</td>
+            </tr>
+            <tr>
+                <td>Kembali</td>
+                <td colspan='2' id='kembaliStruk' style='text-align: right'>{{ $kembali }}</td>
+            </tr>
+            <tr>
+                <td colspan='3' style='border-top: 1px solid black; text-align: center'>Terima Kasih</td>
+            </tr>
+            <tr>
+                <td colspan='3' style='border-top: 1px solid black; text-align: center;'>
+                    <div id='qrcodeStruk'></div>
+                </td>
+            </tr>
+        </table>
+    @endforeach
+
     <script>
         $(document).ready(function() {
+            function currencyIdr(angka, prefix) {
+                let number_string = angka.replace(/[^,\d]/g, "").toString(),
+                    split = number_string.split(","),
+                    sisa = split[0].length % 3,
+                    rupiah = split[0].substr(0, sisa),
+                    ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+                if (ribuan) {
+                    separator = sisa ? "." : "";
+                    rupiah += separator + ribuan.join(".");
+                }
+                rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
+                return prefix == undefined ? rupiah : rupiah ? "Rp " + rupiah : "";
+            }
+
+            $('.harga-item-struk').each(function(e) {
+                $(this).html(currencyIdr($(this).html(), 'Rp '))
+            })
+
+            $('#totalStruk').html(function() {
+                return currencyIdr($(this).html(), 'Rp ')
+            })
+
+            $('#grandTotalStruk').html(function() {
+                return currencyIdr($(this).html(), 'Rp ')
+            })
+
+            $('#uangStruk').html(function() {
+                return currencyIdr($(this).html(), 'Rp ')
+            })
+
+            $('#kembaliStruk').html(function() {
+                return currencyIdr($(this).html(), 'Rp ')
+            })
+
             let d = new Date();
             let month = d.getMonth() + 1;
             let day = d.getDate();
             let outputDate = (day < 10 ? '0' : '') + day + '-' +
                 (month < 10 ? '0' : '') + month + '-' +
                 d.getFullYear();
-            console.log(outputDate);
 
-            $('#qrcode').qrcode({
-                width: 100,
-                height: 100,
+            $('#qrcodeStruk').qrcode({
+                width: 60,
+                height: 60,
                 text: 'https://www.yamughnibandung.org/'
             });
-            console.log($('#qrcode').html())
+
+            window.print();
+
         })
 
     </script>

@@ -7,6 +7,7 @@ use App\Http\Controllers\SatuanBarangController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\UserController;
+use App\Models\Transaksi;
 use Carbon\Carbon;
 use Facade\FlareClient\View;
 use Illuminate\Support\Facades\Auth;
@@ -57,8 +58,14 @@ Route::middleware('auth')->group(function () {
 
         Route::get('transaksi-pdf', [PDFController::class, 'laporan']);
 
-        Route::get('test-struk', function () {
-            return view('admin.transaksi.test');
+        Route::get('test-struk/{any}/{total}/{uang}/{kembali}', function ($kode, $total, $uang, $kembali) {
+            $data = Transaksi::with(['detail', 'kasir', 'member'])->where('no_resi', $kode)->get();
+            return view('admin.transaksi.test', [
+                'data' => $data,
+                'total' => $total,
+                'uang' => $uang,
+                'kembali' => $kembali
+            ]);
         });
 
         Route::get('test-laporan', function () {

@@ -84,7 +84,7 @@
 
 </head>
 
-<body>
+<body style="width: 100%">
     <div id="appContainer" class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
 
         {{-- navbar --}}
@@ -135,6 +135,9 @@
 
     <!-- Javascript ekstra -->
     @yield('javascript')
+
+    <!-- Javascript ekstra -->
+    @yield('struk-transaksi')
 
     <script type="text/javascript" src="{{ asset('assets/vendor/architectui/assets/scripts/main.js') }}"></script>
 

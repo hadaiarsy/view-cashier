@@ -140,24 +140,24 @@
                                     <div class="row d-flex flex-row-reverse mt-2">
                                         <div class="col-6 input-group">
                                             <input type="text" class="form-control pay-section" data-dataps="ps-1"
-                                                id="diskon" value="">
-                                            <button type="button" class="input-group-text" id="btnDiskon"><i
+                                                id="kodeMember" value="">
+                                            <button type="button" class="input-group-text" id="btnKodeMember"><i
                                                     class="fas fa-search"></i></button>
                                         </div>
-                                        <label for="inputPassword3" class="col-4 col-form-label">Kode Member :</label>
+                                        <label for="" class="col-4 col-form-label">Kode Member :</label>
                                     </div>
                                     <div class="row d-flex flex-row-reverse mt-2">
                                         <div class="col-6 input-group">
-                                            <input type="text" class="form-control pay-section" data-dataps="ps-1"
-                                                id="kodeMember" value="">
-                                            <button type="button" class="input-group-text" id="btnKodeMember">%</button>
+                                            <input type="text" class="form-control pay-section" data-dataps="ps-2"
+                                                id="diskon" name="diskon">
+                                            <button type="button" class="input-group-text" id="btnDiskon">%</button>
                                         </div>
-                                        <label for="inputPassword3" class="col-4 col-form-label">Diskon :</label>
+                                        <label for="diskon" class="col-4 col-form-label">Diskon :</label>
                                     </div>
                                     <div class="row d-flex flex-row-reverse mt-2">
                                         <div class="col-6 input-group">
                                             <button type="button" class="input-group-text" id="btnUang">Rp</button>
-                                            <input type="text" class="form-control pay-section" data-dataps="ps-1"
+                                            <input type="text" class="form-control pay-section" data-dataps="ps-3"
                                                 id="uangTotal" value="">
                                         </div>
                                         <label for="inputPassword3" class="col-4 col-form-label">Uang :</label>
@@ -170,7 +170,7 @@
                                     <div class="row d-flex flex-row-reverse mt-2">
                                         <div class="col-6 input-group">
                                             <button type="button" class="input-group-text" id="btnKmbl">Rp</button>
-                                            <input type="text" class="form-control pay-section" data-dataps="ps-1"
+                                            <input type="text" class="form-control pay-section" data-dataps="ps-4"
                                                 id="kmblTotal" value="">
                                         </div>
                                         <label for="inputPassword3" class="col-4 col-form-label">Kembalian :</label>
@@ -289,6 +289,7 @@
 @section('javascript')
     <script>
         $(document).ready(function() {
+            let globalUrl = 'http://127.0.0.1:8000/';
             $("#tableItems").DataTable();
             $('.alert-row').hide();
             $('.text-alert-total').hide();
@@ -318,7 +319,7 @@
             // end
 
             // get data member
-            let getMember = () => axios.get('/getall-member/')
+            let getMember = () => axios.get(globalUrl + 'getall-member/')
                 .then((response) => {
                     $('#namaCustList').empty();
                     let data = response.data.member;
@@ -334,7 +335,7 @@
             // end
 
             // get data barang
-            let getBarang = () => axios.get('/getall-barang/')
+            let getBarang = () => axios.get(globalUrl + 'getall-barang/')
                 .then((response) => {
                     $('table.table-data-barang').find('tbody').empty();
                     let data = response.data.barang;
@@ -403,7 +404,9 @@
                             idNum = loop;
                         } else {
                             idNum = 1;
-                            $('#slsPrintTransc').click();
+                            let totalText = replaceCurrency($('#totalText').html());
+                            if (totalText != 0)
+                                $('#slsPrintTransc').click();
                         }
                         $(".pay-section[data-dataps=ps-" + idNum + "]").focus();
                     } else if (event.keyCode === 113) {
@@ -459,7 +462,7 @@
             // check barcode
             $('#barcode').on('change paste', function(e) {
                 let barcode = $(this).val();
-                axios.get('/show-barang-transaksi/' + barcode)
+                axios.get(globalUrl + 'show-barang-transaksi/' + barcode)
                     .then((response) => {
                         let data = response.data.barang[0];
                         $('#kodeBarang').val(data.kode_barang);
@@ -492,13 +495,21 @@
             });
             // end
 
+            // diskon per-item
+            $('#diskonItem').on('change paste keyup', function(e) {
+                let val = Number($(this).val());
+                if (val < 0 || val > 20)
+                    $(this).val('0');
+                hitungTotal();
+            });
+
             // check kepastian harga
             $('#harga').on('change paste keyup', function(e) {
                 $(this).val(currencyIdr(String($(this).val()), 'Rp '));
                 let jumlah = Number($('#jumlah').val());
                 let stok = Number($('#stok').val());
                 let harga = Number($(this).val().split(".").join("").split("Rp").join(""));
-                hitungTotal(jumlah, harga);
+                hitungTotal();
             });
             // end
 
@@ -511,7 +522,7 @@
                 if (total || jumlah <= 0) {
                     jumlah = Number($(this).val());
                     stok = Number($('#stok').val());
-                    hitungTotal(jumlah, harga);
+                    hitungTotal();
                     $('.alert-row').show();
                     $('#tambah').prop('disabled', true);
                     $(this).addClass('text-danger');
@@ -525,8 +536,13 @@
             // end
 
             // fungsi hitung total
-            function hitungTotal(a, b) {
-                let total = a * b;
+            function hitungTotal() {
+                let diskon = Number($('#diskonItem').val());
+                let harga = Number(replaceCurrency($('#harga').val()));
+                let jumlah = Number($('#jumlah').val());
+                let total = jumlah * harga;
+                if (diskon > 0)
+                    total = total - (total * (diskon / 100));
                 $('#total').val(currencyIdr(String(total), 'Rp '));
             }
             // end
@@ -719,7 +735,7 @@
                 // proses ajax simpan
                 let token = document.head.querySelector('meta[name="csrf-token"]');
                 window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
-                axios.post('/simpan-transaksi', {
+                axios.post(globalUrl + 'simpan-transaksi', {
                         no_resi: noResi,
                         tanggal: outputDate,
                         jenis_transaksi: 'penjualan',
@@ -740,11 +756,8 @@
                         data['noResi'] = response.data.no_resi;
                         getMember();
                         getBarang();
-                        $('#batal').click();
                         printStruk(data);
-                        // let noResi = $('#noResi').val();
-                        // noResi = noResi.replace("INV-", "");
-                        // $("#noResi").val("INV-" + (parseInt(noResi) + 1));
+                        $('#batal').click();
                     })
                     .catch((error) => {
                         console.log(error)
@@ -755,57 +768,15 @@
 
             // proses print strik
             function printStruk(data) {
-                $('#qrcode').qrcode({
-                    width: 40,
-                    height: 40,
-                    text: 'https://www.yamughnibandung.org/'
+                let total = 0;
+                $(".totalHrg").each(function() {
+                    total += parseInt(Number(replaceCurrency($(this).html())));
                 });
-                let printWindow = window.open('', '');
-                printWindow.document.write('<html><head><title>Print</title></head>');
-                printWindow.document.write("<body style='width: 100%;'>");
-                printWindow.document.write(
-                    "<table style='align-items: center; justify-content: center; font-size: 11px; font-weight: bold;; border-top: 1px dashed black; border-bottom: 1px dashed black; border-spacing: 8px'><tr><td colspan='3' style='text-align: center'>WAROENG YAMUGHNI</td></tr><tr><td colspan='3' style='text-align: center'>Tgl: " +
-                    data.outputDate +
-                    "</td></tr><tr style='margin-bottom: 20px'><td style='border-bottom: 1px solid black;'>ID Kasir:</br>" +
-                    data.idKasir +
-                    "</td><td colspan='2' style='border-bottom: 1px solid black; text-align: right'>No. Resi:</br>" +
-                    data.noResi +
-                    "</td></tr>"
-                );
-                for (let index = 0; index < data.dataBarang.length; ++index) {
-                    printWindow.document.write("<tr>");
-                    printWindow.document.write("<td>" + data.dataBarang[index].nama + "</td>");
-                    printWindow.document.write("<td style='text-align: center'>" + data.dataBarang[index].jumlah +
-                        " " + data.dataBarang[index].satuan + "</td>");
-                    printWindow.document.write("<td style='text-align: right'>" + currencyIdr(String(data
-                            .dataBarang[index].harga), 'Rp ') +
-                        "</td>");
-                    printWindow.document.write("</tr>");
-                };
-                if (Number(data.diskon) > 0) {
-                    let a = 0;
-                    $(".totalHrg").each(function() {
-                        a += parseInt(Number($(this).html().split(".").join("").split("Rp").join(
-                            "")));
-                    });
-                    printWindow.document.write(
-                        "<tr><td style='border-top: 1px solid black;'>Total</td><td colspan='2' style='border-top: 1px solid black; text-align: right'>" +
-                        currencyIdr(String(a), 'Rp ') +
-                        "</td></tr><tr><td>Diskon</td><td colspan='2' style='text-align: right'>" +
-                        data.diskon + " %</td></tr>");
-                }
-                printWindow.document.write(
-                    "<tr><td style='border-top: 1px solid black;'>Grand Total</td><td colspan='2' style='border-top: 1px solid black; text-align: right'>" +
-                    data.ttlSm + "</td></tr><tr><td>Uang</td><td colspan='2' style='text-align: right'>" +
-                    data.uang +
-                    "</td></tr><tr><td>Kembali</td><td colspan='2' style='text-align: right'>" +
-                    data.kmbl +
-                    "</td></tr><tr><td colspan='3' style='border-top: 1px solid black; text-align: center'>Terima Kasih</td></tr></table>"
-                );
-                printWindow.document.write(
-                    '</body></html>');
-                printWindow.print();
-                printWindow.close();
+                let printStruk = window.open(globalUrl + 'test-struk/' + data.noResi + '/' + total + '/' + data
+                    .uang + '/' + data.kmbl);
+                let tmout = setTimeout(function() {
+                    printStruk.close()
+                }, 3000);
             }
             // end
 
