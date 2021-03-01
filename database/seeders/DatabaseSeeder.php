@@ -29,9 +29,9 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('passwordzz'), // password
             'remember_token' => Str::random(10),
         ]);
-        // \App\Models\Member::factory(1)->create();
-        // \App\Models\Barang::factory(1)->create();
-        // \App\Models\SatuanBarang::factory(1)->create();
+        \App\Models\Member::factory(1)->create();
+        \App\Models\Barang::factory(1)->create();
+        \App\Models\SatuanBarang::factory(1)->create();
         // \App\Models\Transaksi::factory(1)->create();
         // \App\Models\DetailTransaksi::factory(1)->create();
     }

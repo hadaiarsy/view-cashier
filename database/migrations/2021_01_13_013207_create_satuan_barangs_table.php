@@ -20,7 +20,8 @@ class CreateSatuanBarangsTable extends Migration
             $table->foreign('kode_barang')->references('kode_barang')->on('barang')->onDelete('cascade');
             $table->string('nama_satuan');
             $table->float('rasio');
-            $table->integer('harga');
+            $table->integer('harga_beli')->nullable();
+            $table->integer('harga_jual');
             $table->timestamps();
             $table->softDeletes();
         });

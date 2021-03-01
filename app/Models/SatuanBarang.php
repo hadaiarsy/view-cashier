@@ -15,7 +15,8 @@ class SatuanBarang extends Model
         'kode_barang',
         'nama_satuan',
         'stok',
-        'harga'
+        'harga_beli',
+        'harga_jual'
     ];
 
     public function barang()

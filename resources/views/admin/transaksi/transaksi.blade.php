@@ -175,6 +175,13 @@
                                         </div>
                                         <label for="inputPassword3" class="col-4 col-form-label">Kembalian :</label>
                                     </div>
+                                    <div class="row d-flex flex-row-reverse mt-2">
+                                        <div class="col position-relative form-check d-flex justify-content-end mt-2 mb-2">
+                                            <label class="form-check-label">
+                                                <input type="checkbox" class="form-check-input" id="piutangCheck"> piutang
+                                            </label>
+                                        </div>
+                                    </div>
                                     <div class="row d-flex justify-content-end mt-2">
                                         <div class="col d-flex justify-content-end">
                                             <button type="button" class="btn btn-warning btn-sm mr-2" id="batal"><i
@@ -289,7 +296,7 @@
 @section('javascript')
     <script>
         $(document).ready(function() {
-            let globalUrl = 'http://127.0.0.1:8000/';
+            const globalUrl = 'http://127.0.0.1:8000/';
             $("#tableItems").DataTable();
             $('.alert-row').hide();
             $('.text-alert-total').hide();
@@ -347,7 +354,8 @@
                             (data[i].barcode == null ? '-' : data[i].barcode) +
                             "</p></td><td><p>" + data[i].nama +
                             "</p></td><td><p>" + data[i].stok + ' ' + data[i].satuan[0].nama_satuan +
-                            "</p></td><td><p>" + currencyIdr(String(data[i].satuan[0].harga), 'Rp ') + ' / ' +
+                            "</p></td><td><p>" + currencyIdr(String(data[i].satuan[0].harga_jual), 'Rp ') +
+                            ' / ' +
                             data[i]
                             .satuan[
                                 0].nama_satuan +
@@ -356,7 +364,7 @@
                             "' data-datanama='" + data[i].nama + "' data-datastok='" + data[i].stok * data[i]
                             .satuan[0].rasio + "' data-datasatuan='" + data[i].satuan[0].nama_satuan +
                             "' data-datarasio='" + data[i].satuan[0].rasio +
-                            "' data-dataharga='" + data[i].satuan[0].harga +
+                            "' data-dataharga='" + data[i].satuan[0].harga_jual +
                             "'><i class='fas fa-plus text-light'></i></button></td></tr>";
                         $('.table-data-barang').find('tbody').append(dataLoop);
                         btnModalTambah();
@@ -467,11 +475,11 @@
                         let data = response.data.barang[0];
                         $('#kodeBarang').val(data.kode_barang);
                         $('#nama').val(data.nama);
-                        $('#harga').val(currencyIdr(String(data.satuan[0].harga), 'Rp '));
+                        $('#harga').val(currencyIdr(String(data.satuan[0].harga_jual), 'Rp '));
                         $('#stok').val(data.stok);
                         $('#jumlah').val(1);
                         $('#btnJumlah').html(data.satuan[0].nama_satuan);
-                        $('#total').val(currencyIdr(String(data.satuan[0].harga * 1), 'Rp '));
+                        $('#total').val(currencyIdr(String(data.satuan[0].harga_jual * 1), 'Rp '));
                         $('.alert-row').hide();
                         $('#tambah').prop('disabled', false);
                     }).catch((error) => {
@@ -608,6 +616,7 @@
                 $('#btnJumlah').html('#');
                 $('#total').val('');
                 $('#diskon').change();
+                console.log($('#piutangCheck').change());
             });
             // end
 
@@ -700,7 +709,7 @@
                 let unitMember = $('#unitCust').val();
                 let teleponMember = $('#teleponCust').val();
                 let alamatMember = $('#alamatCust').val();
-                let isLunas = 'true';
+                let isLunas = piutangcheck();
                 let d = new Date();
                 let month = d.getMonth() + 1;
                 let day = d.getDate();
@@ -780,16 +789,22 @@
             }
             // end
 
+            // piutang checkbox
             $('#piutangCheck').on('change', function() {
+                piutangcheck();
+            });
+
+            function piutangcheck() {
                 let piutang;
-                if ($(this).is(':checked')) {
-                    piutang = 'ok';
+                if ($('#piutangCheck').is(':checked')) {
+                    piutang = false;
                     $('#slsPrintTransc').prop('disabled', false);
                 } else {
-                    piutang = 'nope';
+                    piutang = true;
                 }
-                console.log(piutang)
-            });
+                return piutang;
+            }
+
         });
 
     </script>

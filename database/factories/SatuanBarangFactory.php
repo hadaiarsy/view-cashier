@@ -25,7 +25,8 @@ class SatuanBarangFactory extends Factory
             'kode_barang' => 'B-210114001',
             'nama_satuan' => 'kg',
             'rasio' => 1,
-            'harga' => 11900
+            'harga_beli' => 7000,
+            'harga_jual' => 11900
         ];
     }
 }

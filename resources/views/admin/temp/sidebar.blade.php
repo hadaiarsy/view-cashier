@@ -47,6 +47,13 @@
                         Transaksi
                     </a>
                 </li>
+                <li class="app-sidebar__heading">Piutang</li>
+                <li>
+                    <a href="#" class="{{ $sideTitle == 'piutang' ? 'mm-active' : '' }}">
+                        <i class="metismenu-icon pe-7s-hammer"></i>
+                        Piutang
+                    </a>
+                </li>
                 <li class="app-sidebar__heading">Barang</li>
                 <li>
                     <a href="javascript:void(0);" class="">
