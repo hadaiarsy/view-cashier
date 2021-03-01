@@ -49,21 +49,21 @@
                 </li>
                 <li class="app-sidebar__heading">Piutang</li>
                 <li>
-                    <a href="#" class="{{ $sideTitle == 'piutang' ? 'mm-active' : '' }}">
+                    <a href="javascript:void(0);" class="{{ $sideTitle == 'piutang' ? 'mm-active' : '' }}">
                         <i class="metismenu-icon pe-7s-hammer"></i>
                         Piutang
                     </a>
                 </li>
                 <li class="app-sidebar__heading">Barang</li>
                 <li>
-                    <a href="javascript:void(0);" class="">
+                    <a href="javascript:void(0);" class="{{ $sideTitle == 'barang' ? 'mm-active' : '' }}">
                         <i class="metismenu-icon pe-7s-box1"></i>
                         Info Barang
                     </a>
                 </li>
                 <li class="app-sidebar__heading">Member</li>
                 <li>
-                    <a href="javascript:void(0);" class="">
+                    <a href="javascript:void(0);" class="{{ $sideTitle == 'member' ? 'mm-active' : '' }}">
                         <i class="metismenu-icon pe-7s-id"></i>
                         Info Member
                     </a>
@@ -71,7 +71,7 @@
                 @if ($level != 2)
                     <li class="app-sidebar__heading">User</li>
                     <li>
-                        <a href="javascript:void(0);" class="">
+                        <a href="javascript:void(0);" class="{{ $sideTitle == 'user' ? 'mm-active' : '' }}">
                             <i class="metismenu-icon pe-7s-users"></i>
                             Info User
                         </a>
