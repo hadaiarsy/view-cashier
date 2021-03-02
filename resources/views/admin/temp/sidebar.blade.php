@@ -1,4 +1,4 @@
-<div id="appSidebar" class="app-sidebar sidebar-shadow">
+<div id="appSidebar" class="app-sidebar sidebar-shadow bg-deep-blue sidebar-text-dark">
     <div class="app-header__logo">
         <div class="logo-src"></div>
         <div class="header__pane ml-auto">

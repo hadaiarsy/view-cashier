@@ -85,7 +85,8 @@
 </head>
 
 <body style="width: 100%">
-    <div id="appContainer" class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+    <div id="appContainer"
+        class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header closed-sidebar">
 
         {{-- navbar --}}
         @include('admin.temp.navbar')
@@ -182,11 +183,11 @@
         currentTime();
 
         // sidebar
-        let sideBar = document.getElementById('appContainer');
-        sideBar.classList.add('closed-sidebar');
-        let sideBarStyle = document.getElementById('appSidebar');
-        sideBarStyle.classList.add('bg-deep-blue');
-        sideBarStyle.classList.add('sidebar-text-dark');
+        // let sideBar = document.getElementById('appContainer');
+        // sideBar.classList.add('closed-sidebar');
+        // let sideBarStyle = document.getElementById('appSidebar');
+        // sideBarStyle.classList.add('bg-deep-blue');
+        // sideBarStyle.classList.add('sidebar-text-dark');
 
         // currency IDR
         function currencyIdr(angka, prefix) {
