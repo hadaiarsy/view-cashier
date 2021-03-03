@@ -148,227 +148,224 @@
     </div>
 @endsection
 
-<script>
-    $(document).ready(function() {
-        // check barang baru
-        function barangBaru() {
-            let barangBaru;
-            if ($('#isBarangBaru').is(':checked')) {
-                barangBaru = true;
-            } else {
-                barangBaru = false;
-            }
-            return barangBaru;
-        };
+@section('script-e')
+    <script>
+        $(document).ready(function() {
+            const globalUrl = 'http://127.0.0.1:8000/';
 
-        // check barcode
-        $('#barcodePembelian').on('change paste keyup', function(e) {
-            let barcode = $(this).val();
-            axios.get('/show-barang-transaksi/' + barcode)
-                .then((response) => {
-                    let data = response.data.barang[0];
-                    console.log(data);
-                    $('#kodeBarangPembelian').val(data.kode_barang);
-                    $('#namaBarangPembelian').val(data.nama);
-                    $('#hargaPembelian').val(currencyIdr(String(data.satuan[0].harga_beli), 'Rp '));
-                    $('#namaSatuanPembelian').val(data.satuan[0].nama_satuan);
-                    $('.alert-row-pembelian').hide();
-                }).catch((error) => {
-                    console.log(error.response);
-                    $('.alert-row-pembelian').show();
-                    if (barcode == '') $('.alert-row-pembelian').hide();
-                })
-        });
-        // end
-
-        // input qty(jumlah)
-        $('#jumlahPembelian').on('change paste keyup', function(e) {
-            let jml = $(this).val();
-            let harga = $('#hargaPembelian').val();
-            hitungTotalPembelian(jml, replaceCurrency(harga));
-        })
-
-        // input harga
-        $('#hargaPembelian').on('change paste keyup', function(e) {
-            let harga = $(this).val();
-            let jml = $('#jumlahPembelian').val();
-            $(this).val(currencyIdr($(this).val(), 'Rp '));
-            hitungTotalPembelian(jml, replaceCurrency(harga));
-        })
-
-        // input total
-        $('#totalPembelian').on('change paste keyup', function(e) {
-            $(this).val(currencyIdr($(this).val(), 'Rp '));
-        })
-
-        // fungsi hitung total Pembelian
-        function hitungTotalPembelian(a, b) {
-            let total = a * b;
-            $('#totalPembelian').val(currencyIdr(String(total), 'Rp '));
-        }
-        // end
-
-        // tambah row Pembelian
-        $('#tambahPembelian').on('click', function(e) {
-            let data = {
-                kodeBarang: $('#kodeBarangPembelian').val(),
-                barcode: $('#barcodePembelian').val(),
-                namaBarang: $('#namaBarangPembelian').val(),
-                harga_beli: $('#hargaPembelian').val(),
-                jumlah: $('#jumlahPembelian').val(),
-                namaSatuan: $('#namaSatuanPembelian').val(),
-                total: $('#totalPembelian').val(),
-                isBarangBaru: barangBaru(),
-            };
-            console.log(data);
-            let numInt = $("#tablePembelian").find("tbody").children().length + 1;
-            let childTable =
-                "<tr class='itemRowPembelian' id='itemPembelianRow[" + numInt +
-                "]'><td class='barang-baru-pembelian' style='display: none'>" +
-                data.isBarangBaru + "</td><td class='kode-barang-pembelian' style='display: none'>" +
-                data.kodeBarang + "</td><td class='barcode-barang-pembelian'>" +
-                data
-                .barcode +
-                "</td><td class='nama-barang-pembelian' id='namaItm" + numInt + "'>" +
-                data
-                .namaBarang +
-                "</td><td class='harga-barang-pembelian' id='hargaItm" + numInt + "'>" +
-                data
-                .harga_beli +
-                "</td><td id='jumlahItm" + numInt + "'><span class='jumlah-barang-pembelian'>" + data
-                .jumlah +
-                "</span> <span class='satuan-barang-pembelian'>" + data.namaSatuan +
-                "</span></td><td class='totalHrgPembelian total-barang-pembelian' id='totalItm" +
-                numInt + "'>" +
-                data
-                .total +
-                "</td><td><a class='btn btn-danger btn-sm btn-hapus-pembelian' data-id='itemPembelianRow[" +
-                numInt +
-                "]' data-bs-toggle='modal' data-bs-target='#hapusItemPembelianModal' data-dataid='item" +
-                numInt + "'><i class='fas fa-trash-alt'></i></a></td></tr>";
-            $("#tablePembelian").find("tbody").append(childTable);
-            hapusRowPembelian(true);
-            totalHargaPembelian();
-            $('.alert-row-pembelian').hide();
-            $('#isBarangBaru').prop('checked', false);
-            $('#kodeBarangPembelian').val('');
-            $('#barcodePembelian').focus();
-            $('#barcodePembelian').val('');
-            $('#namaBarangPembelian').val('');
-            $('#hargaPembelian').val('');
-            $('#jumlahPembelian').val('');
-            $('#namaSatuanPembelian').val('');
-            $('#totalPembelian').val('');
-        })
-
-        // set value hapus
-        function hapusRowPembelian(check = false) {
-            if (check) {
-                let btnHapus = $('.btn-hapus-pembelian');
-                for (let i = 0; i < btnHapus.length; i++) {
-                    $(btnHapus[i]).on('click', function(event) {
-                        $('#hapusItemPembelian').val($(this).data('id'));
-                    });
+            // check barang baru
+            function barangBaru() {
+                let barangBaru;
+                if ($('#isBarangBaru').is(':checked')) {
+                    barangBaru = true;
+                } else {
+                    barangBaru = false;
                 }
-            }
-        }
-        // end
-
-        // hapus row
-        $("#hapusBtnPembelianModal").on("click", function(e) {
-            let itemID = $("#hapusItemPembelian").val();
-            document.getElementById(itemID).remove();
-            totalHargaPembelian();
-        });
-        // end
-
-        // hitung total harga transaksi
-        function totalHargaPembelian() {
-            $("#totalTextPembelian").html(function() {
-                var a = 0;
-                $(".totalHrgPembelian").each(function() {
-                    a += parseInt(Number(replaceCurrency($(this).html())));
-                });
-                return currencyIdr(String(a), 'Rp ');
-            });
-            if (Number(replaceCurrency($('#totalTextPembelian').html())) == 0) {
-
-            }
-            return $("#totalTextPembelian").html();
-        };
-        // end
-
-        // tombol batal pembelian
-        $('#batalPembelian').on('click', function() {
-            $('.alert-row-pembelian').hide();
-            $('#isBarangBaru').prop('checked', false);
-            $('#kodeBarangPembelian').val('');
-            $('#barcodePembelian').focus();
-            $('#barcodePembelian').val('');
-            $('#namaBarangPembelian').val('');
-            $('#hargaPembelian').val('');
-            $('#jumlahPembelian').val('');
-            $('#namaSatuanPembelian').val('');
-            $('#totalPembelian').val('');
-            $('.itemRowPembelian').remove();
-            totalHargaPembelian();
-        });
-        // end
-
-        // tombol selesai pembelian
-        $('#selesaiPembelian').on('click', function() {
-            let totalPembelian = $('#totalTextPembelian');
-            let row = $('.itemRowPembelian');
-            let dataBarangPembelian = [];
-            for (let i = 0; i < row.length; i++) {
-                dataBarangPembelian.push({
-                    baru: $(row[i]).find('td.barang-baru-pembelian').html(),
-                    kode: $(row[i]).find('td.kode-barang-pembelian').html(),
-                    barcode: $(row[i]).find('td.barcode-barang-pembelian').html(),
-                    nama: $(row[i]).find('td.nama-barang-pembelian').html(),
-                    jumlah: Number($(row[i]).find('span.jumlah-barang-pembelian').html()),
-                    satuan: $(row[i]).find('span.satuan-barang-pembelian').html(),
-                    harga: replaceCurrency($(row[i]).find('td.harga-barang-pembelian').html()),
-                    total: replaceCurrency($(row[i]).find('td.total-barang-pembelian').html())
-                });
+                return barangBaru;
             };
-            console.log(dataBarangPembelian);
 
-            // proses ajax simpan pembelian
-            let token = document.head.querySelector('meta[name="csrf-token"]');
-            window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
-            axios.post(globalUrl + 'simpan-transaksi', {
-                    no_resi: noResi,
-                    tanggal: outputDate,
-                    jenis_transaksi: 'penjualan',
-                    kasir_id: idKasir,
-                    nama_member: namaMember,
-                    unit_member: unitMember,
-                    telepon_member: teleponMember,
-                    alamat_member: alamatMember,
-                    jenis_member: 'customer',
-                    total: replaceCurrency(ttlSm),
-                    diskon: diskon,
-                    is_lunas: isLunas,
-                    detail_transaksi: dataBarang
-                })
-                .then((response) => {
-                    console.log(response.data);
-                    data['idKasir'] = response.data.id_kasir;
-                    data['noResi'] = response.data.no_resi;
-                    getMember();
-                    getBarang();
-                    printStruk(data);
-                    $('#batalPembelian').click();
-                })
-                .catch((error) => {
-                    console.log(error)
-                });
+            // check barcode
+            $('#barcodePembelian').on('change paste keyup', function(e) {
+                let barcode = $(this).val();
+                axios.get(globalUrl + 'show-barang-transaksi/' + barcode)
+                    .then((response) => {
+                        let data = response.data.barang[0];
+                        console.log(data);
+                        $('#kodeBarangPembelian').val(data.kode_barang);
+                        $('#namaBarangPembelian').val(data.nama);
+                        $('#hargaPembelian').val(currencyIdr(String(data.satuan[0].harga_beli), 'Rp '));
+                        $('#namaSatuanPembelian').val(data.satuan[0].nama_satuan);
+                        $('.alert-row-pembelian').hide();
+                    }).catch((error) => {
+                        console.log(error.response);
+                        $('.alert-row-pembelian').show();
+                        if (barcode == '') $('.alert-row-pembelian').hide();
+                    })
+            });
             // end
 
-        });
-        // end
+            // input qty(jumlah)
+            $('#jumlahPembelian').on('change paste keyup', function(e) {
+                let jml = $(this).val();
+                let harga = $('#hargaPembelian').val();
+                hitungTotalPembelian(jml, replaceCurrency(harga));
+            })
 
-    })
+            // input harga
+            $('#hargaPembelian').on('change paste keyup', function(e) {
+                let harga = $(this).val();
+                let jml = $('#jumlahPembelian').val();
+                $(this).val(currencyIdr($(this).val(), 'Rp '));
+                hitungTotalPembelian(jml, replaceCurrency(harga));
+            })
 
-</script>
+            // input total
+            $('#totalPembelian').on('change paste keyup', function(e) {
+                $(this).val(currencyIdr($(this).val(), 'Rp '));
+            })
+
+            // fungsi hitung total Pembelian
+            function hitungTotalPembelian(a, b) {
+                let total = a * b;
+                $('#totalPembelian').val(currencyIdr(String(total), 'Rp '));
+            }
+            // end
+
+            // tambah row Pembelian
+            $('#tambahPembelian').on('click', function(e) {
+                let data = {
+                    kodeBarang: $('#kodeBarangPembelian').val(),
+                    barcode: $('#barcodePembelian').val(),
+                    namaBarang: $('#namaBarangPembelian').val(),
+                    harga_beli: $('#hargaPembelian').val(),
+                    jumlah: $('#jumlahPembelian').val(),
+                    namaSatuan: $('#namaSatuanPembelian').val(),
+                    total: $('#totalPembelian').val(),
+                    isBarangBaru: barangBaru(),
+                };
+                console.log(data);
+                let numInt = $("#tablePembelian").find("tbody").children().length + 1;
+                let childTable =
+                    "<tr class='itemRowPembelian' id='itemPembelianRow[" + numInt +
+                    "]'><td class='barang-baru-pembelian' style='display: none'>" +
+                    data.isBarangBaru + "</td><td class='kode-barang-pembelian' style='display: none'>" +
+                    data.kodeBarang + "</td><td class='barcode-barang-pembelian'>" +
+                    data
+                    .barcode +
+                    "</td><td class='nama-barang-pembelian' id='namaItm" + numInt + "'>" +
+                    data
+                    .namaBarang +
+                    "</td><td class='harga-barang-pembelian' id='hargaItm" + numInt + "'>" +
+                    data
+                    .harga_beli +
+                    "</td><td id='jumlahItm" + numInt + "'><span class='jumlah-barang-pembelian'>" + data
+                    .jumlah +
+                    "</span> <span class='satuan-barang-pembelian'>" + data.namaSatuan +
+                    "</span></td><td class='totalHrgPembelian total-barang-pembelian' id='totalItm" +
+                    numInt + "'>" +
+                    data
+                    .total +
+                    "</td><td><a class='btn btn-danger btn-sm btn-hapus-pembelian' data-id='itemPembelianRow[" +
+                    numInt +
+                    "]' data-bs-toggle='modal' data-bs-target='#hapusItemPembelianModal' data-dataid='item" +
+                    numInt + "'><i class='fas fa-trash-alt'></i></a></td></tr>";
+                $("#tablePembelian").find("tbody").append(childTable);
+                hapusRowPembelian(true);
+                totalHargaPembelian();
+                $('.alert-row-pembelian').hide();
+                $('#isBarangBaru').prop('checked', false);
+                $('#kodeBarangPembelian').val('');
+                $('#barcodePembelian').focus();
+                $('#barcodePembelian').val('');
+                $('#namaBarangPembelian').val('');
+                $('#hargaPembelian').val('');
+                $('#jumlahPembelian').val('');
+                $('#namaSatuanPembelian').val('');
+                $('#totalPembelian').val('');
+            })
+
+            // set value hapus
+            function hapusRowPembelian(check = false) {
+                if (check) {
+                    let btnHapus = $('.btn-hapus-pembelian');
+                    for (let i = 0; i < btnHapus.length; i++) {
+                        $(btnHapus[i]).on('click', function(event) {
+                            $('#hapusItemPembelian').val($(this).data('id'));
+                        });
+                    }
+                }
+            }
+            // end
+
+            // hapus row
+            $("#hapusBtnPembelianModal").on("click", function(e) {
+                let itemID = $("#hapusItemPembelian").val();
+                document.getElementById(itemID).remove();
+                totalHargaPembelian();
+            });
+            // end
+
+            // hitung total harga transaksi
+            function totalHargaPembelian() {
+                $("#totalTextPembelian").html(function() {
+                    var a = 0;
+                    $(".totalHrgPembelian").each(function() {
+                        a += parseInt(Number(replaceCurrency($(this).html())));
+                    });
+                    return currencyIdr(String(a), 'Rp ');
+                });
+                if (Number(replaceCurrency($('#totalTextPembelian').html())) == 0) {
+
+                }
+                return $("#totalTextPembelian").html();
+            };
+            // end
+
+            // tombol batal pembelian
+            $('#batalPembelian').on('click', function() {
+                $('.alert-row-pembelian').hide();
+                $('#isBarangBaru').prop('checked', false);
+                $('#kodeBarangPembelian').val('');
+                $('#barcodePembelian').focus();
+                $('#barcodePembelian').val('');
+                $('#namaBarangPembelian').val('');
+                $('#hargaPembelian').val('');
+                $('#jumlahPembelian').val('');
+                $('#namaSatuanPembelian').val('');
+                $('#totalPembelian').val('');
+                $('.itemRowPembelian').remove();
+                totalHargaPembelian();
+            });
+            // end
+
+            // tombol selesai pembelian
+            $('#selesaiPembelian').on('click', function() {
+                let totalPembelian = $('#totalTextPembelian').html();
+                let row = $('.itemRowPembelian');
+                let dataBarangPembelian = [];
+
+                let d = new Date();
+                let month = d.getMonth() + 1;
+                let day = d.getDate();
+                let outputDate = (day < 10 ? '0' : '') + day + '-' +
+                    (month < 10 ? '0' : '') + month + '-' +
+                    d.getFullYear();
+
+                for (let i = 0; i < row.length; i++) {
+                    dataBarangPembelian.push({
+                        baru: $(row[i]).find('td.barang-baru-pembelian').html(),
+                        kode: $(row[i]).find('td.kode-barang-pembelian').html(),
+                        barcode: $(row[i]).find('td.barcode-barang-pembelian').html(),
+                        nama: $(row[i]).find('td.nama-barang-pembelian').html(),
+                        jumlah: Number($(row[i]).find('span.jumlah-barang-pembelian').html()),
+                        satuan: $(row[i]).find('span.satuan-barang-pembelian').html(),
+                        harga: replaceCurrency($(row[i]).find('td.harga-barang-pembelian').html()),
+                        total: replaceCurrency($(row[i]).find('td.total-barang-pembelian').html())
+                    });
+                };
+
+                // proses ajax simpan pembelian
+                let token = document.head.querySelector('meta[name="csrf-token"]');
+                window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+                axios.post(globalUrl + 'simpan-transaksi', {
+                        tanggal: outputDate,
+                        jenis_transaksi: 'pembelian',
+                        total: replaceCurrency(totalPembelian),
+                        detail_transaksi: dataBarangPembelian
+                    })
+                    .then((response) => {
+                        console.log(response);
+                        $('#batalPembelian').click();
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    });
+                // end
+
+            });
+            // end
+
+        })
+
+    </script>
+@endsection

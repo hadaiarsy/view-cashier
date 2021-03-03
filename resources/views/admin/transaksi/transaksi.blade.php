@@ -808,4 +808,6 @@
         });
 
     </script>
+
+    @yield('script-e')
 @endsection
