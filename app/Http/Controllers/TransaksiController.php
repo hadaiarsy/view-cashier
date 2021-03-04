@@ -160,71 +160,91 @@ class TransaksiController extends Controller
             $memberId = Member::incrementId();
             $loopData = count(collect($request)->get('detail_transaksi'));
 
-            // // member
-            // $member = new Member;
-            // $member->kode_member = $memberId;
-            // $member->jenis_member = 'supplier';
-            // $member->nama = $member->getName();
-            // $member->unit = '';
-            // $member->telepon = '';
-            // $member->alamat = '';
-            // // end
+            // member
+            $member = new Member;
+            $member->kode_member = $memberId;
+            $member->jenis_member = 'supplier';
+            $member->nama = $member->getName();
+            $member->unit = null;
+            $member->telepon = null;
+            $member->alamat = null;
+            $member->save();
+            // end
 
-            // // Transaksi
-            // $transaksi = new Transaksi;
-            // $transaksi->no_resi = $noResi;
-            // $transaksi->tanggal = now();
-            // $transaksi->jenis_transaksi = $request->jenis_transaksi;
-            // $transaksi->kasir_id = $idKasir;
-            // $transaksi->member_id = $memberId;
-            // $transaksi->total = $request->total;
-            // $transaksi->diskon = $request->diskon;
-            // $transaksi->is_lunas = $request->is_lunas;
-            // $transaksi->save();
-            // // End
+            // Transaksi
+            $transaksi = new Transaksi;
+            $transaksi->no_resi = $noResi;
+            $transaksi->tanggal = now();
+            $transaksi->jenis_transaksi = $request->jenis_transaksi;
+            $transaksi->kasir_id = $idKasir;
+            $transaksi->member_id = $memberId;
+            $transaksi->total = $request->total;
+            $transaksi->diskon = null;
+            $transaksi->is_lunas = true;
+            $transaksi->save();
+            // End
 
-            // // Detail Transaksi
-            // for ($i = 0; $i < $loopData; $i++) {
-            //     $detail = new DetailTransaksi;
-            //     $detail->transaksi_id = $noResi;
-            //     $detail->kode_barang = $request->detail_transaksi[$i]['kode'];
-            //     $detail->nama_barang = $request->detail_transaksi[$i]['nama'];
-            //     $detail->jumlah = $request->detail_transaksi[$i]['jumlah'];
-            //     $detail->satuan = $request->detail_transaksi[$i]['satuan'];
-            //     $detail->harga = $request->detail_transaksi[$i]['total'];
-            //     $detail->save();
+            // Detail Transaksi
+            for ($i = 0; $i < $loopData; $i++) {
+                $detail = new DetailTransaksi;
+                $detail->transaksi_id = $noResi;
 
-            //     // edit stok barang
-            //     if ($request->detail_transaksi[$i]['baru'] == false) {
-            //         $barang = new Barang;
-            //         $stok = $barang->where('kode_barang', $request->detail_transaksi[$i]['kode'])->first()->stok;
-            //         $barang->where('kode_barang', $request->detail_transaksi[$i]['kode'])
-            //             ->update([
-            //                 'stok' => floatval(floatval($stok) + floatval($request->detail_transaksi[$i]['jumlah']))
-            //             ]);
-            //     } else {
-            //         $kodeBarang = Barang::incrementId();
-            //         $barang = new Barang;
-            //         $barang->kode_barang = $kodeBarang;
-            //         $barang->barcode = $request->detail_transaksi[$i]['barcode'];
-            //         $barang->nama = $request->detail_transaksi[$i]['nama'];
-            //         $barang->stok = $request->detail_transaksi[$i]['jumlah'];
-            //         $barang->save();
-            //         $satuan = new SatuanBarang;
-            //         $satuan->kode_barang = $kodeBarang;
-            //         $satuan->nama_satuan = $request->detail_transaksi[$i]['satuan'];
-            //         $satuan->rasio = 1;
-            //         $satuan->harga = $request->detail_transaksi[$i]['harga'];
-            //         $satuan->save();
-            //     }
-            //     // end
+                // edit stok barang
+                if ($request->detail_transaksi[$i]['baru'] == 'false') {
+                    $detail->kode_barang = $request->detail_transaksi[$i]['kode'];
 
-            // }
-            // // End
+                    $barang = new Barang;
+                    $stok = $barang->where('kode_barang', $request->detail_transaksi[$i]['kode'])->first()->stok;
+                    $barang->where('kode_barang', $request->detail_transaksi[$i]['kode'])
+                        ->update([
+                            'stok' => floatval(floatval($stok) + floatval($request->detail_transaksi[$i]['jumlah'])),
+                        ]);
+                    $satuan = new SatuanBarang;
+                    $satuan->where([
+                        'kode_barang' => $request->detail_transaksi[$i]['kode'],
+                        'nama_satuan' => $request->detail_transaksi[$i]['satuan']
+                    ])
+                        ->update([
+                            'harga_beli' => $request->detail_transaksi[$i]['harga'],
+                        ]);
+                } else {
+                    $kodeBarang = Barang::incrementId();
+                    $detail->kode_barang = $kodeBarang;
 
-            return response()->json([
-                'data' => $request->all()
-            ]);
+                    $barang = new Barang;
+                    $barang->kode_barang = $kodeBarang;
+                    $barang->barcode = $request->detail_transaksi[$i]['barcode'];
+                    $barang->nama = $request->detail_transaksi[$i]['nama'];
+                    $barang->stok = $request->detail_transaksi[$i]['jumlah'];
+                    $barang->save();
+                    $satuan = new SatuanBarang;
+                    $satuan->kode_barang = $kodeBarang;
+                    $satuan->nama_satuan = $request->detail_transaksi[$i]['satuan'];
+                    $satuan->rasio = 1;
+                    $satuan->harga_beli = $request->detail_transaksi[$i]['harga'];
+                    $satuan->harga_jual = $request->detail_transaksi[$i]['harga'];
+                    $satuan->save();
+                }
+                // end
+
+                $detail->nama_barang = $request->detail_transaksi[$i]['nama'];
+                $detail->jumlah = $request->detail_transaksi[$i]['jumlah'];
+                $detail->satuan = $request->detail_transaksi[$i]['satuan'];
+                $detail->harga = $request->detail_transaksi[$i]['total'];
+                $detail->save();
+            }
+            // End
+
+            if ($member && $transaksi && $detail && $barang) {
+                return response()->json([
+                    'message' => 'success',
+                    'data' => Transaksi::where('no_resi', $noResi)->get()
+                ], 200);
+            } else {
+                return response()->json([
+                    'message' => 'failed',
+                ], 500);
+            }
         }
     }
 

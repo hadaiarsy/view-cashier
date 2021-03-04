@@ -151,15 +151,15 @@
 @section('script-e')
     <script>
         $(document).ready(function() {
-            const globalUrl = 'http://127.0.0.1:8000/';
+            const globalUrl = 'http://waroeng-yamughni.com/';
 
             // check barang baru
             function barangBaru() {
                 let barangBaru;
                 if ($('#isBarangBaru').is(':checked')) {
-                    barangBaru = true;
+                    barangBaru = 'true';
                 } else {
-                    barangBaru = false;
+                    barangBaru = 'false';
                 }
                 return barangBaru;
             };
@@ -343,6 +343,7 @@
                         total: replaceCurrency($(row[i]).find('td.total-barang-pembelian').html())
                     });
                 };
+                console.log(dataBarangPembelian);
 
                 // proses ajax simpan pembelian
                 let token = document.head.querySelector('meta[name="csrf-token"]');
@@ -355,15 +356,70 @@
                     })
                     .then((response) => {
                         console.log(response);
+                        getOutBarang();
                         $('#batalPembelian').click();
                     })
                     .catch((error) => {
-                        console.log(error)
+                        console.log(error.response)
                     });
                 // end
 
             });
             // end
+
+            let getOutBarang = () => axios.get(globalUrl + 'getall-barang/')
+                .then((response) => {
+                    $('table.table-data-barang').find('tbody').empty();
+                    let data = response.data.barang;
+                    for (let i = 0; i < data.length; i++) {
+                        let dataLoop =
+                            "<tr><td><p>" +
+                            data[i].kode_barang +
+                            "</p></td><td><p>" +
+                            (data[i].barcode == null ? '-' : data[i].barcode) +
+                            "</p></td><td><p>" + data[i].nama +
+                            "</p></td><td><p>" + data[i].stok + ' ' + data[i].satuan[0].nama_satuan +
+                            "</p></td><td><p>" + currencyIdr(String(data[i].satuan[0].harga_jual), 'Rp ') +
+                            ' / ' +
+                            data[i]
+                            .satuan[
+                                0].nama_satuan +
+                            "</p></td><td><button class='btn btn-info btn-sm text-light add-item' data-bs-dismiss='modal'aria-label='Close' id='addItem[]' data-datakode='" +
+                            data[i].kode_barang + "' data-databarcode='" + data[i].barcode +
+                            "' data-datanama='" + data[i].nama + "' data-datastok='" + data[i].stok * data[i]
+                            .satuan[0].rasio + "' data-datasatuan='" + data[i].satuan[0].nama_satuan +
+                            "' data-datarasio='" + data[i].satuan[0].rasio +
+                            "' data-dataharga='" + data[i].satuan[0].harga_jual +
+                            "'><i class='fas fa-plus text-light'></i></button></td></tr>";
+                        $('.table-data-barang').find('tbody').append(dataLoop);
+                        btnModalTambah();
+                    }
+                }).catch((error) => {
+                    console.log(error);
+                })
+
+            let btnModalTambah = () => $("button.add-item").on("click", function(e) {
+                var data = {
+                    kode: $(this).data('datakode'),
+                    barcode: $(this).data('databarcode'),
+                    nama: $(this).data('datanama'),
+                    stok: $(this).data('datastok'),
+                    harga: $(this).data('dataharga'),
+                    namaSatuan: $(this).data('datasatuan'),
+                };
+                let kode = $("#kodeBarang").val(data.kode);
+                let barcode = $("#barcode").val(data.barcode);
+                let nama = $("#nama").val(data.nama);
+                let stok = $("#stok").val(data.stok);
+                let harga = $("#harga").val(currencyIdr(String(data.harga), 'Rp '));
+                let namaSatuan = $("#btnJumlah").html(data.namaSatuan);
+                let jumlah = $("#jumlah").val(1);
+                let ttl = data.harga * 1;
+                let total = $("#total").val(currencyIdr(String(ttl), 'Rp '));
+                $('.alert-row').hide();
+                $('#tambah').prop('disabled', false);
+                $('#diskon').change();
+            });
 
         })
 

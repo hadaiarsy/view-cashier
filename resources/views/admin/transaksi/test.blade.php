@@ -28,7 +28,7 @@
 
     @foreach ($data as $transaksi)
         <table id='printStruk'
-            style='align-items: center; justify-content: center; font-size: 11px; font-weight: bold; border-top: 1px dashed black; border-bottom: 1px dashed black; border-spacing: 8px; width: 178px'>
+            style='align-items: center; justify-content: center; font-size: 11px; font-weight: bold; border-top: 1px dashed black; border-bottom: 1px dashed black; border-spacing: 8px; width: 186px'>
             <tr>
                 <td colspan='3' style='text-align: center'>
                     <img src='{{ asset('assets/img/icon/logo.png') }}' alt='yamughni img' style='width: 60px'>

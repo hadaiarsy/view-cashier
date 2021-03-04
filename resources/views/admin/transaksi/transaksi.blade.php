@@ -231,36 +231,6 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($barang as $b)
-                                    <tr>
-                                        <td>
-                                            <p>{{ $b->kode_barang }}</p>
-                                        </td>
-                                        <td>
-                                            <p>{{ $b->barcode }}</p>
-                                        </td>
-                                        <td>
-                                            <p>{{ $b->nama }}</p>
-                                        </td>
-                                        <td>
-                                            <p>{{ $b->stok . ' ' . $b->satuan[0]->nama_satuan }}</p>
-                                        </td>
-                                        <td>
-                                            <p>Rp {{ $b->satuan[0]->harga . ' / ' . $b->satuan[0]->nama_satuan }}</p>
-                                        </td>
-                                        <td>
-                                            <button class="btn btn-info btn-sm text-light add-item" data-bs-dismiss="modal"
-                                                aria-label="Close" id="addItem[]" data-datakode="{{ $b->kode_barang }}"
-                                                data-databarcode="{{ $b->barcode }}" data-datanama="{{ $b->nama }}"
-                                                data-datastok="{{ $b->stok * $b->satuan[0]->rasio }}"
-                                                data-datasatuan="{{ $b->satuan[0]->nama_satuan }}"
-                                                data-datarasio="{{ $b->satuan[0]->rasio }}"
-                                                data-dataharga="{{ $b->satuan[0]->harga }}">
-                                                <i class="fas fa-plus"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -296,7 +266,7 @@
 @section('javascript')
     <script>
         $(document).ready(function() {
-            const globalUrl = 'http://127.0.0.1:8000/';
+            const globalUrl = 'http://waroeng-yamughni.com/';
             $("#tableItems").DataTable();
             $('.alert-row').hide();
             $('.text-alert-total').hide();
@@ -687,17 +657,19 @@
                 $(this).val(currencyIdr($(this).val(), 'Rp '));
                 let uang = Number($(this).val().split(".").join("").split("Rp").join(""));
                 let total = Number($("#totalText").html().split(".").join("").split("Rp").join(""));
-                let kmbl = uang - total;
-                if (kmbl < 0) {
-                    $("#kmblTotal").val('');
-                    $('#slsPrintTransc').prop('disabled', true);
-                    $('.text-alert-total').show();
-                    $(this).addClass('text-danger');
-                } else {
-                    $("#kmblTotal").val(currencyIdr(String(kmbl), 'Rp '));
-                    $('#slsPrintTransc').prop('disabled', false);
-                    $('.text-alert-total').hide();
-                    $(this).removeClass('text-danger');
+                if (piutangcheck()) {
+                    let kmbl = uang - total;
+                    if (kmbl < 0) {
+                        $("#kmblTotal").val('');
+                        $('#slsPrintTransc').prop('disabled', true);
+                        $('.text-alert-total').show();
+                        $(this).addClass('text-danger');
+                    } else {
+                        $("#kmblTotal").val(currencyIdr(String(kmbl), 'Rp '));
+                        $('#slsPrintTransc').prop('disabled', false);
+                        $('.text-alert-total').hide();
+                        $(this).removeClass('text-danger');
+                    }
                 }
             });
             // end
