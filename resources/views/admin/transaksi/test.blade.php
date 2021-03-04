@@ -70,7 +70,11 @@
                 </tr>
             @endif
             <tr>
-                <td style='border-top: 1px solid black;'>Grand Total</td>
+                @if ($transaksi->is_lunas == '1')
+                    <td style='border-top: 1px solid black;'>Grand Total</td>
+                @else
+                    <td style='border-top: 1px solid black;'>Total Piutang</td>
+                @endif
                 <td colspan='2' id='grandTotalStruk' style='border-top: 1px solid black; text-align: right'>
                     {{ $transaksi->total }}
                 </td>
@@ -79,10 +83,12 @@
                 <td>Uang</td>
                 <td colspan='2' id='uangStruk' style='text-align: right'>{{ $uang }}</td>
             </tr>
-            <tr>
-                <td>Kembali</td>
-                <td colspan='2' id='kembaliStruk' style='text-align: right'>{{ $kembali }}</td>
-            </tr>
+            @if ($transaksi->is_lunas == '1')
+                <tr>
+                    <td>Kembali</td>
+                    <td colspan='2' id='kembaliStruk' style='text-align: right'>{{ $kembali }}</td>
+                </tr>
+            @endif
             <tr>
                 <td colspan='3' style='border-top: 1px solid black; text-align: center'>Terima Kasih</td>
             </tr>

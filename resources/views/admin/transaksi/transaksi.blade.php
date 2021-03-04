@@ -645,7 +645,7 @@
                 if (total > 0) {
                     $('#totalText').html(currencyIdr(String(Math.ceil(Math.floor(total))), 'Rp '));
                 }
-                if (uang > 0) {
+                if (uang > 0 && piutangcheck() == '1') {
                     let kmbl = uang - total;
                     $("#kmblTotal").val(currencyIdr(String(kmbl), 'Rp '));
                 }
@@ -657,7 +657,7 @@
                 $(this).val(currencyIdr($(this).val(), 'Rp '));
                 let uang = Number($(this).val().split(".").join("").split("Rp").join(""));
                 let total = Number($("#totalText").html().split(".").join("").split("Rp").join(""));
-                if (piutangcheck()) {
+                if (piutangcheck() == '1') {
                     let kmbl = uang - total;
                     if (kmbl < 0) {
                         $("#kmblTotal").val('');
@@ -691,8 +691,8 @@
                 let noResi = $("#noResi").val();
                 let ttlSm = $("#totalText").html();
                 let diskon = Number($("#diskon").val());
-                let uang = $("#uangTotal").val();
-                let kmbl = $("#kmblTotal").val();
+                let uang = $("#uangTotal").val() == '' ? 'Rp 0' : $("#uangTotal").val();
+                let kmbl = $("#kmblTotal").val() == '' ? 'Rp 0' : $("#kmblTotal").val();
                 let row = $('.itemRow');
                 let dataBarang = [];
                 for (let i = 0; i < row.length; i++) {
@@ -741,7 +741,7 @@
                         $('#batal').click();
                     })
                     .catch((error) => {
-                        console.log(error)
+                        console.log(error.response)
                     });
                 // end
             });
@@ -769,13 +769,22 @@
             function piutangcheck() {
                 let piutang;
                 if ($('#piutangCheck').is(':checked')) {
-                    piutang = false;
+                    piutang = '0';
                     $('#slsPrintTransc').prop('disabled', false);
                 } else {
-                    piutang = true;
+                    piutang = '1';
                 }
                 return piutang;
             }
+
+            $('#piutangCheck').on('change', function() {
+                if ($('#piutangCheck').is(':checked')) {
+                    $('#slsPrintTransc').prop('disabled', false);
+                    $('.text-alert-total').hide();
+                    $('#uangTotal').removeClass('text-danger');
+                    $('#slsPrintTransc').prop('disabled', false);
+                }
+            });
 
         });
 
