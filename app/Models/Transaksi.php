@@ -54,4 +54,9 @@ class Transaksi extends Model
     {
         return $this->hasMany(DetailTransaksi::class, 'transaksi_id', 'no_resi');
     }
+
+    public function piutang()
+    {
+        return $this->hasMany(DetailPiutang::class, 'transaksi_id', 'no_resi');
+    }
 }

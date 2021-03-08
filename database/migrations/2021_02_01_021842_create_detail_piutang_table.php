@@ -18,7 +18,7 @@ class CreateDetailPiutangTable extends Migration
             $table->string('transaksi_id');
             $table->timestamp('tanggal');
             $table->string('kasir_id');
-            $table->float('uang');
+            $table->integer('uang');
             $table->timestamps();
             $table->softDeletes();
         });

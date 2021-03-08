@@ -5,6 +5,7 @@ use App\Http\Controllers\PDFController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\SatuanBarangController;
 use App\Http\Controllers\TransaksiController;
+use App\Http\Controllers\DetailPiutangController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\UserController;
 use App\Models\Transaksi;
@@ -40,8 +41,27 @@ Route::middleware('auth')->group(function () {
     // Route Transaksi
     Route::group([''], function () {
         Route::get('transaksi', [TransaksiController::class, 'index'])->name('transaksi');
+
+        Route::get('piutang', [DetailPiutangController::class, 'index'])->name('piutang');
+
+        Route::get('get-piutang/{any}', [DetailPiutangController::class, 'show']);
+
+        Route::post('store-piutang', [DetailPiutangController::class, 'store']);
+
+        Route::get('struk-piutang/{resi}/{idPiutang}/{saldoAwal}/{sisa}', function ($resi, $idPiutang, $saldoAwal, $sisa) {
+            $transaksi = Transaksi::with(['detail', 'kasir', 'member', 'piutang'])->where('no_resi', $resi)->get();
+            return view('admin.transaksi.strukpiutang', [
+                'data' => $transaksi,
+                'idPiutang' => $idPiutang,
+                'saldoAwal' => $saldoAwal,
+                'sisa' => $sisa
+            ]);
+        });
+
         Route::get('show-barang-transaksi/{any}', [TransaksiController::class, 'showBarang']);
+
         Route::post('simpan-transaksi', [TransaksiController::class, 'store']);
+
         Route::get('generate-member-id', function () {
             return \App\Models\Member::incrementId();
         });

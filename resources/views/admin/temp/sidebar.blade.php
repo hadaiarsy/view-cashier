@@ -49,7 +49,7 @@
                 </li>
                 <li class="app-sidebar__heading">Piutang</li>
                 <li>
-                    <a href="javascript:void(0);" class="{{ $sideTitle == 'piutang' ? 'mm-active' : '' }}">
+                    <a href="{{ route('piutang') }}" class="{{ $sideTitle == 'piutang' ? 'mm-active' : '' }}">
                         <i class="metismenu-icon pe-7s-hammer"></i>
                         Piutang
                     </a>

@@ -137,14 +137,17 @@
                                             <h4 class="text-danger border-bottom border-danger" id="totalText">Rp 0</h4>
                                         </div>
                                     </div>
-                                    <div class="row d-flex flex-row-reverse mt-2">
-                                        <div class="col-6 input-group">
-                                            <input type="text" class="form-control pay-section" data-dataps="ps-1"
-                                                id="kodeMember" value="">
-                                            <button type="button" class="input-group-text" id="btnKodeMember"><i
-                                                    class="fas fa-search"></i></button>
+                                    <div style="display: none">
+                                        <div class="row d-flex flex-row-reverse mt-2">
+                                            <div class="col-6 input-group">
+                                                <input type="hidden" name="unitMember" id="unitMember">
+                                                <input type="text" class="form-control pay-section" data-dataps="ps-1"
+                                                    id="kodeMember" value="">
+                                                <button type="button" class="input-group-text" id="btnKodeMember"><i
+                                                        class="fas fa-search"></i></button>
+                                            </div>
+                                            <label for="" class="col-4 col-form-label">Kode Member :</label>
                                         </div>
-                                        <label for="" class="col-4 col-form-label">Kode Member :</label>
                                     </div>
                                     <div class="row d-flex flex-row-reverse mt-2">
                                         <div class="col-6 input-group">
@@ -156,7 +159,6 @@
                                     </div>
                                     <div class="row d-flex flex-row-reverse mt-2">
                                         <div class="col-6 input-group">
-                                            <button type="button" class="input-group-text" id="btnUang">Rp</button>
                                             <input type="text" class="form-control pay-section" data-dataps="ps-3"
                                                 id="uangTotal" value="">
                                         </div>
@@ -169,7 +171,6 @@
                                     </div>
                                     <div class="row d-flex flex-row-reverse mt-2">
                                         <div class="col-6 input-group">
-                                            <button type="button" class="input-group-text" id="btnKmbl">Rp</button>
                                             <input type="text" class="form-control pay-section" data-dataps="ps-4"
                                                 id="kmblTotal" value="">
                                         </div>
@@ -366,6 +367,7 @@
                 totalHarga();
                 $('#barcode').focus();
                 $('#slsPrintTransc').prop('disabled', true);
+                $('#piutangCheck').prop('checked', false);
             });
             // end
 
@@ -729,6 +731,7 @@
                         total: replaceCurrency(ttlSm),
                         diskon: diskon,
                         is_lunas: isLunas,
+                        uang: replaceCurrency(uang),
                         detail_transaksi: dataBarang
                     })
                     .then((response) => {
@@ -738,7 +741,7 @@
                         getMember();
                         getBarang();
                         printStruk(data);
-                        $('#batal').click();
+                        // $('#batal').click();
                     })
                     .catch((error) => {
                         console.log(error.response)
@@ -753,8 +756,9 @@
                 $(".totalHrg").each(function() {
                     total += parseInt(Number(replaceCurrency($(this).html())));
                 });
-                let printStruk = window.open(globalUrl + 'test-struk/' + data.noResi + '/' + total + '/' + data
-                    .uang + '/' + data.kmbl);
+                let printStruk = window.open(globalUrl + 'test-struk/' + data.noResi + '/' + total + '/' +
+                    replaceCurrency(data
+                        .uang) + '/' + replaceCurrency(data.kmbl));
                 let tmout = setTimeout(function() {
                     printStruk.close()
                 }, 3000);

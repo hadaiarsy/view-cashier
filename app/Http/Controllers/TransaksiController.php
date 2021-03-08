@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaksi;
 use App\Models\DetailTransaksi;
+use App\Models\DetailPiutang;
 use App\Models\Member;
 use App\Models\Barang;
 use App\Models\SatuanBarang;
@@ -84,6 +85,7 @@ class TransaksiController extends Controller
             $loopData = count(collect($request)->get('detail_transaksi'));
             $noResi = Transaksi::incrementId();
             $idKasir = Auth::user()->id;
+            $tanggal = now();
 
             // Member
             if (Member::checkName($request->nama_member) == false) {
@@ -106,7 +108,7 @@ class TransaksiController extends Controller
             // Transaksi
             $transaksi = new Transaksi;
             $transaksi->no_resi = $noResi;
-            $transaksi->tanggal = now();
+            $transaksi->tanggal = $tanggal;
             $transaksi->jenis_transaksi = $request->jenis_transaksi;
             $transaksi->kasir_id = $idKasir;
             $transaksi->member_id = $memberId;
@@ -142,6 +144,17 @@ class TransaksiController extends Controller
                         ]);
                 }
                 // End
+
+                // piutang
+                if ($request->is_lunas == '0' && (int)$request->uang > 0) {
+                    $piutang = new DetailPiutang;
+                    $piutang->transaksi_id = $noResi;
+                    $piutang->tanggal = $tanggal;
+                    $piutang->kasir_id = $idKasir;
+                    $piutang->uang = $request->uang;
+                    $piutang->save();
+                }
+                // end
 
                 return response()->json([
                     'message' => 'success',

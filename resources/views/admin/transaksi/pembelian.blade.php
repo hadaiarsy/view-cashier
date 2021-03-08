@@ -7,7 +7,7 @@
                     <div class="row alert-row-pembelian" style="display: none">
                         <div class="alert alert-danger" data-start="true" role="alert">
                             Data Barang <strong>Tidak</strong> Tersedia! Harap cek kembali form
-                            <strong>Transaksi</strong> di bawah! <span>Abaikan jika inign mendaftarkan <strong>Barang
+                            <strong>Transaksi</strong> di bawah! <span>Abaikan jika ingin mendaftarkan <strong>Barang
                                     baru</strong></span>
                         </div>
                     </div>
