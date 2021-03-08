@@ -137,18 +137,19 @@
                                             <h4 class="text-danger border-bottom border-danger" id="totalText">Rp 0</h4>
                                         </div>
                                     </div>
-                                    <div style="display: none">
-                                        <div class="row d-flex flex-row-reverse mt-2">
-                                            <div class="col-6 input-group">
-                                                <input type="hidden" name="unitMember" id="unitMember">
-                                                <input type="text" class="form-control pay-section" data-dataps="ps-1"
-                                                    id="kodeMember" value="">
-                                                <button type="button" class="input-group-text" id="btnKodeMember"><i
-                                                        class="fas fa-search"></i></button>
-                                            </div>
-                                            <label for="" class="col-4 col-form-label">Kode Member :</label>
+                                    {{-- <div style="display: none"> --}}
+                                    <div class="row d-flex flex-row-reverse mt-2">
+                                        <div class="col-6 input-group">
+                                            <input type="hidden" name="unitMember" id="unitMember">
+                                            <input type="text" class="form-control pay-section" data-dataps="ps-1"
+                                                id="kodeMember" value="">
+                                            <button type="button" class="input-group-text" id="btnKodeMember"
+                                                data-bs-toggle="modal" data-bs-target="#memberModal"><i
+                                                    class="fas fa-search"></i></button>
                                         </div>
+                                        <label for="" class="col-4 col-form-label">Kode Member :</label>
                                     </div>
+                                    {{-- </div> --}}
                                     <div class="row d-flex flex-row-reverse mt-2">
                                         <div class="col-6 input-group">
                                             <input type="text" class="form-control pay-section" data-dataps="ps-2"
@@ -261,6 +262,36 @@
         </div>
     </div>
 
+    {{-- Modal Data Member --}}
+    <div class="modal fade" id="memberModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="memberModalLabel">Data Member</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-12">
+                        <table class="table table-striped table-hover table-data-member" id="tableItemsMember">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Kode</th>
+                                    <th scope="col">Nama</th>
+                                    <th scope="col">Unit</th>
+                                    <th scope="col">Alamat</th>
+                                    <th scope="col">#</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @yield('modal-e')
 @endsection
 
@@ -269,6 +300,7 @@
         $(document).ready(function() {
             const globalUrl = 'http://waroeng-yamughni.com/';
             $("#tableItems").DataTable();
+            $("#tableItemsMember").DataTable();
             $('.alert-row').hide();
             $('.text-alert-total').hide();
             $('button#tambah').prop('disabled', true);
@@ -284,6 +316,18 @@
                 btnModalTambah();
             });
 
+            $('div#tableItems_length label select').on('change', function(e) {
+                btnModalTambah();
+            });
+
+            $('div#tableItemsMember_length label select').on('change', function(e) {
+                btnModalTambahMember();
+            });
+
+            $('div#tableItemsMember_filter label input').on('change paste keyup', function(e) {
+                btnModalTambahMember();
+            });
+
             // set focus
             $('.trans-section[data-datats=ts-1]').focus();
             // end
@@ -294,22 +338,6 @@
                     $('.pay-section[data-dataps=1]').focus();
                 }
             });
-            // end
-
-            // get data member
-            let getMember = () => axios.get(globalUrl + 'getall-member/')
-                .then((response) => {
-                    $('#namaCustList').empty();
-                    let data = response.data.member;
-                    let datalist = '';
-                    for (let i = 0; i < data.length; i++) {
-                        datalist = "<option value='" + data[i].nama + '__' + data[i].kode_member + "'>";
-                        $('#namaCustList').append(datalist);
-                    }
-                }).catch((error) => {
-                    console.log(error);
-                })
-            getMember();
             // end
 
             // get data barang
@@ -344,6 +372,39 @@
                     console.log(error);
                 })
             getBarang();
+            // end
+
+            // get data member
+            let getMember = () => axios.get(globalUrl + 'getall-member/')
+                .then((response) => {
+                    $('table.table-data-member').find('tbody').empty();
+                    let data = response.data.member;
+                    for (let i = 0; i < data.length; i++) {
+                        let dataLoop =
+                            "<tr><td><p>" +
+                            data[i].kode_member +
+                            "</p></td><td><p>" +
+                            data[i].nama +
+                            "</p></td><td><p>" + data[i].unit +
+                            "</p></td><td><p>" + data[i].alamat +
+                            "</p></td><td><button class='btn btn-info btn-sm text-light add-item-member' data-bs-dismiss='modal'aria-label='Close' data-datakode='" +
+                            data[i].kode_member + "'><i class='fas fa-plus text-light'></i></button></td></tr>";
+                        $('.table-data-member').find('tbody').append(dataLoop);
+                        btnModalTambahMember();
+                    }
+                }).catch((error) => {
+                    console.log(error);
+                })
+            getMember();
+            // end
+
+            // btn member
+            let btnModalTambahMember = () => $("button.add-item-member").on("click", function(e) {
+                var data = {
+                    kode: $(this).data('datakode'),
+                };
+                let kode = $("#kodeMember").val(data.kode);
+            });
             // end
 
             // button batal
@@ -680,6 +741,7 @@
             $("#slsPrintTransc").on("click", function() {
                 let idKasir = $('#idKasir').val();
                 let namaMember = $('#namaCust').val();
+                let kodeMember = $('#kodeMember').val();
                 let unitMember = $('#unitCust').val();
                 let teleponMember = $('#teleponCust').val();
                 let alamatMember = $('#alamatCust').val();
@@ -724,6 +786,7 @@
                         jenis_transaksi: 'penjualan',
                         kasir_id: idKasir,
                         nama_member: namaMember,
+                        kode_member: kodeMember,
                         unit_member: unitMember,
                         telepon_member: teleponMember,
                         alamat_member: alamatMember,

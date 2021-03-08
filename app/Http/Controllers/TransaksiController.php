@@ -58,7 +58,7 @@ class TransaksiController extends Controller
     public function getMember()
     {
         return response()->json([
-            'member' => Member::where('nama', 'not like', '%Customer-%')->get()
+            'member' => Member::where('jenis_member', 'customer')->where('nama', 'not like', '%Customer-%')->get()
         ]);
     }
 
@@ -88,7 +88,7 @@ class TransaksiController extends Controller
             $tanggal = now();
 
             // Member
-            if (Member::checkName($request->nama_member) == false) {
+            if ($request->kode_member == "") {
                 $memberId = Member::incrementId();
                 $member = new Member;
                 $member->kode_member = $memberId;
@@ -100,7 +100,7 @@ class TransaksiController extends Controller
                 $memberSave = true;
             } else {
                 $member = true;
-                $memberId = Member::checkName($request->nama_member);
+                $memberId = $request->kode_member;
                 $memberSave = false;
             }
             // End

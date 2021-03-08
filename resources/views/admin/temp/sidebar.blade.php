@@ -54,7 +54,7 @@
                         Piutang
                     </a>
                 </li>
-                <li class="app-sidebar__heading">Barang</li>
+                {{-- <li class="app-sidebar__heading">Barang</li>
                 <li>
                     <a href="javascript:void(0);" class="{{ $sideTitle == 'barang' ? 'mm-active' : '' }}">
                         <i class="metismenu-icon pe-7s-box1"></i>
@@ -76,7 +76,7 @@
                             Info User
                         </a>
                     </li>
-                @endif
+                @endif --}}
         </div>
     </div>
 </div>
