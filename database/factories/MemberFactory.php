@@ -24,7 +24,8 @@ class MemberFactory extends Factory
         return [
             'kode_member' => 'M-210114001',
             'jenis_member' => 'customer',
-            'nama' => 'Andi'
+            'nama' => 'Andi',
+            'unit' => 10
         ];
     }
 }

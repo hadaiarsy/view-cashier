@@ -13,6 +13,13 @@
                     </div>
                     <div class="row">
                         <div class="col-8">
+                            <div class="row alert-success-pembelian" style="display: none">
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    Data Pembelian <strong>Berhasil</strong> disimpan.
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Close"></button>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col">
                                     <div class="row d-flex align-items-center">
@@ -178,6 +185,10 @@
                         $('.alert-row-pembelian').hide();
                     }).catch((error) => {
                         console.log(error.response);
+                        $('#kodeBarangPembelian').val('');
+                        $('#namaBarangPembelian').val('');
+                        $('#hargaPembelian').val('');
+                        $('#namaSatuanPembelian').val('');
                         $('.alert-row-pembelian').show();
                         if (barcode == '') $('.alert-row-pembelian').hide();
                     })
@@ -357,6 +368,7 @@
                     .then((response) => {
                         console.log(response);
                         getOutBarang();
+                        $('.alert-success-pembelian').show();
                         $('#batalPembelian').click();
                     })
                     .catch((error) => {

@@ -54,6 +54,13 @@
                         Piutang
                     </a>
                 </li>
+                <li class="app-sidebar__heading">Laporan</li>
+                <li>
+                    <a href="/daftar-transaksi" class="{{ $sideTitle == 'laporan' ? 'mm-active' : '' }}">
+                        <i class="metismenu-icon pe-7s-wallet"></i>
+                        Laporan
+                    </a>
+                </li>
                 {{-- <li class="app-sidebar__heading">Barang</li>
                 <li>
                     <a href="javascript:void(0);" class="{{ $sideTitle == 'barang' ? 'mm-active' : '' }}">

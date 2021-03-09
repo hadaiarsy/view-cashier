@@ -23,8 +23,9 @@ class BarangFactory extends Factory
     {
         return [
             'kode_barang' => 'B-210114001',
-            'nama' => 'Gula Pasir',
-            'stok' => 100
+            'barcode' => '000',
+            'nama' => 'something',
+            'stok' => 1000
         ];
     }
 }

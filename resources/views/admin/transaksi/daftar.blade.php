@@ -2,7 +2,7 @@
 
 @section('site-title', 'Daftar Transaksi')
 
-@section('contents')
+@section('main-contents')
     <style>
         /* Absolute Center Spinner */
         .loading {
@@ -145,11 +145,17 @@
     </div>
 
     <div class="row mt-3">
+        <div style="display: none">
+            <div class="col-lg-5 form-inline d-flex">
+                <input type="date" class="form-control mr-2" name="" id="tanggal_awal" value="{{ date('Y-m-d') }}">
+                <span class=""><i class="fas fa-arrow-alt-circle-right"></i></span>
+                <input type="date" class="form-control d-inline" name="" id="tanggal_akhir" value="{{ date('Y-m-d') }}">
+                <button type="button" class="btn btn-success pl-2" id="kirim">Kirim</button>
+            </div>
+        </div>
         <div class="col-lg-5 form-inline d-flex">
-            <input type="date" class="form-control mr-2" name="" id="tanggal_awal" value="{{ date('Y-m-d') }}">
-            <span class=""><i class="fas fa-arrow-alt-circle-right"></i></span>
-            <input type="date" class="form-control d-inline" name="" id="tanggal_akhir" value="{{ date('Y-m-d') }}">
-            <button type="button" class="btn btn-success pl-2" id="kirim">Kirim</button>
+            <a href="/transaksi-pdf" target="_blank"><button type="button" class="btn btn-success pl-2" id="kirim">Laporan
+                    PDF</button></a>
         </div>
     </div>
 
@@ -206,7 +212,7 @@
             let year = d.getFullYear();
             let outputDate = year + '-' + (month < 10 ? '0' : '') + month + (day < 10 ? '0' : '') + '-' +
                 day;
-            $('#tanggal_awal').val(outputDate);
+            // $('#tanggal_awal').val(outputDate);
 
             $('#tanggal_awal').on('change', function(e) {
                 let taw = $(this).val();

@@ -16,7 +16,7 @@
         }
 
         table {
-            width: 50%;
+            width: 100%;
             border: 1px solid black;
         }
 
@@ -56,9 +56,9 @@
         </tr>
         <tr class="head-list">
             <td rowspan="8" class="border-right">1</td>
-            <td>PJ-2101060001</td>
-            <td>06-01-2021</td>
-            <td>Rp 100000</td>
+            <td>INV-2101060001</td>
+            <td>09-03-2021</td>
+            <td>Rp 100.000</td>
         </tr>
         <tr class="border-bottom">
             <td colspan="4"></td>
@@ -72,30 +72,30 @@
             <td colspan="4"></td>
         </tr>
         <tr>
-            <td>Gula Pasir</td>
-            <td>15 kg</td>
-            <td>Rp 55000</td>
+            <td>Something</td>
+            <td>15 unit</td>
+            <td>Rp 55.000</td>
         </tr>
         <tr>
-            <td>Gula Merah</td>
-            <td>10 kg</td>
-            <td>Rp 45000</td>
+            <td>Something-2</td>
+            <td>10 unit</td>
+            <td>Rp 45.000</td>
         </tr>
         <tr class="border-bottom">
             <td colspan="5"></td>
         </tr>
         <tr class="">
             <td colspan="3">Total</td>
-            <td>Rp 100000</td>
+            <td>Rp 100.000</td>
         </tr>
         <tr class="border-bottom">
             <td colspan="5"></td>
         </tr>
-        {{-- <tr class="head-list">
+        <tr class="head-list">
             <td rowspan="7" class="border-right">2</td>
-            <td>PJ-2101060001</td>
-            <td>06-01-2021</td>
-            <td>Rp 100000</td>
+            <td>INV-2101060001</td>
+            <td>09-03-2021</td>
+            <td>Rp 100.000</td>
         </tr>
         <tr class="border-bottom">
             <td colspan="4"></td>
@@ -110,23 +110,23 @@
             <td colspan="4"></td>
         </tr>
         <tr>
-            <td>Gula Pasir</td>
-            <td>8 kg</td>
-            <td>Rp 35000</td>
+            <td>Something</td>
+            <td>8 unit</td>
+            <td>Rp 35.000</td>
         </tr>
         <tr class="border-bottom">
             <td colspan="5"></td>
         </tr>
         <tr class="">
             <td colspan="3">Total</td>
-            <td>Rp 35000</td>
+            <td>Rp 35.000</td>
         </tr>
         <tr class="border-bottom">
             <td colspan="5"></td>
-        </tr> --}}
+        </tr>
         <tr>
             <td colspan="4">Total Semua</td>
-            <td>Rp 100000</td>
+            <td>Rp 135.000</td>
         </tr>
     </table>
 </body>

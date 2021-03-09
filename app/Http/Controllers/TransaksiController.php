@@ -270,7 +270,8 @@ class TransaksiController extends Controller
     public function list(Transaksi $transaksi)
     {
         return view('admin.transaksi.daftar', [
-            'transaksi' => $transaksi->with(['member', 'kasir'])->where('jenis_transaksi', 'penjualan')->get()
+            'transaksi' => $transaksi->with(['member', 'kasir'])->where('jenis_transaksi', 'penjualan')->get(),
+            'sideTitle' => 'laporan'
         ]);
     }
 

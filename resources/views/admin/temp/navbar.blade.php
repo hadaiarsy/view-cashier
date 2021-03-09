@@ -42,8 +42,10 @@
             <ul class="header-menu nav">
                 <li class="nav-item">
                     <a href="javascript:void(0);" class="nav-link">
-                        <i class="nav-link-icon fa fa-clock"> </i>
-                        <span id="clockZone"></span>
+                        <h6>
+                            <i class="nav-link-icon fa fa-clock"> </i>
+                            <span id="clockZone"></span>
+                        </h6>
                     </a>
                 </li>
             </ul>

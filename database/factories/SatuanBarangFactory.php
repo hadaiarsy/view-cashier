@@ -23,10 +23,10 @@ class SatuanBarangFactory extends Factory
     {
         return [
             'kode_barang' => 'B-210114001',
-            'nama_satuan' => 'kg',
+            'nama_satuan' => 'unit',
             'rasio' => 1,
-            'harga_beli' => 7000,
-            'harga_jual' => 11900
+            'harga_beli' => 15000,
+            'harga_jual' => 55000
         ];
     }
 }
