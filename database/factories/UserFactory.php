@@ -26,8 +26,8 @@ class UserFactory extends Factory
         return [
             'id' => 'U-210114001',
             'level' => 1,
-            'name' => 'admin',
-            'email' => 'admin@mail.com',
+            'name' => 'super_admin',
+            'email' => 'super_admin@mail.com',
             'email_verified_at' => now(),
             'password' => Hash::make('passwordzz'), // password
             'remember_token' => Str::random(10),

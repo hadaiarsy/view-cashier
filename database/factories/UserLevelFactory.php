@@ -22,7 +22,7 @@ class UserLevelFactory extends Factory
     public function definition()
     {
         return [
-            'name' => 'administrator'
+            'name' => 'super administrator'
         ];
     }
 }
