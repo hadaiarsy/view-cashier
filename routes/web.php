@@ -78,6 +78,10 @@ Route::middleware('auth')->group(function () {
 
         Route::get('transaksi-pdf', [PDFController::class, 'laporan']);
 
+        Route::get('get-member-piutang/{kode}', [TransaksiController::class, 'member_piutang']);
+
+        Route::get('get-member-search', [MemberController::class, 'member_search']);
+
         Route::get('test-struk/{any}/{total}/{uang}/{kembali}', function ($kode, $total, $uang, $kembali) {
             $data = Transaksi::with(['detail', 'kasir', 'member'])->where('no_resi', $kode)->get();
             return view('admin.transaksi.test', [

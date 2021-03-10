@@ -137,4 +137,13 @@ class MemberController extends Controller
     {
         //
     }
+
+    public function member_search()
+    {
+        $member = Member::with(['transaksi'])->where('jenis_member', 'customer')->get();
+        return response()->json([
+            'message' => 'success',
+            'data' => $member
+        ]);
+    }
 }

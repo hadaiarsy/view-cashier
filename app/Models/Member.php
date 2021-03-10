@@ -68,6 +68,11 @@ class Member extends Model
 
     public function transaksi()
     {
-        return $this->hasManyThrough('detail_transaksi', 'Transaksi', 'kasir_id', 'id');
+        return $this->hasMany(Transaksi::class, 'member_id', 'kode_member');
+    }
+
+    public function detailTransaksi()
+    {
+        return $this->hasManyThrough(DetailTransaksi::class, Transaksi::class, 'member_id', 'transaksi_id', 'kode_member', 'no_resi');
     }
 }

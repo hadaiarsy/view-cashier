@@ -12,6 +12,75 @@
                 <div class="col-lg">
                     <div class="main-card mb-3 card">
                         <div class="card-body">
+
+                            <div id="accordion">
+                                <div id="headingOne">
+                                    <h5 class="card-title collapsed" id="titleMemberSearch" data-toggle="collapse"
+                                        data-target="#dataPiutangMember" aria-expanded="true" aria-controls="collapseOne">
+                                        Search Member
+                                        <button class="btn btn-sm text-primary" style="margin-top: -10px">
+                                            <i class="fas fa-sort-down"></i>
+                                        </button>
+                                    </h5>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-8">
+                                        <div class="row d-flex">
+                                            <div class="col-6">
+                                                <div class="row mb-3">
+                                                    <label for="inputPassword3" class="col-sm-4 col-form-label">Kode
+                                                        Member</label>
+                                                    <div class="col-sm-8">
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control trans-section"
+                                                                data-datats="ts-1" id="memberSearch" name="memberSearch">
+                                                            <button type="button" class="input-group-text"
+                                                                id="btnMemberSearch" data-bs-toggle="modal"
+                                                                data-bs-target="#memberModal">
+                                                                <i class="fas fa-search"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div data-parent="#accordion" id="dataPiutangMember" aria-labelledby="headingOne"
+                                        class="collapse">
+                                        <div class="scroll-area-sm">
+                                            <div class="scrollbar-container ps--active-y">
+                                                <table class="mb-0 table table-striped table-member-piutang"
+                                                    id="tableMember">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">No Resi</th>
+                                                            <th scope="col">Tanggal</th>
+                                                            <th scope="col">Total Piutang</th>
+                                                            <th scope="col">Sisa Piutang</th>
+                                                            <th scope="col">Tindakan</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg">
+                    <div class="main-card mb-3 card">
+                        <div class="card-body">
                             <h5 class="card-title">Data Piutang</h5>
                             <div class="row alert-row" style="display: none">
                                 <div class="alert alert-danger alert-row" data-start="true" role="alert">
@@ -39,7 +108,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="scroll-area-sm">
+                                        <div class="scroll-area-md">
                                             <div class="scrollbar-container ps--active-y">
                                                 <table class="mb-0 table table-striped" id="tableItem">
                                                     <thead>
@@ -122,10 +191,128 @@
 
 @endsection
 
+@section('modals')
+    <!-- modal data member -->
+    <div class="modal fade" id="memberModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="memberModalLabel">Data Member</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-12">
+                        <table class="table table-striped table-hover table-data-member" id="tableModalMember">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Kode Member</th>
+                                    <th scope="col">Nama</th>
+                                    <th scope="col">Unit</th>
+                                    <th scope="col">Piutang</th>
+                                    <th scope="col">Tindakan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
 @section('javascript')
     <script>
         $(document).ready(function() {
             const globalUrl = 'http://waroeng-yamughni.com/';
+
+            // member
+            $('#btnMemberSearch').on('click', function() {
+                axios.get(globalUrl + 'get-member-search/')
+                    .then((response) => {
+                        let data = response.data.data;
+                        memberModal(data);
+                    }).catch((error) => {
+                        console.log(error.response);
+                    })
+            });
+
+            function memberModal(data) {
+                $('.table-data-member').find('tbody').empty();
+                data.forEach(member => {
+                    member.transaksi.forEach(transaksi => {
+                        let num = 0;
+                        if (transaksi.is_lunas == '0') num += 1;
+                        if (num > 0) {
+                            // tambah row
+                            $('.table-data-member').find('tbody').append(
+                                "<tr class='item-row'><td>" +
+                                member.kode_member +
+                                "</td><td>" + member.nama +
+                                "</td><td>" + member.unit +
+                                "</td><td>" + num +
+                                " pembelian</td><td><button class='btn btn-primary btn-sm text-light btn-tambah-member' data-kode='" +
+                                member.kode_member +
+                                "' data-bs-dismiss='modal' aria-label='Close'><i class='fas fa-plus'></i></button></td></tr>"
+                            );
+                        }
+                    });
+                });
+                btnModalTambahMember();
+            }
+
+            let btnModalTambahMember = () => $("button.btn-tambah-member").on("click", function(e) {
+                var data = {
+                    kode: $(this).data('kode'),
+                };
+                let kode = $("#memberSearch").val(data.kode);
+                $('#memberSearch').change();
+            });
+
+            $('#memberSearch').on('change paste keyup', function(event) {
+                axios.get(globalUrl + 'get-member-piutang/' + $(this).val())
+                    .then((response) => {
+                        let data = response.data.data;
+                        memberTable(data)
+                    }).catch((error) => {
+                        console.log(error.response);
+                    })
+            });
+
+            function memberTable(data) {
+                console.log(data);
+                $('.table-member-piutang').find('tbody').empty();
+                data.forEach(piutang => {
+                    let sisa = 0;
+                    for (let i = 0; i < piutang.piutang.length; i++) {
+                        sisa += piutang.piutang[i].uang;
+                    }
+                    // tambah row
+                    $('.table-member-piutang').find('tbody').append(
+                        "<tr class='row-table-member-piutang'><td>" +
+                        piutang.no_resi +
+                        "</td><td>" + piutang.tanggal +
+                        "</td><td>" + currencyIdr(String(piutang.total), 'Rp ') +
+                        "</td><td>" + currencyIdr(String(piutang.total - sisa), 'Rp ') +
+                        "</td><td><button class='btn btn-primary btn-sm text-light btn-tambah-piutang' data-kode='" +
+                        piutang.no_resi +
+                        "' data-bs-dismiss='modal' aria-label='Close'><i class='fas fa-plus'></i></button></td></tr>"
+                    );
+                });
+                btnTambahPiutang();
+                $('#titleMemberSearch').removeClass('collapsed');
+                $('#dataPiutangMember').addClass('show');
+            }
+
+            let btnTambahPiutang = () => $('button.btn-tambah-piutang').on('click', function(event) {
+                $('#noResi').val($(this).data('kode'));
+                $('#btnResi').click();
+                $('#titleMemberSearch').addClass('collapsed');
+                $('#dataPiutangMember').removeClass('show');
+            });
+
             $('#btnResi').on('click', function() {
                 let inv = $('#noResi').val();
                 axios.get(globalUrl + 'get-piutang/' + inv)
@@ -252,6 +439,8 @@
 
             // btn batal
             $('#batal').on('click', function() {
+                $('#memberSearch').val('');
+                $('.row-table-member-piutang').remove();
                 $('#noResi').val('');
                 $('#noResiHidden').val('');
                 $('#totalText').html('Rp 0');

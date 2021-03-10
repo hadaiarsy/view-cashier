@@ -322,4 +322,13 @@ class TransaksiController extends Controller
     {
         //
     }
+
+    public function member_piutang($kode)
+    {
+        $transaksi = Transaksi::with(['member', 'kasir', 'detail', 'piutang'])->where(['member_id' => $kode, 'is_lunas' => '0'])->get();
+        return response()->json([
+            'message' => 'success',
+            'data' => $transaksi
+        ]);
+    }
 }
