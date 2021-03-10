@@ -58,6 +58,14 @@
                         <td>Uang</td>
                         <td colspan='2' id='uangStruk' style='text-align: right'>{{ $piutang->uang }}</td>
                     </tr>
+                    @if ($transaksi->is_lunas == '1')
+                        <tr>
+                            <td>kembali</td>
+                            <td colspan='2' id='kembali' style='text-align: right'>
+                                {{ $saldoAwal - $piutang->uang }}
+                            </td>
+                        </tr>
+                    @endif
                 @endif
             @endforeach
             <tr>
@@ -107,6 +115,10 @@
             })
 
             $('#uangStruk').html(function() {
+                return currencyIdr(String($(this).html()), 'Rp ')
+            })
+
+            $('#kembali').html(function() {
                 return currencyIdr(String($(this).html()), 'Rp ')
             })
 

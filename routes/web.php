@@ -70,7 +70,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('getall-barang', [TransaksiController::class, 'getBarang']);
 
-        Route::get('daftar-transaksi', [TransaksiController::class, 'list']);
+        Route::get('daftar-transaksi', [TransaksiController::class, 'list'])->name('laporan');
 
         Route::get('show-transaksi/{any}', [TransaksiController::class, 'show']);
 
@@ -106,7 +106,7 @@ Route::middleware('auth')->group(function () {
 
     // Route Barang
     Route::group([''], function () {
-        Route::get('daftar-barang', [BarangController::class, 'index']);
+        Route::get('daftar-barang', [BarangController::class, 'index'])->name('barang');
         Route::post('store-barang', [BarangController::class, 'store']);
         Route::get('show-barang/{any}', [BarangController::class, 'show']);
         Route::post('update-barang', [BarangController::class, 'update']);
@@ -127,7 +127,7 @@ Route::middleware('auth')->group(function () {
 
     // Route Member
     Route::group([''], function () {
-        Route::get('daftar-member', [MemberController::class, 'index']);
+        Route::get('daftar-member', [MemberController::class, 'index'])->name('member');
         Route::post('store-member', [MemberController::class, 'store']);
         Route::delete('delete-member/{any}', [MemberController::class, 'delete']);
         Route::get('show-member/{any}', [MemberController::class, 'show']);
@@ -160,12 +160,13 @@ Route::middleware('auth')->group(function () {
             // return \Illuminate\Support\Facades\DB::select(\Illuminate\Support\Facades\DB::raw('SELECT * FROM user_level'));
 
             // return '';
+            return redirect('/');
         });
     });
 
     // Route User
     Route::middleware('auth')->group(function () {
-        Route::get('daftar-user', [UserController::class, 'index']);
+        Route::get('daftar-user', [UserController::class, 'index'])->name('user');
         Route::post('store-user', [UserController::class, 'store']);
         Route::delete('delete-user/{any}', [UserController::class, 'delete']);
         Route::get('show-user/{any}', [UserController::class, 'show']);

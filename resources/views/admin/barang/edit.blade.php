@@ -2,7 +2,7 @@
 
 @section('site-title', 'Show Barang')
 
-@section('contents')
+@section('main-contents')
     <div class="row">
         <div class="col-sm-2">
             <h4>Rincian Barang</h4>
@@ -12,7 +12,11 @@
 
     <div class="row d-flex justify-content-between">
         <div class="col-md-3 border p-2">
-            <h5 class="mt-2 mb-3"><i class='fas fa-edit'></i> Edit Barang</h5>
+            <h5 class="mt-2 mb-3">
+                <i class='fas fa-edit'></i> Edit Barang
+                <a href="{{ route('barang') }}" class="btn btn-sm btn-warning ml-3"><i class='fas fa-backward'></i>
+                    Kembali</a>
+            </h5>
             <fieldset disabled="disabled">
                 <div class="row mb-3">
                     <label for="inputEmail3" class="col-sm-4 col-form-label">Kode :</label>
@@ -60,8 +64,8 @@
             <div class="p-2">
                 <div class="row">
                     <h5 class="mt-2 mb-3"><i class="fas fa-cart-plus"></i> Detail Satuan
-                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#tambahModal"><i
-                                class="fas fa-plus"></i> Tambah Satuan</button>
+                        {{-- <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#tambahModal"><i
+                                class="fas fa-plus"></i> Tambah Satuan</button> --}}
                     </h5>
                 </div>
                 <div class="row mt-3 overflow-auto">
@@ -72,7 +76,8 @@
                                 <th scope="col">Nama Satuan</th>
                                 <th scope="col">Rasio</th>
                                 <th scope="col">Stok</th>
-                                <th scope="col">Harga</th>
+                                <th scope="col">Harga Beli</th>
+                                <th scope="col">Harga Jual</th>
                                 <th scope="col">Tindakan</th>
                             </tr>
                         </thead>
@@ -83,14 +88,15 @@
                                     <td>{{ $sat->nama_satuan }}</td>
                                     <td>{{ $sat->rasio }}</td>
                                     <td>{{ $barang[0]->stok * $sat->rasio . ' ' . $sat->nama_satuan }}</td>
-                                    <td class="harga-barang">{{ $sat->harga }}</td>
+                                    <td class="harga-beli-barang">{{ $sat->harga_beli }}</td>
+                                    <td class="harga-jual-barang">{{ $sat->harga_jual }}</td>
                                     <td>
-                                        <button class="btn btn-sm btn-warning btnEditSatuan" data-dataid="{{ $sat->id }}"
-                                            data-bs-toggle="modal" data-bs-target="#editModal"><i
-                                                class='fas fa-edit'></i></button>
-                                        <button class="btn btn-sm btn-danger btnHapusSatuan" data-dataid="{{ $sat->id }}"
-                                            data-bs-toggle="modal" data-bs-target="#hapusModal"><i
-                                                class='fas fa-trash-alt'></i></button>
+                                        <button class="btn btn-sm btn-warning btnEditSatuan"
+                                            data-dataid="{{ $sat->id }}" data-bs-toggle="modal"
+                                            data-bs-target="#editModal"><i class='fas fa-edit'></i></button>
+                                        {{-- <button class="btn btn-sm btn-danger btnHapusSatuan"
+                                            data-dataid="{{ $sat->id }}" data-bs-toggle="modal"
+                                            data-bs-target="#hapusModal"><i class='fas fa-trash-alt'></i></button> --}}
                                     </td>
                                 </tr>
                             @endforeach
@@ -100,7 +106,9 @@
             </div>
         </div>
     </div>
+@endsection
 
+@section('modals')
     {{-- Modal --}}
     {{-- Modal Hapus Barang --}}
     <div class="modal fade" id="hapusBarangModal" tabindex="-1" aria-labelledby="hapusBarangModalLabel" aria-hidden="true">
@@ -145,9 +153,15 @@
                         </div>
                     </div>
                     <div class="row mt-3">
-                        <label for="inputEmail3" class="col-sm-4 col-form-label">Harga :</label>
+                        <label for="inputEmail3" class="col-sm-4 col-form-label">Harga Beli:</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" name="harga" id="harga">
+                            <input type="text" class="form-control" name="harga" id="hargaBeli">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <label for="inputEmail3" class="col-sm-4 col-form-label">Harga Jual:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="harga" id="hargaJual">
                         </div>
                     </div>
                 </div>
@@ -169,7 +183,8 @@
                 </div>
                 <div class="modal-body">
                     <input type="hidden" name="id_edit" id="idEdit">
-                    <input type="hidden" name="kode_barang_edit" id="kodeBarangEdit" value="{{ $barang[0]->kode_barang }}">
+                    <input type="hidden" name="kode_barang_edit" id="kodeBarangEdit"
+                        value="{{ $barang[0]->kode_barang }}">
                     <div class="row mt-3">
                         <label for="inputEmail3" class="col-sm-4 col-form-label">Nama Satuan :</label>
                         <div class="col-sm-8">
@@ -183,9 +198,15 @@
                         </div>
                     </div>
                     <div class="row mt-3">
-                        <label for="inputEmail3" class="col-sm-4 col-form-label">Harga :</label>
+                        <label for="inputEmail3" class="col-sm-4 col-form-label">Harga Beli :</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" name="harga_edit" id="hargaEdit">
+                            <input type="text" class="form-control" name="harga_edit" id="hargaBeliEdit">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <label for="inputEmail3" class="col-sm-4 col-form-label">Harga Jual :</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="harga_edit" id="hargaJualEdit">
                         </div>
                     </div>
                 </div>
@@ -216,22 +237,40 @@
             </div>
         </div>
     </div>
+@endsection
 
+@section('javascript')
     <script>
         $(".enter-pass[data-nextid=sc-1]").focus();
         $(document).ready(function() {
-            let hargaBrg = $(".harga-barang");
-            for (let i = 0; i < hargaBrg.length; i++) {
-                let valThis = $(hargaBrg[i]).html();
-                $(hargaBrg[i]).html(currencyIdr(valThis, 'Rp '));
+            let hargaBeliBrg = $(".harga-beli-barang");
+            for (let i = 0; i < hargaBeliBrg.length; i++) {
+                let valThis = $(hargaBeliBrg[i]).html();
+                $(hargaBeliBrg[i]).html(currencyIdr(valThis, 'Rp '));
             }
 
-            $("#harga").on("change paste keyup", function(e) {
+            let hargaJualBrg = $(".harga-jual-barang");
+            for (let i = 0; i < hargaJualBrg.length; i++) {
+                let valThis = $(hargaJualBrg[i]).html();
+                $(hargaJualBrg[i]).html(currencyIdr(valThis, 'Rp '));
+            }
+
+            $("#hargaBeli").on("change paste keyup", function(e) {
                 let valThis = $(this).val();
                 $(this).val(currencyIdr(valThis, 'Rp '));
             });
 
-            $("#hargaEdit").on("change paste keyup", function(e) {
+            $("#hargaJual").on("change paste keyup", function(e) {
+                let valThis = $(this).val();
+                $(this).val(currencyIdr(valThis, 'Rp '));
+            });
+
+            $("#hargaBeliEdit").on("change paste keyup", function(e) {
+                let valThis = $(this).val();
+                $(this).val(currencyIdr(valThis, 'Rp '));
+            });
+
+            $("#hargaJualEdit").on("change paste keyup", function(e) {
                 let valThis = $(this).val();
                 $(this).val(currencyIdr(valThis, 'Rp '));
             });
@@ -290,14 +329,16 @@
                 let kodeBarang = $('#kodeBarang').val();
                 let namaSatuan = $('#namaSatuan').val();
                 let rasio = $('#rasio').val();
-                let harga = $('#harga').val();
+                let hargaBeli = $('#hargaBeli').val();
+                let hargaJual = $('#hargaJual').val();
                 let token = document.head.querySelector('meta[name="csrf-token"]');
                 window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
                 axios.post('/store-satuan', {
                         kode_barang: kodeBarang,
                         nama_satuan: namaSatuan,
                         rasio: parseFloat(rasio),
-                        harga: Number(harga.split(".").join("").split("Rp").join(""))
+                        harga_beli: Number(harga.split(".").join("").split("Rp").join("")),
+                        harga_jual: Number(harga.split(".").join("").split("Rp").join("")),
                     })
                     .then((response) => {
                         location.reload();
@@ -315,9 +356,8 @@
                         $('#idEdit').val(data.id);
                         $('#namaSatuanEdit').val(data.nama_satuan);
                         $('#rasioEdit').val(data.rasio);
-                        $('#hargaEdit').val(data.harga);
-                        let hargaEdit = $('#hargaEdit').val();
-                        $('#hargaEdit').val(currencyIdr(hargaEdit, 'Rp '));
+                        $('#hargaBeliEdit').val(currencyIdr(String(data.harga_beli), 'Rp '));
+                        $('#hargaJualEdit').val(currencyIdr(String(data.harga_jual), 'Rp '));
                     }).catch((error) => {
                         console.log(error)
                     })
@@ -327,7 +367,8 @@
                 let id = $('#idEdit').val();
                 let namaSatuan = $('#namaSatuanEdit').val();
                 let rasio = $('#rasioEdit').val();
-                let harga = $('#hargaEdit').val();
+                let hargaBeli = $('#hargaBeliEdit').val();
+                let hargaJual = $('#hargaJualEdit').val();
                 let token = document.head.querySelector('meta[name="csrf-token"]');
                 window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
                 axios.post('/update-satuan', {
@@ -335,7 +376,8 @@
                         kode_barang: $('#kodeBarangEdit').val(),
                         nama_satuan: namaSatuan,
                         rasio: parseFloat(rasio),
-                        harga: Number(harga.split(".").join("").split("Rp").join(""))
+                        harga_beli: Number(hargaBeli.split(".").join("").split("Rp").join("")),
+                        harga_jual: Number(hargaJual.split(".").join("").split("Rp").join("")),
                     })
                     .then((response) => {
                         location.reload();

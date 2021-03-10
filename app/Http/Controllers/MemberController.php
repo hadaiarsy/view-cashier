@@ -18,7 +18,8 @@ class MemberController extends Controller
         $member = Member::where('nama', 'not like', '%Customer-%')->get();
         return view('admin.member.daftarmember', [
             'idMember' => $idMember,
-            'member' => $member
+            'member' => $member,
+            'sideTitle' => 'member'
         ]);
     }
 

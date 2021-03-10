@@ -2,7 +2,7 @@
 
 @section('site-title', 'Daftar User')
 
-@section('contents')
+@section('main-contents')
     <div class="row">
         <div class="col-sm-2">
             <h4>Daftar User</h4>
@@ -121,7 +121,9 @@
             </div>
         </div>
     </div>
+@endsection
 
+@section('modals')
     {{-- Modal Edit Satuan --}}
     <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -222,7 +224,9 @@
             </div>
         </div>
     </div>
+@endsection
 
+@section('javascript')
     <script>
         $(document).ready(function() {
             $("#tableUser").DataTable();

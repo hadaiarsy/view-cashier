@@ -18,7 +18,8 @@ class BarangController extends Controller
         $barang = Barang::with('satuan')->get();
         return view('admin.barang.daftarbarang', [
             'barang' => $barang,
-            'date' => Barang::incrementId()
+            'date' => Barang::incrementId(),
+            'sideTitle' => 'barang'
         ]);
     }
 
@@ -50,7 +51,8 @@ class BarangController extends Controller
         $satuan->kode_barang = $request->kode_barang;
         $satuan->nama_satuan = $request->nama_satuan;
         $satuan->rasio = $request->rasio;
-        $satuan->harga = $request->harga;
+        $satuan->harga_beli = $request->harga_beli;
+        $satuan->harga_jual = $request->harga_jual;
         $satuan->save();
         if ($barang && $satuan) {
             return response()->json([
@@ -78,7 +80,8 @@ class BarangController extends Controller
         $data = $barang->with('satuan')->find(['kode_barang' => $kode]);
         if ($data->count() > 0) {
             return view('admin.barang.edit', [
-                'barang' => $data
+                'barang' => $data,
+                'sideTitle' => 'barang'
             ]);
         } else {
             return redirect('daftar-barang');

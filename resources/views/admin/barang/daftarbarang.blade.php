@@ -2,7 +2,7 @@
 
 @section('site-title', 'Daftar Barang')
 
-@section('contents')
+@section('main-contents')
     <div class="row">
         <div class="col-sm-2">
             <h4>Daftar Barang</h4>
@@ -54,9 +54,17 @@
                 </div>
             </div>
             <div class="row mb-3">
-                <label for="inputtext3" class="col-sm-4 col-form-label">Harga :</label>
+                <label for="inputtext3" class="col-sm-4 col-form-label">Harga Beli :</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control enter-pass" id="hargaBrg" name="hargaBrg" data-nextid="sc-5">
+                    <input type="text" class="form-control enter-pass" id="hargaBeliBrg" name="hargaBeliBrg"
+                        data-nextid="sc-5">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="inputtext3" class="col-sm-4 col-form-label">Harga Jual :</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control enter-pass" id="hargaJualBrg" name="hargaJualBrg"
+                        data-nextid="sc-6">
                 </div>
             </div>
             <button type="button" class="btn btn-success btn-sm mt-2" id="tmbhBtn"><i class="fas fa-plus"></i>
@@ -76,7 +84,8 @@
                                 <th scope="col">Kode</th>
                                 <th scope="col">Nama</th>
                                 <th scope="col">Stok</th>
-                                <th scope="col">Harga</th>
+                                <th scope="col">Harga Beli</th>
+                                <th scope="col">Harga Jual</th>
                                 <th scope="col">Tindakan</th>
                             </tr>
                         </thead>
@@ -87,7 +96,8 @@
                                     <td>{{ $item->kode_barang }}</td>
                                     <td>{{ $item->nama }}</td>
                                     <td>{{ $item->stok . ' ' . $item->satuan[0]->nama_satuan }}</td>
-                                    <td class="harga-barang">{{ $item->satuan[0]->harga }}</td>
+                                    <td class="harga-beli-barang">{{ $item->satuan[0]->harga_beli }}</td>
+                                    <td class="harga-jual-barang">{{ $item->satuan[0]->harga_jual }}</td>
                                     <td>
                                         <a href='show-barang/{{ $item->kode_barang }}' class='btn btn-primary btn-sm'><i
                                                 class='far fa-eye'></i></a>
@@ -100,18 +110,31 @@
             </div>
         </div>
     </div>
+@endsection
 
+@section('javascript')
     <script>
-        $(".enter-pass[data-nextid=sc-1]").focus();
         $(document).ready(function() {
+            $(".enter-pass[data-nextid=sc-1]").focus();
             $("#tableItem").DataTable();
-            let hargaBrg = $(".harga-barang");
-            for (let i = 0; i < hargaBrg.length; i++) {
-                let valThis = $(hargaBrg[i]).html();
-                $(hargaBrg[i]).html(currencyIdr(valThis, 'Rp '));
+            let hargaBeliBrg = $(".harga-beli-barang");
+            for (let i = 0; i < hargaBeliBrg.length; i++) {
+                let valThis = $(hargaBeliBrg[i]).html();
+                $(hargaBeliBrg[i]).html(currencyIdr(valThis, 'Rp '));
             }
 
-            $("#hargaBrg").on("keyup", function(e) {
+            let hargaJualBrg = $(".harga-jual-barang");
+            for (let i = 0; i < hargaJualBrg.length; i++) {
+                let valThis = $(hargaJualBrg[i]).html();
+                $(hargaJualBrg[i]).html(currencyIdr(valThis, 'Rp '));
+            }
+
+            $("#hargaBeliBrg").on("keyup", function(e) {
+                let valThis = $(this).val();
+                $(this).val(currencyIdr(valThis, 'Rp '));
+            });
+
+            $("#hargaJualBrg").on("keyup", function(e) {
                 let valThis = $(this).val();
                 $(this).val(currencyIdr(valThis, 'Rp '));
             });
@@ -141,7 +164,8 @@
                 let nama = $("#namaBrg").val();
                 let jumlah = Number($("#jumlahBrg").val());
                 let satuan = $("#satuanBrg").val();
-                let harga = $("#hargaBrg").val();
+                let hargaBeli = $("#hargaBeliBrg").val();
+                let hargaJual = $("#hargaJualBrg").val();
                 let token = document.head.querySelector('meta[name="csrf-token"]');
                 window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
                 axios.post('/store-barang', {
@@ -151,7 +175,8 @@
                         stok: jumlah,
                         nama_satuan: satuan,
                         rasio: 1,
-                        harga: Number(harga.split(".").join("").split("Rp").join(""))
+                        harga_beli: Number(hargaBeli.split(".").join("").split("Rp").join("")),
+                        harga_jual: Number(hargaJual.split(".").join("").split("Rp").join("")),
                     })
                     .then((response) => {
                         console.log(response)
@@ -161,7 +186,8 @@
                             "</td><td>" + noResi +
                             "</td><td>" + nama +
                             "</td><td>" + jumlah + ' ' + satuan +
-                            "</td><td class='harga-barang'>" + harga +
+                            "</td><td class='harga-beli-barang'>" + hargaBeli +
+                            "</td><td class='harga-jual-barang'>" + hargaJual +
                             "</td><td><a href='show-barang/" + noResi +
                             "' class='btn btn-primary btn-sm'><i class='far fa-eye'></i></a></td></tr>";
                         $("#tableItem").find("tbody").append(childTable);
@@ -170,7 +196,8 @@
                         $("#barcode").val("");
                         $("#namaBrg").val("");
                         $("#jumlahBrg").val("");
-                        $("#hargaBrg").val("");
+                        $("#hargaBeliBrg").val("");
+                        $("#hargaJualBrg").val("");
                     }).catch((error) => {
                         console.log(error.response.data)
                     })

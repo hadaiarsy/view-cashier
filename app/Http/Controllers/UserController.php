@@ -21,7 +21,8 @@ class UserController extends Controller
             'level' => auth()->user()->level,
             'id' => User::incrementId(),
             'user' => User::with('userLevel')->get(),
-            'userlevel' => UserLevel::all()
+            'userlevel' => UserLevel::all(),
+            'sideTitle' => 'user'
         ]);
     }
 

@@ -33,13 +33,13 @@
     <div class="scrollbar-sidebar">
         <div class="app-sidebar__inner">
             <ul class="vertical-nav-menu">
-                <li class="app-sidebar__heading">Dashboards</li>
+                {{-- <li class="app-sidebar__heading">Dashboards</li>
                 <li>
                     <a href="javascript:void(0);" class="">
                         <i class="metismenu-icon pe-7s-rocket"></i>
                         Dashboard
                     </a>
-                </li>
+                </li> --}}
                 <li class="app-sidebar__heading">Transaksi</li>
                 <li>
                     <a href="{{ route('transaksi') }}" class="{{ $sideTitle == 'transaksi' ? 'mm-active' : '' }}">
@@ -56,21 +56,21 @@
                 </li>
                 <li class="app-sidebar__heading">Laporan</li>
                 <li>
-                    <a href="/daftar-transaksi" class="{{ $sideTitle == 'laporan' ? 'mm-active' : '' }}">
+                    <a href="{{ route('laporan') }}" class="{{ $sideTitle == 'laporan' ? 'mm-active' : '' }}">
                         <i class="metismenu-icon pe-7s-wallet"></i>
                         Laporan
                     </a>
                 </li>
-                {{-- <li class="app-sidebar__heading">Barang</li>
+                <li class="app-sidebar__heading">Barang</li>
                 <li>
-                    <a href="javascript:void(0);" class="{{ $sideTitle == 'barang' ? 'mm-active' : '' }}">
+                    <a href="{{ route('barang') }}" class="{{ $sideTitle == 'barang' ? 'mm-active' : '' }}">
                         <i class="metismenu-icon pe-7s-box1"></i>
                         Info Barang
                     </a>
                 </li>
                 <li class="app-sidebar__heading">Member</li>
                 <li>
-                    <a href="javascript:void(0);" class="{{ $sideTitle == 'member' ? 'mm-active' : '' }}">
+                    <a href="{{ route('member') }}" class="{{ $sideTitle == 'member' ? 'mm-active' : '' }}">
                         <i class="metismenu-icon pe-7s-id"></i>
                         Info Member
                     </a>
@@ -78,12 +78,12 @@
                 @if ($level != 2)
                     <li class="app-sidebar__heading">User</li>
                     <li>
-                        <a href="javascript:void(0);" class="{{ $sideTitle == 'user' ? 'mm-active' : '' }}">
+                        <a href="{{ route('user') }}" class="{{ $sideTitle == 'user' ? 'mm-active' : '' }}">
                             <i class="metismenu-icon pe-7s-users"></i>
                             Info User
                         </a>
                     </li>
-                @endif --}}
+                @endif
         </div>
     </div>
 </div>
