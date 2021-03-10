@@ -201,7 +201,7 @@
         </div>
 
         <!-- transaksi pembelian -->
-        @if ($level != 2)
+        @if ($level != 3)
             @include('admin.transaksi.pembelian')
         @endif
 

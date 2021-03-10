@@ -117,7 +117,7 @@
                             <div class="app-footer-right">
                                 <ul class="nav">
                                     <li class="nav-item">
-                                        <a href="https://dashboardpack.com" class="nav-link" target="_blank">
+                                        <a href="https://yamuhgnibandung.org/" class="nav-link" target="_blank">
                                             <span id="footerYearCopy"></span>
                                         </a>
                                     </li>
@@ -208,7 +208,7 @@
 
         $('#footerYearCopy').html(function() {
             let date = new Date();
-            return '&#169; ' + String(date.getFullYear()) + ' Design by DashboardPack';
+            return '&#169; ' + String(date.getFullYear()) + ' Aplikasi Kasir by Beegency versi 1.0';
         })
 
     </script>
