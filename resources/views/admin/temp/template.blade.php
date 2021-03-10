@@ -12,6 +12,7 @@
     <meta name="description" content="This is an example dashboard created using build-in elements and components.">
     <meta name="msapplication-tap-highlight" content="no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="url-global" content="{{ config('app.url') }}">
 
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('assets/favicon/yamughni/apple-icon-57x57.png') }}">
@@ -22,7 +23,8 @@
     <link rel="apple-touch-icon" sizes="120x120" href="{{ asset('assets/favicon/yamughni/apple-icon-120x120.png') }}">
     <link rel="apple-touch-icon" sizes="144x144" href="{{ asset('assets/favicon/yamughni/apple-icon-144x144.png') }}">
     <link rel="apple-touch-icon" sizes="152x152" href="{{ asset('assets/favicon/yamughni/apple-icon-152x152.png') }}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/favicon/yamughni/apple-icon-180x180.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180"
+        href="{{ asset('assets/favicon/yamughni/apple-icon-180x180.png') }}">
     <link rel="icon" type="image/png" sizes="192x192"
         href="{{ asset('assets/favicon/yamughni/android-icon-192x192.png') }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/favicon/yamughni/favicon-32x32.png') }}">
@@ -134,12 +136,6 @@
     <!-- Modal -->
     @yield('modals')
 
-    <!-- Javascript ekstra -->
-    @yield('javascript')
-
-    <!-- Javascript ekstra -->
-    @yield('struk-transaksi')
-
     <script type="text/javascript" src="{{ asset('assets/vendor/architectui/assets/scripts/main.js') }}"></script>
 
     <!-- Bootstrap Bundle with Popper -->
@@ -150,6 +146,8 @@
 
     <script>
         // view clock
+        const globalUrl = $('meta[name=url-global]').attr('content');;
+
         function currentTime() {
             var date = new Date();
             var day = date.getDay();
@@ -214,6 +212,13 @@
         })
 
     </script>
+
+    <!-- Javascript ekstra -->
+    @yield('javascript')
+
+    <!-- Javascript ekstra -->
+    @yield('struk-transaksi')
+
 </body>
 
 </html>

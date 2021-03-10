@@ -158,7 +158,6 @@
 @section('script-e')
     <script>
         $(document).ready(function() {
-            const globalUrl = 'http://waroeng-yamughni.com/';
 
             // check barang baru
             function barangBaru() {

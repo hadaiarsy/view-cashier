@@ -226,7 +226,6 @@
 @section('javascript')
     <script>
         $(document).ready(function() {
-            const globalUrl = 'http://waroeng-yamughni.com/';
 
             // member
             $('#btnMemberSearch').on('click', function() {

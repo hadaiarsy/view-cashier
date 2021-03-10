@@ -83,8 +83,10 @@
                             </div>
                             <div class="widget-subheading">
                                 @if ($level == 1)
-                                    Administrasi
+                                    Super Admin
                                 @elseif($level == 2)
+                                    Administrator
+                                @elseif($level == 3)
                                     Kasir
                                 @endif
                             </div>

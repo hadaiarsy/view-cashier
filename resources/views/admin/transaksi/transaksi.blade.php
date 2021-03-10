@@ -298,7 +298,6 @@
 @section('javascript')
     <script>
         $(document).ready(function() {
-            const globalUrl = 'http://waroeng-yamughni.com/';
             $("#tableItems").DataTable();
             $("#tableItemsMember").DataTable();
             $('.alert-row').hide();

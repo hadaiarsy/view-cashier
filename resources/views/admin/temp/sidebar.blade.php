@@ -75,7 +75,7 @@
                         Info Member
                     </a>
                 </li>
-                @if ($level != 1)
+                @if ($level == 1)
                     <li class="app-sidebar__heading">User</li>
                     <li>
                         <a href="{{ route('user') }}" class="{{ $sideTitle == 'user' ? 'mm-active' : '' }}">

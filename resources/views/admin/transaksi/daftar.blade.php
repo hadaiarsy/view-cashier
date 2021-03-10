@@ -145,15 +145,13 @@
     </div>
 
     <div class="row mt-3">
-        <div style="display: none">
-            <div class="col-lg-5 form-inline d-flex">
-                <input type="date" class="form-control mr-2" name="" id="tanggal_awal" value="{{ date('Y-m-d') }}">
-                <span class=""><i class="fas fa-arrow-alt-circle-right"></i></span>
-                <input type="date" class="form-control d-inline" name="" id="tanggal_akhir" value="{{ date('Y-m-d') }}">
-                <button type="button" class="btn btn-success pl-2" id="kirim">Kirim</button>
-            </div>
-        </div>
         <div class="col-lg-5 form-inline d-flex">
+            <input type="date" class="form-control mr-2" name="" id="tanggal_awal" value="{{ date('Y-m-d') }}">
+            <span class="d-inline-block mr-2"><i class="fas fa-arrow-alt-circle-right"></i></span>
+            <input type="date" class="form-control d-inline" name="" id="tanggal_akhir" value="{{ date('Y-m-d') }}">
+            <button type="button" class="btn btn-success ml-2" id="kirim">Kirim</button>
+        </div>
+        <div class="col-lg d-flex flex-row-reverse">
             <a href="/transaksi-pdf" target="_blank"><button type="button" class="btn btn-success pl-2" id="kirim">Laporan
                     PDF</button></a>
         </div>
@@ -194,7 +192,9 @@
             </table>
         </div>
     </div>
+@endsection
 
+@section('javascript')
     <script>
         // window.onbeforeunload = confirmExit;
 
