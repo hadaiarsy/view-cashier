@@ -12,63 +12,66 @@
 
     <div class="row d-flex justify-content-between">
         <div class="col-md-3 border p-2">
-            <h5 class="mt-2 mb-3"><i class="fas fa-plus"></i> Tambah Barang</h5>
-            <fieldset disabled="disabled">
+            <form action="/store-barang" method="post" id="storeBarang">
+                @csrf
+                <h5 class="mt-2 mb-3"><i class="fas fa-plus"></i> Tambah Barang</h5>
+                <fieldset disabled="disabled">
+                    <div class="row mb-3">
+                        <label for="inputEmail3" class="col-sm-4 col-form-label">Kode :</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="noResi" value="{{ $date }}">
+                        </div>
+                    </div>
+                </fieldset>
                 <div class="row mb-3">
-                    <label for="inputEmail3" class="col-sm-4 col-form-label">Kode :</label>
+                    <label for="inputEmail3" class="col-sm-4 col-form-label">Barcode :</label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="noResi" value="{{ $date }}">
+                        <input type="text" class="form-control enter-pass" id="barcode" name="barcode" data-nextid="sc-1">
                     </div>
                 </div>
-            </fieldset>
-            <div class="row mb-3">
-                <label for="inputEmail3" class="col-sm-4 col-form-label">Barcode :</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control enter-pass" id="barcode" data-nextid="sc-1">
+                <div class="row">
+                    <div class="col">
+                        <h6>
+                            <small class="text-muted">Data Barang</small>
+                        </h6>
+                        <hr class="divider">
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <h6>
-                        <small class="text-muted">Data Barang</small>
-                    </h6>
-                    <hr class="divider">
+                <div class="row mb-3">
+                    <label for="inputPassword3" class="col-sm-4 col-form-label">Nama :</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control enter-pass" id="namaBrg" name="nama" data-nextid="sc-2">
+                    </div>
                 </div>
-            </div>
-            <div class="row mb-3">
-                <label for="inputPassword3" class="col-sm-4 col-form-label">Nama :</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control enter-pass" id="namaBrg" name="namaBrg" data-nextid="sc-2">
-                </div>
-            </div>
-            <div class="row mb-3">
-                <label for="inputtext3" class="col-sm-4 col-form-label">Stok :</label>
-                {{-- <div class="col-sm-8">
+                <div class="row mb-3">
+                    <label for="inputtext3" class="col-sm-4 col-form-label">Stok :</label>
+                    {{-- <div class="col-sm-8">
                     <input type="text" class="form-control" id="jumlahBrg" name="jumlahBrg" placeholder="">
                 </div> --}}
-                <div class="input-group col-sm-8">
-                    <input type="text" aria-label="First name" class="form-control enter-pass" id="jumlahBrg"
-                        name="jumlahBrg" data-nextid="sc-3" placeholder="jumlah">
-                    <input type="text" class="form-control enter-pass" id="satuanBrg" name="satuanBrg" data-nextid="sc-4"
-                        placeholder="satuan(kg/liter)">
+                    <div class="input-group col-sm-8">
+                        <input type="text" aria-label="First name" class="form-control enter-pass" id="jumlahBrg"
+                            name="stok" data-nextid="sc-3" placeholder="jumlah">
+                        <input type="text" class="form-control enter-pass" id="satuanBrg" name="nama_satuan"
+                            data-nextid="sc-4" placeholder="satuan(kg/liter)">
+                    </div>
                 </div>
-            </div>
-            <div class="row mb-3">
-                <label for="inputtext3" class="col-sm-4 col-form-label">Harga Beli :</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control enter-pass" id="hargaBeliBrg" name="hargaBeliBrg"
-                        data-nextid="sc-5">
+                <div class="row mb-3">
+                    <label for="inputtext3" class="col-sm-4 col-form-label">Harga Beli :</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control enter-pass" id="hargaBeliBrg" name="harga_beli"
+                            data-nextid="sc-5">
+                    </div>
                 </div>
-            </div>
-            <div class="row mb-3">
-                <label for="inputtext3" class="col-sm-4 col-form-label">Harga Jual :</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control enter-pass" id="hargaJualBrg" name="hargaJualBrg"
-                        data-nextid="sc-6">
+                <div class="row mb-3">
+                    <label for="inputtext3" class="col-sm-4 col-form-label">Harga Jual :</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control enter-pass" id="hargaJualBrg" name="harga_jual"
+                            data-nextid="sc-6">
+                    </div>
                 </div>
-            </div>
-            <button type="button" class="btn btn-success btn-sm mt-2" id="tmbhBtn"><i class="fas fa-plus"></i>
-                Tambah</button>
+                <button type="submit" class="btn btn-success btn-sm mt-2" id="tmbhBtn"><i class="fas fa-plus"></i>
+                    Tambah</button>
+            </form>
         </div>
 
         <div class="col-md-8 border">
@@ -149,6 +152,7 @@
                         let nextID = $(".enter-pass[data-nextid=sc-" + idNo + "]");
                         if (nextID.length) {
                             idNum = idNo;
+                            $('#storeBrang').preventDefault();
                         } else {
                             idNum = 1;
                             $("#tmbhBtn").click();
@@ -157,51 +161,6 @@
                     }
                 });
             };
-
-            $("#tmbhBtn").on("click", function() {
-                let noResi = $("#noResi").val();
-                let barcode = $("#barcode").val();
-                let nama = $("#namaBrg").val();
-                let jumlah = Number($("#jumlahBrg").val());
-                let satuan = $("#satuanBrg").val();
-                let hargaBeli = $("#hargaBeliBrg").val();
-                let hargaJual = $("#hargaJualBrg").val();
-                let token = document.head.querySelector('meta[name="csrf-token"]');
-                window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
-                axios.post('/store-barang', {
-                        kode_barang: noResi,
-                        barcode: barcode,
-                        nama: nama,
-                        stok: jumlah,
-                        nama_satuan: satuan,
-                        rasio: 1,
-                        harga_beli: Number(hargaBeli.split(".").join("").split("Rp").join("")),
-                        harga_jual: Number(hargaJual.split(".").join("").split("Rp").join("")),
-                    })
-                    .then((response) => {
-                        console.log(response)
-                        let numInt = $("#tableItem").find("tbody").children().length + 1;
-                        let childTable =
-                            "<tr id='itemRow[" + numInt + "]'><td>" + numInt +
-                            "</td><td>" + noResi +
-                            "</td><td>" + nama +
-                            "</td><td>" + jumlah + ' ' + satuan +
-                            "</td><td class='harga-beli-barang'>" + hargaBeli +
-                            "</td><td class='harga-jual-barang'>" + hargaJual +
-                            "</td><td><a href='show-barang/" + noResi +
-                            "' class='btn btn-primary btn-sm'><i class='far fa-eye'></i></a></td></tr>";
-                        $("#tableItem").find("tbody").append(childTable);
-                        noResi = noResi.replace("B-", "");
-                        $("#noResi").val("B-" + (parseInt(noResi) + 1));
-                        $("#barcode").val("");
-                        $("#namaBrg").val("");
-                        $("#jumlahBrg").val("");
-                        $("#hargaBeliBrg").val("");
-                        $("#hargaJualBrg").val("");
-                    }).catch((error) => {
-                        console.log(error.response.data)
-                    })
-            });
         });
 
     </script>

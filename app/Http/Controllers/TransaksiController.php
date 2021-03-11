@@ -58,7 +58,7 @@ class TransaksiController extends Controller
     public function getMember()
     {
         return response()->json([
-            'member' => Member::where('jenis_member', 'customer')->where('nama', 'not like', '%Customer-%')->get()
+            'member' => Member::where('jenis_member', 'customer')->where('nama', 'not like', '%general-%')->get()
         ]);
     }
 
@@ -89,19 +89,11 @@ class TransaksiController extends Controller
 
             // Member
             if ($request->kode_member == "") {
-                $memberId = Member::incrementId();
-                $member = new Member;
-                $member->kode_member = $memberId;
-                $member->jenis_member = $request->jenis_member;
-                $member->nama = ($request->nama_member == null) ? $member->getName() : $request->nama_member;
-                $member->unit = $request->unit_member;
-                $member->telepon = $request->telepon_member;
-                $member->alamat = $request->alamat_member;
-                $memberSave = true;
+                $member = true;
+                $memberId = 'U-00-01';
             } else {
                 $member = true;
                 $memberId = $request->kode_member;
-                $memberSave = false;
             }
             // End
 
@@ -119,8 +111,6 @@ class TransaksiController extends Controller
 
 
             if ($data && $transaksi && $member) {
-
-                if ($memberSave) $member->save();
 
                 $transaksi->save();
 
@@ -170,18 +160,10 @@ class TransaksiController extends Controller
         } else if ($request->jenis_transaksi == 'pembelian') { // pembelian
             $noResi = Transaksi::incrementId();
             $idKasir = Auth::user()->id;
-            $memberId = Member::incrementId();
+            $memberId = 'U-00-02';
             $loopData = count(collect($request)->get('detail_transaksi'));
 
             // member
-            $member = new Member;
-            $member->kode_member = $memberId;
-            $member->jenis_member = 'supplier';
-            $member->nama = $member->getName();
-            $member->unit = null;
-            $member->telepon = null;
-            $member->alamat = null;
-            $member->save();
             // end
 
             // Transaksi
@@ -248,7 +230,7 @@ class TransaksiController extends Controller
             }
             // End
 
-            if ($member && $transaksi && $detail && $barang) {
+            if ($transaksi && $detail && $barang) {
                 return response()->json([
                     'message' => 'success',
                     'data' => Transaksi::where('no_resi', $noResi)->get()

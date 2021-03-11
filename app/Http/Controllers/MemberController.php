@@ -14,10 +14,8 @@ class MemberController extends Controller
      */
     public function index()
     {
-        $idMember = Member::incrementId();
-        $member = Member::where('nama', 'not like', '%Customer-%')->get();
+        $member = Member::where('nama', 'not like', '%general-%')->get();
         return view('admin.member.daftarmember', [
-            'idMember' => $idMember,
             'member' => $member,
             'sideTitle' => 'member'
         ]);
@@ -42,7 +40,7 @@ class MemberController extends Controller
     public function store(Request $request)
     {
         $member = new Member;
-        $member->kode_member = Member::incrementId();
+        $member->kode_member = Member::incrementId((int)$request->unit);
         $member->jenis_member = $request->jenis_member;
         $member->nama = $request->nama;
         $member->unit = $request->unit;

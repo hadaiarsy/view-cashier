@@ -167,6 +167,7 @@
                         <th scope="col">Tanggal</th>
                         <th scope="col">ID Kasir</th>
                         <th scope="col">ID Member</th>
+                        <th scope="col">Nama Member</th>
                         <th scope="col">Total</th>
                         <th scope="col">Ket</th>
                         <th scope="col">Option</th>
@@ -179,12 +180,14 @@
                             <td>{{ $t->no_resi }}</td>
                             <td>{{ date('Y-m-d', strtotime($t->tanggal)) }}</td>
                             <td>{{ $t->kasir->name }}</td>
+                            <td>{{ $t->member->kode_member }}</td>
                             <td>{{ $t->member->nama }}</td>
                             <td class="total-row">{{ $t->total }}</td>
-                            <td>{{ $t->is_lunas ? 'Lunas' : '' }}</td>
+                            <td>{{ $t->is_lunas ? 'Lunas' : 'Piutang' }}</td>
                             <td>
-                                <a href="show-transaksi/{{ $t->no_resi }}" class="btn btn-primary btn-sm" id="btnShow"><i
-                                        class="far fa-eye"></i></i></a>
+                                -
+                                {{-- <a href="show-transaksi/{{ $t->no_resi }}" class="btn btn-primary btn-sm" id="btnShow"><i
+                                        class="far fa-eye"></i></i></a> --}}
                             </td>
                         </tr>
                     @endforeach
@@ -248,6 +251,10 @@
                 let tahir = $('#tanggal_akhir').val();
                 console.log(tawal + ' -> ' + tahir);
             }
+
+            $('div#tableTrans_filter label input').on('change paste keyup', function(event) {
+                console.log($(this).val());
+            });
         });
 
     </script>

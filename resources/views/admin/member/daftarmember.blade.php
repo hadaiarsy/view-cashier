@@ -15,15 +15,6 @@
             <form action="/store-member" method="post">
                 @csrf
                 <h5 class="mt-2 mb-3"><i class="fas fa-plus"></i> Tambah Member</h5>
-                <fieldset disabled="disabled">
-                    <div class="row mb-3">
-                        <label for="kode_member" class="col-sm-4 col-form-label">Kode :</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="kode_member" name="kode_member"
-                                value="{{ $idMember }}">
-                        </div>
-                    </div>
-                </fieldset>
                 <div class="row">
                     <div class="col">
                         <h6>

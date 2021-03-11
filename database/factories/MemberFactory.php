@@ -22,10 +22,10 @@ class MemberFactory extends Factory
     public function definition()
     {
         return [
-            'kode_member' => 'M-210114001',
+            'kode_member' => 'U-00-01',
             'jenis_member' => 'customer',
-            'nama' => 'Andi',
-            'unit' => 10
+            'nama' => 'general-customer',
+            'unit' => 0
         ];
     }
 }

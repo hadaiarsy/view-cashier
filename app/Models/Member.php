@@ -23,22 +23,34 @@ class Member extends Model
         'alamat'
     ];
 
-    public static function incrementId()
+    public static function incrementId($unit)
     {
-        $date = date('ymd');
-        $lastId = Self::withTrashed()->orderBy('kode_member', 'desc')->first();
+        // $date = date('ymd');
+        // $lastId = Self::withTrashed()->orderBy('kode_member', 'desc')->first();
+        // if ($lastId) {
+        //     $lastId = $lastId->kode_member;
+        //     $lastId = preg_replace('/M-/', '', strval($lastId));
+        //     if (preg_match('/^' . $date . '/', $lastId)) {
+        //         $val = (int)preg_replace('/^' . $date . '/', '', $lastId) + 1;
+        //         $val =  str_pad($val, 3, "0", STR_PAD_LEFT);
+        //         return 'M-' . $date . $val;
+        //     } else {
+        //         return 'M-' . $date . '001';
+        //     }
+        // } else {
+        //     return 'M-' . $date . '001';
+        // }
+        $lastId = Self::withTrashed()->where(['jenis_member' => 'customer', 'unit' => $unit])->orderBy('kode_member', 'desc')->first();
         if ($lastId) {
             $lastId = $lastId->kode_member;
-            $lastId = preg_replace('/M-/', '', strval($lastId));
-            if (preg_match('/^' . $date . '/', $lastId)) {
-                $val = (int)preg_replace('/^' . $date . '/', '', $lastId) + 1;
-                $val =  str_pad($val, 3, "0", STR_PAD_LEFT);
-                return 'M-' . $date . $val;
-            } else {
-                return 'M-' . $date . '001';
-            }
+            $lastId = preg_replace('/U-/', '', strval($lastId));
+            $lastId = explode('-', $lastId);
+            $lastId = (int)$lastId[1] + 1;
+            $lastId = str_pad($lastId, 2, "0", STR_PAD_LEFT);
+            $lastId = 'U-' . $unit . '-' . $lastId;
+            return $lastId;
         } else {
-            return 'M-' . $date . '001';
+            return 'U-' . str_pad($unit, 2, "0", STR_PAD_LEFT) . '-01';
         }
     }
 

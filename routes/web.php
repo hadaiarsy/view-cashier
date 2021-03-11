@@ -62,9 +62,9 @@ Route::middleware('auth')->group(function () {
 
         Route::post('simpan-transaksi', [TransaksiController::class, 'store']);
 
-        Route::get('generate-member-id', function () {
-            return \App\Models\Member::incrementId();
-        });
+        // Route::get('generate-member-id', function () {
+        //     return \App\Models\Member::incrementId();
+        // });
 
         Route::get('getall-member', [TransaksiController::class, 'getMember']);
 
@@ -152,6 +152,7 @@ Route::middleware('auth')->group(function () {
             // return \App\Models\Barang::where('kode_barang', 'B-210114001')->first()->stok;
 
             // return \App\Models\Member::checkName('asd bambang_M-210127001');
+            return \App\Models\Member::incrementId(10);
 
             // return csrf_token();
 
@@ -164,7 +165,7 @@ Route::middleware('auth')->group(function () {
             // return \Illuminate\Support\Facades\DB::select(\Illuminate\Support\Facades\DB::raw('SELECT * FROM user_level'));
 
             // return '';
-            return redirect('/');
+            // return redirect('/');
         });
     });
 

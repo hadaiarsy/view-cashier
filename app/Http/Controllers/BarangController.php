@@ -41,32 +41,24 @@ class BarangController extends Controller
      */
     public function store(Request $request)
     {
+        $kodeBarang = Barang::incrementId();
+
         $barang = new Barang;
-        $barang->kode_barang = $request->kode_barang;
+        $barang->kode_barang = $kodeBarang;
         $barang->barcode = $request->barcode;
         $barang->nama = $request->nama;
         $barang->stok = $request->stok;
-        $barang->save();
+
         $satuan = new SatuanBarang;
-        $satuan->kode_barang = $request->kode_barang;
+        $satuan->kode_barang = $kodeBarang;
         $satuan->nama_satuan = $request->nama_satuan;
-        $satuan->rasio = $request->rasio;
-        $satuan->harga_beli = $request->harga_beli;
-        $satuan->harga_jual = $request->harga_jual;
+        $satuan->rasio = 1;
+        $satuan->harga_beli = (int)str_replace('.', '', preg_replace('/Rp /', '', $request->harga_beli));
+        $satuan->harga_jual = (int)str_replace('.', '', preg_replace('/Rp /', '', $request->harga_jual));
+
+        $barang->save();
         $satuan->save();
-        if ($barang && $satuan) {
-            return response()->json([
-                'message' => 'success',
-                'data' => [
-                    'barang' => $barang,
-                    'satuan' => $satuan
-                ]
-            ], 200);
-        } else {
-            return response()->json([
-                'message' => 'failed',
-            ], 500);
-        }
+        return redirect('/daftar-barang');
     }
 
     /**

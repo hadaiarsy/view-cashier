@@ -424,6 +424,7 @@
                 $('#diskon').val('');
                 $('#uangTotal').val('');
                 $('#kmblTotal').val('');
+                $('#kodeMember').val('');
                 totalHarga();
                 $('#barcode').focus();
                 $('#slsPrintTransc').prop('disabled', true);
