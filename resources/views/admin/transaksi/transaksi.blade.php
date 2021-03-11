@@ -11,7 +11,7 @@
                 <span>Penjualan</span>
             </a>
         </li>
-        @if ($level != 2)
+        @if ($level != 3)
             <li class="nav-item">
                 <a role="tab" class="nav-link" id="tab-1" data-toggle="tab" href="#tab-content-pembelian">
                     <span>Pembelian</span>

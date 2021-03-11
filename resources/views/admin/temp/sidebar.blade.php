@@ -54,35 +54,37 @@
                         Piutang
                     </a>
                 </li>
-                <li class="app-sidebar__heading">Laporan</li>
-                <li>
-                    <a href="{{ route('laporan') }}" class="{{ $sideTitle == 'laporan' ? 'mm-active' : '' }}">
-                        <i class="metismenu-icon pe-7s-wallet"></i>
-                        Laporan
-                    </a>
-                </li>
-                <li class="app-sidebar__heading">Barang</li>
-                <li>
-                    <a href="{{ route('barang') }}" class="{{ $sideTitle == 'barang' ? 'mm-active' : '' }}">
-                        <i class="metismenu-icon pe-7s-box1"></i>
-                        Info Barang
-                    </a>
-                </li>
-                <li class="app-sidebar__heading">Member</li>
-                <li>
-                    <a href="{{ route('member') }}" class="{{ $sideTitle == 'member' ? 'mm-active' : '' }}">
-                        <i class="metismenu-icon pe-7s-id"></i>
-                        Info Member
-                    </a>
-                </li>
-                @if ($level == 1)
-                    <li class="app-sidebar__heading">User</li>
+                @if ($level != 3)
+                    <li class="app-sidebar__heading">Laporan</li>
                     <li>
-                        <a href="{{ route('user') }}" class="{{ $sideTitle == 'user' ? 'mm-active' : '' }}">
-                            <i class="metismenu-icon pe-7s-users"></i>
-                            Info User
+                        <a href="{{ route('laporan') }}" class="{{ $sideTitle == 'laporan' ? 'mm-active' : '' }}">
+                            <i class="metismenu-icon pe-7s-wallet"></i>
+                            Laporan
                         </a>
                     </li>
+                    <li class="app-sidebar__heading">Barang</li>
+                    <li>
+                        <a href="{{ route('barang') }}" class="{{ $sideTitle == 'barang' ? 'mm-active' : '' }}">
+                            <i class="metismenu-icon pe-7s-box1"></i>
+                            Info Barang
+                        </a>
+                    </li>
+                    <li class="app-sidebar__heading">Member</li>
+                    <li>
+                        <a href="{{ route('member') }}" class="{{ $sideTitle == 'member' ? 'mm-active' : '' }}">
+                            <i class="metismenu-icon pe-7s-id"></i>
+                            Info Member
+                        </a>
+                    </li>
+                    @if ($level == 1)
+                        <li class="app-sidebar__heading">User</li>
+                        <li>
+                            <a href="{{ route('user') }}" class="{{ $sideTitle == 'user' ? 'mm-active' : '' }}">
+                                <i class="metismenu-icon pe-7s-users"></i>
+                                Info User
+                            </a>
+                        </li>
+                    @endif
                 @endif
         </div>
     </div>

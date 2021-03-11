@@ -145,15 +145,17 @@
     </div>
 
     <div class="row mt-3">
-        <div class="col-lg-5 form-inline d-flex">
-            <input type="date" class="form-control mr-2" name="" id="tanggal_awal" value="{{ date('Y-m-d') }}">
-            <span class="d-inline-block mr-2"><i class="fas fa-arrow-alt-circle-right"></i></span>
-            <input type="date" class="form-control d-inline" name="" id="tanggal_akhir" value="{{ date('Y-m-d') }}">
-            <button type="button" class="btn btn-success ml-2" id="kirim">Kirim</button>
+        <div class="d-none">
+            <div class="col-lg-5 form-inline d-flex">
+                <input type="date" class="form-control mr-2" name="" id="tanggal_awal" value="{{ date('Y-m-d') }}">
+                <span class="d-inline-block mr-2"><i class="fas fa-arrow-alt-circle-right"></i></span>
+                <input type="date" class="form-control d-inline" name="" id="tanggal_akhir" value="{{ date('Y-m-d') }}">
+                <button type="button" class="btn btn-success ml-2" id="kirim">Kirim</button>
+            </div>
         </div>
         <div class="col-lg d-flex flex-row-reverse">
-            <a href="/transaksi-pdf" target="_blank"><button type="button" class="btn btn-success pl-2" id="kirim">Laporan
-                    PDF</button></a>
+            <button type="button" class="btn btn-success pl-2" id="laporan">Laporan
+                PDF</button>
         </div>
     </div>
 
@@ -253,7 +255,23 @@
             }
 
             $('div#tableTrans_filter label input').on('change paste keyup', function(event) {
-                console.log($(this).val());
+                // console.log($(this).val());
+            });
+
+            $('#laporan').on('click', function(event) {
+                let idMember = $('div#tableTrans_filter label input').val();
+                axios.get(globalUrl + 'check-id-member/' + (idMember == '' ? 'null' : idMember))
+                    .then((response) => {
+                        let data = response.data;
+                        if (data.length == 0) {
+                            alert('Data Member Tidak Ada');
+                        } else {
+                            console.log(data);
+                            window.open(globalUrl + 'laporan-transaksi/' + data.kode_member);
+                        }
+                    }).catch((error) => {
+                        console.log(error.response);
+                    })
             });
         });
 

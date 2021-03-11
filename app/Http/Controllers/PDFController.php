@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use Barryvdh\DomPDF\Facade as PDF;
 
+use App\Models\Transaksi;
+
 class PDFController extends Controller
 {
     /**
@@ -13,11 +15,14 @@ class PDFController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function laporan()
+    public function laporan($kodeMember)
     {
         $data = [
-            'title' => 'Welcome to Tutsmake.com',
-            'date' => date('m/d/Y')
+            'title' => 'Laporan Transaksi',
+            'date' => date('m/d/Y'),
+            'member' => \App\Models\Member::where(['kode_member' => $kodeMember])->first(),
+            'transaksi' => Transaksi::with(['kasir', 'detail', 'piutang'])->where(['member_id' => $kodeMember])->get(),
+            'num' => 1
         ];
 
         $pdf = PDF::loadView('admin.transaksi.testlaporan', $data);

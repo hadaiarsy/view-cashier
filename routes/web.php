@@ -62,9 +62,9 @@ Route::middleware('auth')->group(function () {
 
         Route::post('simpan-transaksi', [TransaksiController::class, 'store']);
 
-        // Route::get('generate-member-id', function () {
-        //     return \App\Models\Member::incrementId();
-        // });
+        Route::get('check-id-member/{kode}', function ($kode) {
+            return \App\Models\Member::where(['kode_member' => $kode])->first();
+        });
 
         Route::get('getall-member', [TransaksiController::class, 'getMember']);
 
@@ -76,7 +76,16 @@ Route::middleware('auth')->group(function () {
 
         Route::get('download-transaksi', [TransaksiController::class, '']);
 
-        Route::get('transaksi-pdf', [PDFController::class, 'laporan']);
+        Route::get('transaksi-pdf/{member}', [PDFController::class, 'laporan'])->name('download-pdf');
+        Route::get('laporan-transaksi/{member}', function ($kodeMember) {
+            $member = \App\Models\Member::where(['kode_member' => $kodeMember])->first();
+            $transaksi = Transaksi::with(['kasir', 'detail', 'piutang'])->where(['member_id' => $kodeMember])->get();
+            return view('admin.transaksi.laporan', [
+                'member' => $member,
+                'transaksi' => $transaksi,
+                'num' => 1
+            ]);
+        });
 
         Route::get('get-member-piutang/{kode}', [TransaksiController::class, 'member_piutang']);
 
