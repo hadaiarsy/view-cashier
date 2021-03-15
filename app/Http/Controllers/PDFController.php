@@ -41,4 +41,18 @@ class PDFController extends Controller
 
         return $pdf->stream('stok_laporan.pdf');
     }
+
+    public function pembelian($noResi)
+    {
+        $transaksi = Transaksi::with(['kasir', 'member', 'detail'])->where(['jenis_transaksi' => 'pembelian', 'no_resi' => $noResi])->first();
+
+        $data = [
+            'transaksi' => $transaksi,
+            'total' => 0
+        ];
+
+        $pdf = PDF::loadView('admin.transaksi.pdfpembelian', $data);
+
+        return $pdf->stream('laporan-pembelian' . date('d-m-Y_h-i-s') . '.pdf');
+    }
 }

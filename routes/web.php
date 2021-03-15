@@ -87,6 +87,8 @@ Route::middleware('auth')->group(function () {
             ]);
         });
 
+        Route::get('pdf-pembelian/{resi}', [PDFController::class, 'pembelian']);
+
         Route::get('get-member-piutang/{kode}', [TransaksiController::class, 'member_piutang']);
 
         Route::get('get-member-search', [MemberController::class, 'member_search']);

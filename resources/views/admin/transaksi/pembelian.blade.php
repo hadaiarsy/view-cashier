@@ -367,6 +367,7 @@
                     .then((response) => {
                         console.log(response);
                         getOutBarang();
+                        pdfOut(response.data.data[0].no_resi);
                         $('.alert-success-pembelian').show();
                         $('#batalPembelian').click();
                     })
@@ -377,6 +378,10 @@
 
             });
             // end
+
+            function pdfOut(resi) {
+                window.open(globalUrl + 'pdf-pembelian/' + resi);
+            }
 
             let getOutBarang = () => axios.get(globalUrl + 'getall-barang/')
                 .then((response) => {
