@@ -13,6 +13,7 @@
     <meta name="msapplication-tap-highlight" content="no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="url-global" content="{{ config('app.url') }}">
+    <meta name="login" content="{{ session('login') }}">
 
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('assets/favicon/yamughni/apple-icon-57x57.png') }}">
@@ -22,7 +23,8 @@
     <link rel="apple-touch-icon" sizes="114x114" href="{{ asset('assets/favicon/yamughni/apple-icon-114x114.png') }}">
     <link rel="apple-touch-icon" sizes="120x120" href="{{ asset('assets/favicon/yamughni/apple-icon-120x120.png') }}">
     <link rel="apple-touch-icon" sizes="144x144" href="{{ asset('assets/favicon/yamughni/apple-icon-144x144.png') }}">
-    <link rel="apple-touch-icon" sizes="152x152" href="{{ asset('assets/favicon/yamughni/apple-icon-152x152.png') }}">
+    <link rel="apple-touch-icon" sizes="152x152"
+        href="{{ asset('assets/favicon/yamughni/apple-icon-152x152.png') }}">
     <link rel="apple-touch-icon" sizes="180x180"
         href="{{ asset('assets/favicon/yamughni/apple-icon-180x180.png') }}">
     <link rel="icon" type="image/png" sizes="192x192"
@@ -128,8 +130,6 @@
                 </div>
 
             </div>
-
-            <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
         </div>
     </div>
 
@@ -144,9 +144,32 @@
     <!-- FontAwesome cdn -->
     <script src="{{ asset('assets/fontawesome/js/all.js') }}" crossorigin="anonymous"></script>
 
+    <!-- SweetAlert 2 -->
+    <script src="{{ asset('assets/js/sweetalert2.all.min.js') }}" crossorigin="anonymous"></script>
+
     <script>
         // view clock
-        const globalUrl = $('meta[name=url-global]').attr('content');;
+        const globalUrl = $('meta[name=url-global]').attr('content');
+
+        // message login succesful
+        let is_login = $('meta[name=login]').attr('content');
+        if (is_login == 'succesful') {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+            Toast.fire({
+                icon: 'success',
+                title: 'Signed in successfully'
+            })
+        }
 
         function currentTime() {
             var date = new Date();
