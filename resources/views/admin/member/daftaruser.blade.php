@@ -15,7 +15,7 @@
             <form action="/store-user" method="post">
                 <h5 class="mt-2 mb-3"><i class="fas fa-plus"></i> Tambah User</h5>
                 @csrf
-                <fieldset>
+                <fieldset style="display: none">
                     <div class="row mb-3">
                         <label for="inputEmail3" class="col-sm-4 col-form-label">Kode :</label>
                         <div class="col-sm-8">

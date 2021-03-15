@@ -15,7 +15,7 @@
             <form action="/store-barang" method="post" id="storeBarang">
                 @csrf
                 <h5 class="mt-2 mb-3"><i class="fas fa-plus"></i> Tambah Barang</h5>
-                <fieldset disabled="disabled">
+                <fieldset disabled="disabled" style="display: none">
                     <div class="row mb-3">
                         <label for="inputEmail3" class="col-sm-4 col-form-label">Kode :</label>
                         <div class="col-sm-8">

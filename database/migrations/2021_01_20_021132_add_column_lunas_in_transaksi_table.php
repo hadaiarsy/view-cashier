@@ -14,7 +14,7 @@ class AddColumnLunasInTransaksiTable extends Migration
     public function up()
     {
         Schema::table('transaksi', function (Blueprint $table) {
-            $table->enum('is_lunas', ['1', '0'])->after('diskon');
+            $table->enum('is_lunas', ['1', '0'])->after('uang');
             $table->timestamp('batas_waktu')->nullable()->after('is_lunas');
         });
     }

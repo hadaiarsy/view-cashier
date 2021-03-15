@@ -18,7 +18,12 @@ class Transaksi extends Model
         'tanggal',
         'jenis_transaksi',
         'kasir_id',
-        'member_id'
+        'member_id',
+        'total',
+        'diskon',
+        'uang',
+        'is_lunas',
+        'batas_waktu'
     ];
 
     public static function incrementId()
