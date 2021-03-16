@@ -51,7 +51,7 @@
                                             <div class="form-floating">
                                                 <input type="text" class="form-control" id="hargaPembelian"
                                                     placeholder="0,000.eg" autofocus>
-                                                <label for="hargaPembelian">Harga</label>
+                                                <label for="hargaPembelian">Harga Beli</label>
                                             </div>
                                         </div>
                                     </div>
@@ -78,8 +78,9 @@
                                             </div>
                                         </div>
                                         <div class="col-2 justify-content-center">
-                                            <button class="btn btn-warning btn-sm text-light"
-                                                id="searchBarangPembelian"><i class="fas fa-search"></i></button>
+                                            <button class="btn btn-warning btn-sm text-light" id="searchBarangPembelian"
+                                                data-bs-toggle='modal' data-bs-target='#barangModalPembelian'><i
+                                                    class="fas fa-search"></i></button>
                                             <button class="btn btn-info btn-sm text-light ml-4" id="tambahPembelian"><i
                                                     class="fas fa-plus"></i></button>
                                         </div>
@@ -132,7 +133,39 @@
 </div>
 
 @section('modal-e')
-    {{-- Modal hapus item --}}
+    {{-- Modal Data Barang Pembelian --}}
+    <div class="modal fade" id="barangModalPembelian" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="barangModalLabelPembelian">Data Barang</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-12">
+                        <table class="table table-striped table-hover table-data-barang-pembelian-modal"
+                            id="tableItemsPembelianModal">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Kode</th>
+                                    <th scope="col">Barcode</th>
+                                    <th scope="col">Barang</th>
+                                    <th scope="col">Stok</th>
+                                    <th scope="col">Harga Beli</th>
+                                    <th scope="col">#</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Modal hapus item Pembelian --}}
     <div class="modal fade" id="hapusItemPembelianModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -158,6 +191,60 @@
 @section('script-e')
     <script>
         $(document).ready(function() {
+
+            // get data barang
+            let getPembelianBarang = () => axios.get(globalUrl + 'getall-barang/')
+                .then((response) => {
+                    $('table.table-data-barang-pembelian-modal').find('tbody').empty();
+                    let data = response.data.barang;
+                    for (let i = 0; i < data.length; i++) {
+                        let dataLoop =
+                            "<tr><td><p>" +
+                            data[i].kode_barang +
+                            "</p></td><td><p>" +
+                            (data[i].barcode == null ? '-' : data[i].barcode) +
+                            "</p></td><td><p>" + data[i].nama +
+                            "</p></td><td><p>" + data[i].stok + ' ' + data[i].satuan[0].nama_satuan +
+                            "</p></td><td><p>" + currencyIdr(String(data[i].satuan[0].harga_beli), 'Rp ') +
+                            ' / ' +
+                            data[i]
+                            .satuan[
+                                0].nama_satuan +
+                            "</p></td><td><button class='btn btn-info btn-sm text-light add-item-pembelian-modal' data-bs-dismiss='modal'aria-label='Close' id='addItemPembelianModal[]' data-datakode='" +
+                            data[i].kode_barang + "' data-databarcode='" + data[i].barcode +
+                            "' data-datanama='" + data[i].nama + "' data-datastok='" + data[i].stok * data[i]
+                            .satuan[0].rasio + "' data-datasatuan='" + data[i].satuan[0].nama_satuan +
+                            "' data-datarasio='" + data[i].satuan[0].rasio +
+                            "' data-datahargabeli='" + data[i].satuan[0].harga_beli +
+                            "'><i class='fas fa-plus text-light'></i></button></td></tr>";
+                        $('.table-data-barang-pembelian-modal').find('tbody').append(dataLoop);
+                        btnModalTambahPembelian();
+                        $("#tableItemsPembelianModal").DataTable();
+                    }
+                }).catch((error) => {
+                    console.log(error);
+                })
+            getPembelianBarang();
+            // end
+
+            // isi form transaksi tombol modal tambah
+            let btnModalTambahPembelian = () => $("button.add-item-pembelian-modal").on("click", function(e) {
+                var data = {
+                    kode_barang: $(this).data('datakode'),
+                    barcode: $(this).data('databarcode'),
+                    nama: $(this).data('datanama'),
+                    stok: $(this).data('datastok'),
+                    harga_beli: $(this).data('datahargabeli'),
+                    namaSatuan: $(this).data('datasatuan'),
+                };
+                $('#kodeBarangPembelian').val(data.kode_barang);
+                $('#barcodePembelian').val(data.barcode);
+                $('#namaBarangPembelian').val(data.nama);
+                $('#hargaPembelian').val(currencyIdr(String(data.harga_beli), 'Rp '));
+                $('#namaSatuanPembelian').val(data.namaSatuan);
+                $('.alert-row-pembelian').hide();
+            });
+            // end
 
             // check barang baru
             function barangBaru() {
