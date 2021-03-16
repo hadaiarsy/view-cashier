@@ -30,7 +30,7 @@
             </tr>
             <tr>
                 <td colspan='3' style='text-align: center'>Tgl:
-                    {{ date('d-m-Y', strtotime($transaksi->tanggal)) }}</br>Unit:
+                    {{ date('d-m-Y H:i:s', strtotime($transaksi->tanggal)) }}</br>Unit:
                     {{ $transaksi->member->kode_member == 'U-00-01' ? '-' : $transaksi->member->kode_member }}
                 </td>
             </tr>

@@ -30,7 +30,7 @@
             </tr>
             <tr>
                 <td colspan='3' style='text-align: center'>Tgl:
-                    {{ date('d-m-Y', strtotime($transaksi->tanggal)) }}</br>Unit:
+                    {{ date('d-m-Y H:i:s', strtotime($transaksi->tanggal)) }}</br>Unit:
                     {{ $transaksi->member->unit == null ? '-' : $transaksi->member->unit }}
                     | {{ $transaksi->member->kode_member }}
                 </td>
@@ -41,13 +41,11 @@
                     Resi:</br>{{ $transaksi->no_resi }}
                 </td>
             </tr>
-            @if ($transaksi->is_lunas == '0')
-                <tr>
-                    <td colspan='3' style='border-bottom: 1px dashed black; text-align: center;'>
-                        Pembayaran PIUTANG
-                    </td>
-                </tr>
-            @endif
+            <tr>
+                <td colspan='3' style='border-bottom: 1px dashed black; text-align: center;'>
+                    Pembayaran PIUTANG
+                </td>
+            </tr>
             <tr>
                 <td>Saldo Awal</td>
                 <td colspan='2' id='saldoAwal' style='text-align: right'>{{ $saldoAwal }}</td>
