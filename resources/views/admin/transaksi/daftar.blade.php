@@ -145,14 +145,44 @@
     </div>
 
     <div class="row mt-3">
-        <div class="d-none">
-            <div class="col-lg-5 form-inline d-flex">
-                <input type="date" class="form-control mr-2" name="" id="tanggal_awal" value="{{ date('Y-m-d') }}">
-                <span class="d-inline-block mr-2"><i class="fas fa-arrow-alt-circle-right"></i></span>
-                <input type="date" class="form-control d-inline" name="" id="tanggal_akhir" value="{{ date('Y-m-d') }}">
-                <button type="button" class="btn btn-success ml-2" id="kirim">Kirim</button>
-            </div>
+        {{-- <div class="d-none"> --}}
+        <div class="col-lg-5 form-inline d-flex">
+            {{-- <input type="date" class="form-control mr-2" name="" id="tanggal_awal" value="{{ date('Y-m-d') }}"> --}}
+            {{-- <span class="d-inline-block mr-2"><i class="fas fa-arrow-alt-circle-right"></i></span> --}}
+            {{-- <input type="date" class="form-control d-inline" name="" id="tanggal_akhir" value="{{ date('Y-m-d') }}"> --}}
+            {{-- <button type="button" class="btn btn-success ml-2" id="kirim">Kirim</button> --}}
+
+            <span>
+                <select name="birth_month">
+                    <?php for ($m = 1; $m <= 12; ++$m) { $month_label=date('F', mktime(0, 0, 0, $m, 1)); ?> <option value="<?php echo $month_label; ?>"><?php echo $month_label; ?></option>
+                        <?php
+                        } ?>
+                </select>
+            </span>
+            {{-- <span>
+                <select name="birth_day">
+                    <?php
+                    $start_date = 1;
+                    $end_date = 31;
+                    for ($j = $start_date; $j <= $end_date; $j++) {
+                        echo '<option value=' . $j . '>' . $j . '</option>';
+                    }
+                    ?> </select>
+            </span> --}}
+            <span>
+                <select name="birth_year">
+                    <?php
+                    $year = date('Y');
+                    $min = $year - date('y');
+                    $max = $year;
+                    for ($i = $max; $i >= $min; $i--) {
+                    echo '<option value=' . $i . '>' . $i . '</option>';
+                    }
+                    ?>
+                </select>
+            </span>
         </div>
+        {{-- </div> --}}
         <div class="col-lg d-flex flex-row-reverse">
             <button type="button" class="btn btn-success pl-2" id="laporan">Laporan
                 PDF</button>

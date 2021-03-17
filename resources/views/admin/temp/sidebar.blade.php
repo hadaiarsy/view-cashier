@@ -47,6 +47,12 @@
                         Transaksi
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route('laporan') }}" class="{{ $sideTitle == 'laporan' ? 'mm-active' : '' }}">
+                        <i class="metismenu-icon pe-7s-wallet"></i>
+                        Laporan Transaksi
+                    </a>
+                </li>
                 <li class="app-sidebar__heading">Piutang</li>
                 <li>
                     <a href="{{ route('piutang') }}" class="{{ $sideTitle == 'piutang' ? 'mm-active' : '' }}">
@@ -54,14 +60,13 @@
                         Piutang
                     </a>
                 </li>
+                <li>
+                    <a href="" class="{{ $sideTitle == '' ? 'mm-active' : '' }}">
+                        <i class="metismenu-icon pe-7s-wallet"></i>
+                        Laporan Piutang
+                    </a>
+                </li>
                 @if ($level != 3)
-                    <li class="app-sidebar__heading">Laporan</li>
-                    <li>
-                        <a href="{{ route('laporan') }}" class="{{ $sideTitle == 'laporan' ? 'mm-active' : '' }}">
-                            <i class="metismenu-icon pe-7s-wallet"></i>
-                            Laporan
-                        </a>
-                    </li>
                     <li class="app-sidebar__heading">Barang</li>
                     <li>
                         <a href="{{ route('barang') }}" class="{{ $sideTitle == 'barang' ? 'mm-active' : '' }}">

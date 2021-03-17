@@ -804,6 +804,13 @@
                         getMember();
                         getBarang();
                         printStruk(data);
+                        let textSwal = "KEMBALI : " + $('#kmblTotal').val() == '' ? '-' : $(
+                            '#kmblTotal').val();
+                        Swal.fire(
+                            'Transaksi Sukses!',
+                            textSwal,
+                            'success'
+                        )
                         // $('#batal').click();
                     })
                     .catch((error) => {
