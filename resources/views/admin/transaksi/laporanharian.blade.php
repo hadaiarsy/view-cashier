@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="url-global" content="{{ config('app.url') }}">
+
+    <style>
+        * {
+            font-family: arial, sans-serif;
+            font-size: 1rem;
+        }
+
+        body {
+            font-size: 0.1rem;
+        }
+
+        /* div.container {
+            background-color: rgb(39, 38, 38);
+        } */
+
+        tr.list-item th {
+            text-align: left
+        }
+
+        tr.head-list td {
+            text-align: center
+        }
+
+        table#dataTransaksi {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table#dataTransaksi,
+        table#dataTransaksi th,
+        table#dataTransaksi td {
+            border: 1px solid black;
+        }
+
+        table#dataMember {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        table#dataMember td {
+            width: 50%;
+        }
+
+        tr.border-bottom td {
+            border-bottom: 1px solid black;
+        }
+
+        tr.border-full td {
+            border: 1px solid black;
+        }
+
+        td.border-right {
+            vertical-align: top;
+            border-right: 1px solid black;
+        }
+
+        div#laporanLand {
+            width: 80%;
+            margin: auto;
+            margin-top: 40px;
+            border: 1px solid black;
+            padding: 12px;
+        }
+
+        div.row-button {
+            width: 80%;
+            margin: auto;
+            margin-top: 40px;
+        }
+
+    </style>
+
+    <title>Laporan Transaksi</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row row-button">
+            <a href="#" target="_blank"><button type="button">Download
+                    PDF</button></a>
+        </div>
+        <div id="laporanLand">
+            <table id="dataMember">
+                <thead>
+                    <tr class="head-list">
+                        <th colspan="2">
+                            <h4>BUKU PENJUALAN</h4>
+                            <h4 style="margin-top: -16px">KOPERASI YAMUGHNI</h4>
+                            <h4 style="margin-top: -16px">TANGGAL : {{ now() }}</h4>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table id="dataTransaksi">
+                <thead>
+                    <tr style="height: 30px;">
+                        <th scope="col" rowspan="2" style="width: 4%">NO. URUT</th>
+                        <th scope="col" colspan="2" style="width: 14%">FAKTUR</th>
+                        <th scope="col" rowspan="2">NAMA PEMBELI</th>
+                        <th scope="col" rowspan="2">NAMA BARANG</th>
+                        <th scope="col" rowspan="2">BANYAKNYA</th>
+                        <th scope="col" rowspan="2">HARGA SATUAN (Rp.)</th>
+                        <th scope="col" rowspan="2">JUMLAH HARGA (Rp.)</th>
+                        <th scope="col" rowspan="2">TOTAL FAKTUR (Rp.)</th>
+                        <th scope="col" rowspan="2">TANGGAL LUNAS</th>
+                        <th scope="col" rowspan="2">KET.</th>
+                    </tr>
+                    <tr style="height: 30px;">
+                        <th scope="col">TGL</th>
+                        <th scope="col">NOMOR</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($data as $transaksi)
+                        <tr>
+                            <th scope="col" rowspan="{{ count($transaksi->detail) }}">{{ $loop->iteration }}</th>
+                            <td rowspan="{{ count($transaksi->detail) }}">
+                                {{ date('d/m/y', strtotime($transaksi->tanggal)) }}</td>
+                            <td rowspan="{{ count($transaksi->detail) }}">{{ $transaksi->no_resi }}</td>
+                            <td rowspan="{{ count($transaksi->detail) }}">{{ $transaksi->member->nama }}</td>
+                            <td>{{ $transaksi->detail[0]->nama_barang }}</td>
+                            <td>{{ $transaksi->detail[0]->jumlah . ' ' . $transaksi->detail[0]->satuan }}</td>
+                            <td>{{ (int) $transaksi->detail[0]->harga / (int) $transaksi->detail[0]->jumlah }}</td>
+                            <td>{{ $transaksi->detail[0]->harga }}</td>
+                            <td rowspan="{{ count($transaksi->detail) }}">{{ $transaksi->total }}</td>
+                            <td rowspan="{{ count($transaksi->detail) }}">
+                                {{ $transaksi->is_lunas == 1 ? date('d/m/y', strtotime($transaksi->tanggal)) : '-' }}
+                            </td>
+                            <td rowspan="{{ count($transaksi->detail) }}">
+                                {{ $transaksi->is_lunas == 1 ? 'LUNAS' : 'TENGGAT WAKTU: ' . date('d/m/y', strtotime('+30 days', strtotime($transaksi->tanggal))) }}
+                            </td>
+                        </tr>
+                        @if (count($transaksi->detail) > 1)
+                            @for ($i = 1; ($i = count($transaksi->detail) - 1); $i++)
+                                <td>{{ $transaksi->detail[$i]->nama_barang }}</td>
+                                <td>{{ $transaksi->detail[$i]->jumlah . ' ' . $transaksi->detail[$i]->satuan }}</td>
+                                <td>{{ (int) $transaksi->detail[$i]->harga / (int) $transaksi->detail[$i]->jumlah }}
+                                </td>
+                                <td>{{ $transaksi->detail[$i]->harga }}</td>
+                            @endfor
+                        @endif
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

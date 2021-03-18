@@ -184,8 +184,10 @@
         </div>
         {{-- </div> --}}
         <div class="col-lg d-flex flex-row-reverse">
-            <button type="button" class="btn btn-success pl-2" id="laporan">Laporan
-                PDF</button>
+            <button type="button" class="btn btn-success pl-2 mr-3" id="laporanHarian">Laporan
+                Harian</button>
+            <button type="button" class="btn btn-success pl-2 ml-3" id="laporan">Laporan
+                Member</button>
         </div>
     </div>
 

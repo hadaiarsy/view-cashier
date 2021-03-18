@@ -25,9 +25,9 @@ class PDFController extends Controller
             'num' => 1
         ];
 
-        $pdf = PDF::loadView('admin.transaksi.testlaporan', $data);
+        $pdf = PDF::loadView('admin.transaksi.testlaporan', $data)->setPaper('a4', 'landscape');;
 
-        return $pdf->stream('transaksi_laporan.pdf');
+        return $pdf->stream('transaksi_laporan' . date('d-m-y_h-i-s') . '.pdf');
     }
 
     public function stok()

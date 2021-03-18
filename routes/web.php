@@ -108,6 +108,18 @@ Route::middleware('auth')->group(function () {
         Route::get('test-laporan', function () {
             return view('admin.transaksi.testlaporan');
         });
+
+        Route::get('json-laporan-harian', function () {
+            return response()->json([
+                'data' => Transaksi::with(['kasir', 'member', 'detail', 'piutang'])->whereDate('tanggal', now())->get()
+            ]);
+        });
+
+        Route::get('laporan-harian', function () {
+            return view('admin.transaksi.laporanharian', [
+                'data' => Transaksi::with(['kasir', 'member', 'detail', 'piutang'])->where(['jenis_transaksi' => 'penjualan'])->whereDate('tanggal', now())->get()
+            ]);
+        });
     });
 
 
