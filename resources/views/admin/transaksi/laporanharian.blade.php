@@ -145,12 +145,15 @@
                             </td>
                         </tr>
                         @if (count($transaksi->detail) > 1)
-                            @for ($i = 1; ($i = count($transaksi->detail) - 1); $i++)
-                                <td>{{ $transaksi->detail[$i]->nama_barang }}</td>
-                                <td>{{ $transaksi->detail[$i]->jumlah . ' ' . $transaksi->detail[$i]->satuan }}</td>
-                                <td>{{ (int) $transaksi->detail[$i]->harga / (int) $transaksi->detail[$i]->jumlah }}
-                                </td>
-                                <td>{{ $transaksi->detail[$i]->harga }}</td>
+                            @for ($i = 1; $i <= count($transaksi->detail) - 1; $i++)
+                                <tr>
+                                    <td>{{ $transaksi->detail[$i]->nama_barang }}</td>
+                                    <td>{{ $transaksi->detail[$i]->jumlah . ' ' . $transaksi->detail[$i]->satuan }}
+                                    </td>
+                                    <td>{{ (int) $transaksi->detail[$i]->harga / (int) $transaksi->detail[$i]->jumlah }}
+                                    </td>
+                                    <td>{{ $transaksi->detail[$i]->harga }}</td>
+                                </tr>
                             @endfor
                         @endif
                     @endforeach
