@@ -30,6 +30,18 @@ class TransaksiController extends Controller
         ]);
     }
 
+    public function __pembelian()
+    {
+        $noResi = Transaksi::incrementId();
+        $barang = Barang::with('satuan')->get();
+        $sideTitle = "pembelian";
+        return view('admin.transaksi.pembelian', [
+            'noResi' => $noResi,
+            'barang' => $barang,
+            'sideTitle' => $sideTitle
+        ]);
+    }
+
     public function showBarang($barcode)
     {
         $barang = Barang::with('satuan')

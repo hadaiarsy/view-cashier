@@ -1,127 +1,169 @@
-<div class="tab-pane tabs-animation fade" id="tab-content-pembelian" role="tabpanel">
-    <div class="row">
-        <div class="col-lg">
-            <div class="main-card mb-3 card">
-                <div class="card-body">
-                    <h5 class="card-title">Data Pembelian</h5>
-                    <div class="row alert-row-pembelian" style="display: none">
-                        <div class="alert alert-danger" data-start="true" role="alert">
-                            Data Barang <strong>Tidak</strong> Tersedia! Harap cek kembali form
-                            <strong>Transaksi</strong> di bawah! <span>Abaikan jika ingin mendaftarkan <strong>Barang
-                                    baru</strong></span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-8">
-                            <div class="row alert-success-pembelian" style="display: none">
-                                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                    Data Pembelian <strong>Berhasil</strong> disimpan.
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                        aria-label="Close"></button>
+@extends('admin.temp.template')
+
+@section('site-title', 'Transaksi Pembelian')
+
+@section('main-contents')
+
+    <!-- daftar tab -->
+    <ul class="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav">
+        <li class="nav-item">
+            <a role="tab" class="nav-link active" id="tab-0" data-toggle="tab" href="#tab-content-pembelian">
+                <span>Pembelian</span>
+            </a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+
+        <div class="tab-pane tabs-animation fade show active" id="tab-content-pembelian" role="tabpanel">
+            <div class="row">
+                <div class="col-lg">
+                    <div class="main-card mb-3 card">
+                        <div class="card-body">
+                            <h5 class="card-title">Data Pembelian</h5>
+                            <div class="row alert-row-pembelian" style="display: none">
+                                <div class="alert alert-danger" data-start="true" role="alert">
+                                    Data Barang <strong>Tidak</strong> Tersedia! Harap cek kembali form
+                                    <strong>Transaksi</strong> di bawah! <span>Abaikan jika ingin mendaftarkan
+                                        <strong>Barang
+                                            baru</strong></span>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col">
-                                    <div class="row d-flex align-items-center">
-                                        <div class="col-2">
-                                            <div class="position-relative form-check">
-                                                <label class="form-check-label">
-                                                    <input type="checkbox" class="form-check-input" id="isBarangBaru">
-                                                    Barang Baru
-                                                </label>
-                                            </div>
+                                <div class="col-8">
+                                    <div class="row alert-success-pembelian" style="display: none">
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                            Data Pembelian <strong>Berhasil</strong> disimpan.
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                aria-label="Close"></button>
                                         </div>
-                                        <div class="col-3">
-                                            <div class="form-floating">
-                                                <input type="hidden" name="kodeBarangPembelian"
-                                                    id="kodeBarangPembelian">
-                                                <input type="text" class="form-control" id="barcodePembelian"
-                                                    placeholder="0,000.eg" autofocus>
-                                                <label for="barcodePembelian">Barcode</label>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="row d-flex align-items-center">
+                                                <div class="col-2">
+                                                    <div class="position-relative form-check">
+                                                        <label class="form-check-label">
+                                                            <input type="checkbox" class="form-check-input"
+                                                                id="isBarangBaru">
+                                                            Barang Baru
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-floating">
+                                                        <input type="hidden" name="kodeBarangPembelian"
+                                                            id="kodeBarangPembelian">
+                                                        <input type="text" class="form-control" id="barcodePembelian"
+                                                            placeholder="0,000.eg" autofocus>
+                                                        <label for="barcodePembelian">Barcode</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-floating">
+                                                        <input type="text" class="form-control" id="namaBarangPembelian"
+                                                            placeholder="0,000.eg" autofocus>
+                                                        <label for="namaBarangPembelian">Nama Barang</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-floating">
+                                                        <input type="text" class="form-control" id="hargaPembelian"
+                                                            placeholder="0,000.eg" autofocus>
+                                                        <label for="hargaPembelian">Harga Beli</label>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-4">
-                                            <div class="form-floating">
-                                                <input type="text" class="form-control" id="namaBarangPembelian"
-                                                    placeholder="0,000.eg" autofocus>
-                                                <label for="namaBarangPembelian">Nama Barang</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-3">
-                                            <div class="form-floating">
-                                                <input type="text" class="form-control" id="hargaPembelian"
-                                                    placeholder="0,000.eg" autofocus>
-                                                <label for="hargaPembelian">Harga Beli</label>
+                                            <div class="row d-flex align-items-center mt-3">
+                                                <div class="col-3">
+                                                    <div class="form-floating">
+                                                        <input type="text" class="form-control" id="jumlahPembelian"
+                                                            placeholder="0,000.eg" autofocus>
+                                                        <label for="jumlahPembelian">Qty</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-floating">
+                                                        <input type="text" class="form-control" id="namaSatuanPembelian"
+                                                            placeholder="0,000.eg" autofocus>
+                                                        <label for="namaSatuanPembelian">Nama Satuan</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-floating">
+                                                        <input type="text" class="form-control" id="totalPembelian"
+                                                            placeholder="0,000.eg" autofocus>
+                                                        <label for="totalPembelian">Total</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-2 justify-content-center">
+                                                    <button class="btn btn-warning btn-sm text-light"
+                                                        id="searchBarangPembelian" data-bs-toggle='modal'
+                                                        data-bs-target='#barangModalPembelian'><i
+                                                            class="fas fa-search"></i></button>
+                                                    <button class="btn btn-info btn-sm text-light ml-4"
+                                                        id="tambahPembelian"><i class="fas fa-plus"></i></button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row d-flex align-items-center mt-3">
-                                        <div class="col-3">
-                                            <div class="form-floating">
-                                                <input type="text" class="form-control" id="jumlahPembelian"
-                                                    placeholder="0,000.eg" autofocus>
-                                                <label for="jumlahPembelian">Qty</label>
+                                    <div class="row mt-3">
+                                        <div class="scroll-area-sm">
+                                            <div class="scrollbar-container ps--active-y">
+                                                <table class="mb-0 table table-striped" id="tablePembelian">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">Barcode</th>
+                                                            <th scope="col">Item</th>
+                                                            <th scope="col">Harga</th>
+                                                            <th scope="col">Jumlah</th>
+                                                            <th scope="col">Total</th>
+                                                            <th scope="col">#</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
                                             </div>
-                                        </div>
-                                        <div class="col-3">
-                                            <div class="form-floating">
-                                                <input type="text" class="form-control" id="namaSatuanPembelian"
-                                                    placeholder="0,000.eg" autofocus>
-                                                <label for="namaSatuanPembelian">Nama Satuan</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-4">
-                                            <div class="form-floating">
-                                                <input type="text" class="form-control" id="totalPembelian"
-                                                    placeholder="0,000.eg" autofocus>
-                                                <label for="totalPembelian">Total</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-2 justify-content-center">
-                                            <button class="btn btn-warning btn-sm text-light" id="searchBarangPembelian"
-                                                data-bs-toggle='modal' data-bs-target='#barangModalPembelian'><i
-                                                    class="fas fa-search"></i></button>
-                                            <button class="btn btn-info btn-sm text-light ml-4" id="tambahPembelian"><i
-                                                    class="fas fa-plus"></i></button>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row mt-3">
-                                <div class="scroll-area-sm">
-                                    <div class="scrollbar-container ps--active-y">
-                                        <table class="mb-0 table table-striped" id="tablePembelian">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Barcode</th>
-                                                    <th scope="col">Item</th>
-                                                    <th scope="col">Harga</th>
-                                                    <th scope="col">Jumlah</th>
-                                                    <th scope="col">Total</th>
-                                                    <th scope="col">#</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
+                                <div class="col-4">
+                                    <div class="row d-flex flex-row-reverse">
+                                        <div class="col-8 d-flex justify-content-end">
+                                            <h4 class="text-danger border-bottom border-danger" id="totalTextPembelian">Rp 0
+                                            </h4>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="row d-flex flex-row-reverse">
-                                <div class="col-8 d-flex justify-content-end">
-                                    <h4 class="text-danger border-bottom border-danger" id="totalTextPembelian">Rp 0
-                                    </h4>
-                                </div>
-                            </div>
-                            <div class="row d-flex justify-content-end mt-2">
-                                <div class="col d-flex justify-content-end">
-                                    <button type="button" id="batalPembelian" class="btn btn-warning btn-sm mr-2"><i
-                                            class="fas fa-times"></i> Batal</button>
-                                    <button class="btn btn-info btn-sm text-light" id="selesaiPembelian"><i
-                                            class="fas fa-save"></i>
-                                        Selesai</button>
+                                    <div class="row d-flex flex-row-reverse mt-2">
+                                        <div class="col-6 input-group">
+                                            <input type="date" class="form-control pay-section" id="tanggalPembelian"
+                                                value="">
+                                        </div>
+                                        <label for="inputPassword3" class="col-4 col-form-label">Tanggal :</label>
+                                    </div>
+                                    <div class="row d-flex flex-row-reverse mt-2">
+                                        <div class="col-6 input-group">
+                                            <input type="text" class="form-control pay-section" id="noPembelian" value="">
+                                        </div>
+                                        <label for="inputPassword3" class="col-4 col-form-label">No Pembelian :</label>
+                                    </div>
+                                    <div class="row d-flex flex-row-reverse mt-2">
+                                        <div class="col position-relative form-check d-flex justify-content-end mt-2 mb-2">
+                                            <label class="form-check-label">
+                                                <input type="checkbox" class="form-check-input" id="hutangCheck"> piutang
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row d-flex justify-content-end mt-2">
+                                        <div class="col d-flex justify-content-end">
+                                            <button type="button" id="batalPembelian" class="btn btn-warning btn-sm mr-2"><i
+                                                    class="fas fa-times"></i> Batal</button>
+                                            <button class="btn btn-info btn-sm text-light" id="selesaiPembelian"><i
+                                                    class="fas fa-save"></i>
+                                                Selesai</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -130,9 +172,10 @@
             </div>
         </div>
     </div>
-</div>
 
-@section('modal-e')
+@endsection
+
+@section('modals')
     {{-- Modal Data Barang Pembelian --}}
     <div class="modal fade" id="barangModalPembelian" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -188,7 +231,7 @@
     </div>
 @endsection
 
-@section('script-e')
+@section('javascript')
     <script>
         $(document).ready(function() {
 
@@ -212,7 +255,8 @@
                                 0].nama_satuan +
                             "</p></td><td><button class='btn btn-info btn-sm text-light add-item-pembelian-modal' data-bs-dismiss='modal'aria-label='Close' id='addItemPembelianModal[]' data-datakode='" +
                             data[i].kode_barang + "' data-databarcode='" + data[i].barcode +
-                            "' data-datanama='" + data[i].nama + "' data-datastok='" + data[i].stok * data[i]
+                            "' data-datanama='" + data[i].nama + "' data-datastok='" + data[i].stok * data[
+                                i]
                             .satuan[0].rasio + "' data-datasatuan='" + data[i].satuan[0].nama_satuan +
                             "' data-datarasio='" + data[i].satuan[0].rasio +
                             "' data-datahargabeli='" + data[i].satuan[0].harga_beli +
@@ -266,7 +310,8 @@
                         console.log(data);
                         $('#kodeBarangPembelian').val(data.kode_barang);
                         $('#namaBarangPembelian').val(data.nama);
-                        $('#hargaPembelian').val(currencyIdr(String(data.satuan[0].harga_beli), 'Rp '));
+                        $('#hargaPembelian').val(currencyIdr(String(data.satuan[0].harga_beli),
+                            'Rp '));
                         $('#namaSatuanPembelian').val(data.satuan[0].nama_satuan);
                         $('.alert-row-pembelian').hide();
                     }).catch((error) => {
@@ -325,7 +370,8 @@
                 let childTable =
                     "<tr class='itemRowPembelian' id='itemPembelianRow[" + numInt +
                     "]'><td class='barang-baru-pembelian' style='display: none'>" +
-                    data.isBarangBaru + "</td><td class='kode-barang-pembelian' style='display: none'>" +
+                    data.isBarangBaru +
+                    "</td><td class='kode-barang-pembelian' style='display: none'>" +
                     data.kodeBarang + "</td><td class='barcode-barang-pembelian'>" +
                     data
                     .barcode +
@@ -335,7 +381,8 @@
                     "</td><td class='harga-barang-pembelian' id='hargaItm" + numInt + "'>" +
                     data
                     .harga_beli +
-                    "</td><td id='jumlahItm" + numInt + "'><span class='jumlah-barang-pembelian'>" + data
+                    "</td><td id='jumlahItm" + numInt + "'><span class='jumlah-barang-pembelian'>" +
+                    data
                     .jumlah +
                     "</span> <span class='satuan-barang-pembelian'>" + data.namaSatuan +
                     "</span></td><td class='totalHrgPembelian total-barang-pembelian' id='totalItm" +
@@ -436,8 +483,10 @@
                         nama: $(row[i]).find('td.nama-barang-pembelian').html(),
                         jumlah: Number($(row[i]).find('span.jumlah-barang-pembelian').html()),
                         satuan: $(row[i]).find('span.satuan-barang-pembelian').html(),
-                        harga: replaceCurrency($(row[i]).find('td.harga-barang-pembelian').html()),
-                        total: replaceCurrency($(row[i]).find('td.total-barang-pembelian').html())
+                        harga: replaceCurrency($(row[i]).find('td.harga-barang-pembelian')
+                            .html()),
+                        total: replaceCurrency($(row[i]).find('td.total-barang-pembelian')
+                            .html())
                     });
                 };
                 console.log(dataBarangPembelian);
@@ -453,7 +502,6 @@
                     })
                     .then((response) => {
                         console.log(response);
-                        getOutBarang();
                         pdfOut(response.data.data[0].no_resi);
                         $('.alert-success-pembelian').show();
                         $('#batalPembelian').click();
@@ -469,60 +517,6 @@
             function pdfOut(resi) {
                 window.open(globalUrl + 'pdf-pembelian/' + resi);
             }
-
-            let getOutBarang = () => axios.get(globalUrl + 'getall-barang/')
-                .then((response) => {
-                    $('table.table-data-barang').find('tbody').empty();
-                    let data = response.data.barang;
-                    for (let i = 0; i < data.length; i++) {
-                        let dataLoop =
-                            "<tr><td><p>" +
-                            data[i].kode_barang +
-                            "</p></td><td><p>" +
-                            (data[i].barcode == null ? '-' : data[i].barcode) +
-                            "</p></td><td><p>" + data[i].nama +
-                            "</p></td><td><p>" + data[i].stok + ' ' + data[i].satuan[0].nama_satuan +
-                            "</p></td><td><p>" + currencyIdr(String(data[i].satuan[0].harga_jual), 'Rp ') +
-                            ' / ' +
-                            data[i]
-                            .satuan[
-                                0].nama_satuan +
-                            "</p></td><td><button class='btn btn-info btn-sm text-light add-item' data-bs-dismiss='modal'aria-label='Close' id='addItem[]' data-datakode='" +
-                            data[i].kode_barang + "' data-databarcode='" + data[i].barcode +
-                            "' data-datanama='" + data[i].nama + "' data-datastok='" + data[i].stok * data[i]
-                            .satuan[0].rasio + "' data-datasatuan='" + data[i].satuan[0].nama_satuan +
-                            "' data-datarasio='" + data[i].satuan[0].rasio +
-                            "' data-dataharga='" + data[i].satuan[0].harga_jual +
-                            "'><i class='fas fa-plus text-light'></i></button></td></tr>";
-                        $('.table-data-barang').find('tbody').append(dataLoop);
-                        btnModalTambah();
-                    }
-                }).catch((error) => {
-                    console.log(error);
-                })
-
-            let btnModalTambah = () => $("button.add-item").on("click", function(e) {
-                var data = {
-                    kode: $(this).data('datakode'),
-                    barcode: $(this).data('databarcode'),
-                    nama: $(this).data('datanama'),
-                    stok: $(this).data('datastok'),
-                    harga: $(this).data('dataharga'),
-                    namaSatuan: $(this).data('datasatuan'),
-                };
-                let kode = $("#kodeBarang").val(data.kode);
-                let barcode = $("#barcode").val(data.barcode);
-                let nama = $("#nama").val(data.nama);
-                let stok = $("#stok").val(data.stok);
-                let harga = $("#harga").val(currencyIdr(String(data.harga), 'Rp '));
-                let namaSatuan = $("#btnJumlah").html(data.namaSatuan);
-                let jumlah = $("#jumlah").val(1);
-                let ttl = data.harga * 1;
-                let total = $("#total").val(currencyIdr(String(ttl), 'Rp '));
-                $('.alert-row').hide();
-                $('#tambah').prop('disabled', false);
-                $('#diskon').change();
-            });
 
         })
 

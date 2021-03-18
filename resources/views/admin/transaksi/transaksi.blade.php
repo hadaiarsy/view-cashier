@@ -1,6 +1,6 @@
 @extends('admin.temp.template')
 
-@section('site-title', 'Transaksi')
+@section('site-title', 'Transaksi Penjualan')
 
 @section('main-contents')
 
@@ -11,13 +11,11 @@
                 <span>Penjualan</span>
             </a>
         </li>
-        @if ($level != 3)
-            <li class="nav-item">
-                <a role="tab" class="nav-link" id="tab-1" data-toggle="tab" href="#tab-content-pembelian">
-                    <span>Pembelian</span>
-                </a>
-            </li>
-        @endif
+        {{-- <li class="nav-item">
+            <a role="tab" class="nav-link" id="tab-1" data-toggle="tab" href="#tab-content-pembelian">
+                <span>Pembelian</span>
+            </a>
+        </li> --}}
     </ul>
 
     <div class="tab-content">
@@ -201,9 +199,9 @@
         </div>
 
         <!-- transaksi pembelian -->
-        @if ($level != 3)
+        {{-- @if ($level != 3)
             @include('admin.transaksi.pembelian')
-        @endif
+        @endif --}}
 
     </div>
 
@@ -292,7 +290,7 @@
         </div>
     </div>
 
-    @yield('modal-e')
+    {{-- @yield('modal-e') --}}
 @endsection
 
 @section('javascript')
@@ -804,11 +802,11 @@
                         getMember();
                         getBarang();
                         printStruk(data);
-                        let textSwal = "KEMBALI : " + $('#kmblTotal').val() == '' ? '-' : $(
-                            '#kmblTotal').val();
+                        let kmblText = $('#kmblTotal').val() == '' ? '-' : $('#kmblTotal').val();
+                        let textSwal = "KEMBALI : " + kmblText;
                         Swal.fire(
-                            'Transaksi Sukses!',
                             textSwal,
+                            'Transaksi Sukses!',
                             'success'
                         )
                         // $('#batal').click();
@@ -864,5 +862,5 @@
 
     </script>
 
-    @yield('script-e')
+    {{-- @yield('script-e') --}}
 @endsection

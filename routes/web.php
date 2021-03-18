@@ -42,6 +42,8 @@ Route::middleware('auth')->group(function () {
     Route::group([''], function () {
         Route::get('transaksi', [TransaksiController::class, 'index'])->name('transaksi');
 
+        Route::get('pembelian', [TransaksiController::class, '__pembelian'])->name('pembelian');
+
         Route::get('piutang', [DetailPiutangController::class, 'index'])->name('piutang');
 
         Route::get('get-piutang/{any}', [DetailPiutangController::class, 'show']);
@@ -155,15 +157,16 @@ Route::middleware('auth')->group(function () {
             //         ->whereDate('tanggal', '<=', Carbon::parse('2021-02-05')->format('Y-m-d'))
             //         ->get()
             // ]);
-            // return response()->json([
-            //     \App\Models\Transaksi::whereYear('tanggal', '=', '2021')->whereMonth('tanggal', '=', '02')->get()
-            // ]);
+            return response()->json([
+                // \App\Models\Transaksi::whereYear('tanggal', '=', '2021')->whereMonth('tanggal', '=', '02')->get()
+                \App\Models\Transaksi::whereDay('tanggal', '=', date('d'))->get()
+            ]);
             // return Carbon::now('Asia/Bangkok')->format('Y-m-d H:i:s');
 
             // return \App\Models\Barang::where('kode_barang', 'B-210114001')->first()->stok;
 
             // return \App\Models\Member::checkName('asd bambang_M-210127001');
-            return \App\Models\Member::incrementId(10);
+            // return \App\Models\Member::incrementId(10);
 
             // return csrf_token();
 
