@@ -15,6 +15,7 @@ class Transaksi extends Model
     public $incrementing = false;
     protected $keyType = 'string';
     protected $fillable = [
+        'no_dpb',
         'tanggal',
         'jenis_transaksi',
         'kasir_id',
@@ -42,6 +43,24 @@ class Transaksi extends Model
             }
         } else {
             return 'WY-' . $date . '001';
+        }
+    }
+
+    public static function generateDpb()
+    {
+        $date = date('dmy');
+        $lastId = Self::withTrashed()->orderBy('no_dpb', 'desc')->first();
+        if ($lastId) {
+            $lastId = $lastId->no_dpb;
+            if (preg_match('/^' . $date . '/', $lastId)) {
+                $val = (int)preg_replace('/^' . $date . '/', '', $lastId) + 1;
+                $val =  str_pad($val, 3, "0", STR_PAD_LEFT);
+                return $date . $val;
+            } else {
+                return $date . '001';
+            }
+        } else {
+            return $date . '001';
         }
     }
 

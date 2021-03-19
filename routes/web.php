@@ -44,6 +44,12 @@ Route::middleware('auth')->group(function () {
 
         Route::get('pembelian', [TransaksiController::class, '__pembelian'])->name('pembelian');
 
+        Route::get('get-no-dpb', function () {
+            return response()->json([
+                'no_dpb' => Transaksi::generateDpb()
+            ]);
+        });
+
         Route::get('piutang', [DetailPiutangController::class, 'index'])->name('piutang');
 
         Route::get('get-piutang/{any}', [DetailPiutangController::class, 'show']);
@@ -73,6 +79,8 @@ Route::middleware('auth')->group(function () {
         Route::get('getall-barang', [TransaksiController::class, 'getBarang']);
 
         Route::get('daftar-transaksi', [TransaksiController::class, 'list'])->name('laporan');
+
+        Route::get('daftar-transaksi-pembelian', [TransaksiController::class, 'listPembelian'])->name('daftar-pembelian');
 
         Route::get('show-transaksi/{any}', [TransaksiController::class, 'show']);
 
@@ -116,6 +124,8 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::get('laporan-harian-penjualan', [PDFController::class, 'lpj_harian'])->name('lpj-harian');
+
+        Route::get('laporan-harian-pembelian', [PDFController::class, 'lpb_harian'])->name('lpb-harian');
     });
 
 
@@ -167,7 +177,8 @@ Route::middleware('auth')->group(function () {
             // ]);
             return response()->json([
                 // \App\Models\Transaksi::whereYear('tanggal', '=', '2021')->whereMonth('tanggal', '=', '02')->get()
-                \App\Models\Transaksi::whereDay('tanggal', '=', date('d'))->get()
+                // \App\Models\Transaksi::whereDay('tanggal', '=', date('d'))->get()
+                \App\Models\Transaksi::generateDpb()
             ]);
             // return Carbon::now('Asia/Bangkok')->format('Y-m-d H:i:s');
 

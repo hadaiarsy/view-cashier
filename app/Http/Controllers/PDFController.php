@@ -76,4 +76,23 @@ class PDFController extends Controller
 
         return $pdf->stream('lpj-harian' . date('d-m-Y_h-i-s') . '.pdf');
     }
+
+    public function lpb_harian()
+    {
+        $data = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])->where(['jenis_transaksi' => 'pembelian'])->whereDate('created_at', now())->get();
+
+        $pdf = PDF::loadView('admin.transaksi.laporanharianpembelian', [
+            'data' => $data,
+            'number' => CetakLaporan::generateNumber(['lpb_harian', date('Y-m-d')])
+        ])->setPaper('a4', 'landscape');
+
+        // $cetak = new CetakLaporan;
+        // $cetak->id_kasir = Auth::user()->id;
+        // $cetak->tanggal = now();
+        // $cetak->jenis_laporan = 'lpb_harian';
+        // $cetak->no_cetak = CetakLaporan::generateNumber(['lpb_harian', date('d-m-Y')]);
+        // $cetak->save();
+
+        return $pdf->stream('lpb-harian' . date('d-m-Y_h-i-s') . '.pdf');
+    }
 }

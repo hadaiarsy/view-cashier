@@ -71,7 +71,7 @@
 
                 {{-- pembelian --}}
                 <li>
-                    <a href="#" class="<?php if ($sideTitle == 'pembelian' || $sideTitle == '') {
+                    <a href="#" class="<?php if ($sideTitle == 'pembelian' || $sideTitle == 'lpembelian') {
                         echo 'mm-active';
                     } ?>">
                         <i class="metismenu-icon pe-7s-back-2"></i>
@@ -80,7 +80,8 @@
                     </a>
                     <ul>
                         <li>
-                            <a href="{{ route('laporan') }}" class="{{ $sideTitle == '' ? 'mm-active' : '' }}">
+                            <a href="{{ route('daftar-pembelian') }}"
+                                class="{{ $sideTitle == 'lpembelian' ? 'mm-active' : '' }}">
                                 <i class="metismenu-icon"></i>
                                 Laporan Pembelian
                             </a>
@@ -108,7 +109,7 @@
                         <li>
                             <a href="" class="{{ $sideTitle == '' ? 'mm-active' : '' }}">
                                 <i class="metismenu-icon"></i>
-                                Daftar Piutang
+                                Laporan Piutang
                             </a>
                         </li>
                         <li>
@@ -160,8 +161,15 @@
                 {{-- Anggota --}}
                 <li>
                     <a href="{{ route('member') }}" class="{{ $sideTitle == 'member' ? 'mm-active' : '' }}">
-                        <i class="metismenu-icon pe-7s-id"></i>
+                        <i class="metismenu-icon pe-7s-diamond"></i>
                         Daftar Anggota
+                    </a>
+                </li>
+                {{-- Supplier --}}
+                <li>
+                    <a href="javascript:void(0)" class="{{ $sideTitle == 'supplier' ? 'mm-active' : '' }}">
+                        <i class="metismenu-icon pe-7s-id"></i>
+                        Daftar Supplier
                     </a>
                 </li>
                 {{-- User --}}

@@ -174,6 +174,7 @@ class TransaksiController extends Controller
             $idKasir = Auth::user()->id;
             $memberId = 'U-00-02';
             $loopData = count(collect($request)->get('detail_transaksi'));
+            $noDpb = $request->no_dpb == '' ? Transaksi::generateDpb() : $request->no_dpb;
 
             // member
             // end
@@ -181,7 +182,8 @@ class TransaksiController extends Controller
             // Transaksi
             $transaksi = new Transaksi;
             $transaksi->no_resi = $noResi;
-            $transaksi->tanggal = now();
+            $transaksi->no_dpb = $noDpb;
+            $transaksi->tanggal = $request->tanggal == '' ? now() : date_format(date_create($request->tanggal), 'Y-m-d H:i:s');
             $transaksi->jenis_transaksi = $request->jenis_transaksi;
             $transaksi->kasir_id = $idKasir;
             $transaksi->member_id = $memberId;
@@ -266,6 +268,14 @@ class TransaksiController extends Controller
         return view('admin.transaksi.daftar', [
             'transaksi' => $transaksi->with(['member', 'kasir'])->where('jenis_transaksi', 'penjualan')->get(),
             'sideTitle' => 'laporan'
+        ]);
+    }
+
+    public function listPembelian(Transaksi $transaksi)
+    {
+        return view('admin.transaksi.daftarpembelian', [
+            'transaksi' => $transaksi->with(['member', 'kasir'])->where('jenis_transaksi', 'pembelian')->get(),
+            'sideTitle' => 'lpembelian'
         ]);
     }
 

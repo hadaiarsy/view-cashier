@@ -145,13 +145,15 @@
                                     <div class="row d-flex flex-row-reverse mt-2">
                                         <div class="col-6 input-group">
                                             <input type="text" class="form-control pay-section" id="noPembelian" value="">
+                                            <button type="button" class="input-group-text" id="btnNoPembelian"><i
+                                                    class="fas fa-key"></i></button>
                                         </div>
                                         <label for="inputPassword3" class="col-4 col-form-label">No Pembelian :</label>
                                     </div>
                                     <div class="row d-flex flex-row-reverse mt-2">
                                         <div class="col position-relative form-check d-flex justify-content-end mt-2 mb-2">
                                             <label class="form-check-label">
-                                                <input type="checkbox" class="form-check-input" id="hutangCheck"> piutang
+                                                <input type="checkbox" class="form-check-input" id="hutangCheck"> hutang
                                             </label>
                                         </div>
                                     </div>
@@ -445,6 +447,18 @@
             };
             // end
 
+            // generate NO Pembelian
+            $('#btnNoPembelian').click(function(e) {
+                axios.get(globalUrl + 'get-no-dpb/')
+                    .then((response) => {
+                        $('#noPembelian').val(response.data.no_dpb)
+                    })
+                    .catch((error) => {
+                        console.log(error.response)
+                    })
+            });
+            // end
+
             // tombol batal pembelian
             $('#batalPembelian').on('click', function() {
                 $('.alert-row-pembelian').hide();
@@ -458,6 +472,8 @@
                 $('#namaSatuanPembelian').val('');
                 $('#totalPembelian').val('');
                 $('.itemRowPembelian').remove();
+                $('#noPembelian').val('');
+                $('#tanggalPembelian').val('');
                 totalHargaPembelian();
             });
             // end
@@ -467,6 +483,7 @@
                 let totalPembelian = $('#totalTextPembelian').html();
                 let row = $('.itemRowPembelian');
                 let dataBarangPembelian = [];
+                let noDpb = $('#btnNoPembelian').val();
 
                 let d = new Date();
                 let month = d.getMonth() + 1;
@@ -495,8 +512,9 @@
                 let token = document.head.querySelector('meta[name="csrf-token"]');
                 window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
                 axios.post(globalUrl + 'simpan-transaksi', {
-                        tanggal: outputDate,
+                        tanggal: $('#tanggalPembelian').val(),
                         jenis_transaksi: 'pembelian',
+                        no_dpb: noDpb,
                         total: replaceCurrency(totalPembelian),
                         detail_transaksi: dataBarangPembelian
                     })
