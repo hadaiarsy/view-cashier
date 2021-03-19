@@ -182,13 +182,6 @@
                 </select>
             </span>
         </div>
-        {{-- </div> --}}
-        <div class="col-lg d-flex flex-row-reverse">
-            <button type="button" class="btn btn-success pl-2 mr-3" id="laporanHarian">Laporan
-                Harian</button>
-            <button type="button" class="btn btn-success pl-2 ml-3" id="laporan">Laporan
-                Member</button>
-        </div>
     </div>
 
     <div class="row mt-2">
@@ -227,6 +220,21 @@
                     @endforeach
                 </tbody>
             </table>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        {{-- </div> --}}
+        <div class="col-lg d-flex flex-row-reverse">
+            <div class="d-block m-2">
+                <a href="{{ route('lpj-harian') }}" target="_blank"><button type="button" class="btn btn-success pl-2"
+                        id="laporanHarian">Generate Laporan
+                        Harian</button></a>
+            </div>
+            <div class="d-block m-2">
+                <button type="button" class="btn btn-success pl-2" id="laporan">Laporan
+                    Member</button>
+            </div>
         </div>
     </div>
 @endsection

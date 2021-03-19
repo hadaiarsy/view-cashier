@@ -38,6 +38,7 @@
         table#dataTransaksi th,
         table#dataTransaksi td {
             border: 1px solid black;
+            font-size: 0.9rem;
         }
 
         table#dataMember {
@@ -83,36 +84,34 @@
 
 <body>
     <div class="container">
-        <div class="row row-button">
-            <a href="#" target="_blank"><button type="button">Download
-                    PDF</button></a>
-        </div>
-        <div id="laporanLand">
+        <div id="">
             <table id="dataMember">
                 <thead>
                     <tr class="head-list">
                         <th colspan="2">
                             <h4>BUKU PENJUALAN</h4>
                             <h4 style="margin-top: -16px">KOPERASI YAMUGHNI</h4>
-                            <h4 style="margin-top: -16px">TANGGAL : {{ now() }}</h4>
                         </th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td></td>
-                        <td></td>
+                        <td>Tanggal : {{ date('d-m-Y') }}</td>
+                        <td>No. Cetak : {{ $number }}</td>
+                    </tr>
+                    <tr>
+                        <td>ID User : {{ $userid }}</td>
                     </tr>
                 </tbody>
             </table>
             <table id="dataTransaksi">
                 <thead>
                     <tr style="height: 30px;">
-                        <th scope="col" rowspan="2" style="width: 4%">NO. URUT</th>
+                        <th scope="col" rowspan="2" style="width: 3%">NO.</th>
                         <th scope="col" colspan="2" style="width: 14%">FAKTUR</th>
                         <th scope="col" rowspan="2">NAMA PEMBELI</th>
                         <th scope="col" rowspan="2">NAMA BARANG</th>
-                        <th scope="col" rowspan="2">BANYAKNYA</th>
+                        <th scope="col" rowspan="2" style="width: 8%">BANYAKNYA</th>
                         <th scope="col" rowspan="2">HARGA SATUAN (Rp.)</th>
                         <th scope="col" rowspan="2">JUMLAH HARGA (Rp.)</th>
                         <th scope="col" rowspan="2">TOTAL FAKTUR (Rp.)</th>
@@ -125,8 +124,9 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <?php $tp = 0; ?>
                     @foreach ($data as $transaksi)
-                        <tr>
+                        <tr class="head-list">
                             <th scope="col" rowspan="{{ count($transaksi->detail) }}">{{ $loop->iteration }}</th>
                             <td rowspan="{{ count($transaksi->detail) }}">
                                 {{ date('d/m/y', strtotime($transaksi->tanggal)) }}</td>
@@ -146,7 +146,7 @@
                         </tr>
                         @if (count($transaksi->detail) > 1)
                             @for ($i = 1; $i <= count($transaksi->detail) - 1; $i++)
-                                <tr>
+                                <tr class="head-list">
                                     <td>{{ $transaksi->detail[$i]->nama_barang }}</td>
                                     <td>{{ $transaksi->detail[$i]->jumlah . ' ' . $transaksi->detail[$i]->satuan }}
                                     </td>
@@ -155,6 +155,15 @@
                                     <td>{{ $transaksi->detail[$i]->harga }}</td>
                                 </tr>
                             @endfor
+                        @endif
+                        <?php $tp += $transaksi->total; ?>
+                        @if ($loop->last)
+                            <tr>
+                                <th colspan="8" style="text-align: right">TOTAL PENJUALAN (Rp. )</th>
+                                <td style="text-align: center">{{ $tp }}</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
                         @endif
                     @endforeach
                 </tbody>

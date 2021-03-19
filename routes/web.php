@@ -115,11 +115,7 @@ Route::middleware('auth')->group(function () {
             ]);
         });
 
-        Route::get('laporan-harian', function () {
-            return view('admin.transaksi.laporanharian', [
-                'data' => Transaksi::with(['kasir', 'member', 'detail', 'piutang'])->where(['jenis_transaksi' => 'penjualan'])->whereDate('tanggal', now())->get()
-            ]);
-        });
+        Route::get('laporan-harian-penjualan', [PDFController::class, 'lpj_harian'])->name('lpj-harian');
     });
 
 

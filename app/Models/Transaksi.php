@@ -28,20 +28,20 @@ class Transaksi extends Model
 
     public static function incrementId()
     {
-        $date = date('ymd');
+        $date = date('dmy');
         $lastId = Self::withTrashed()->orderBy('no_resi', 'desc')->first();
         if ($lastId) {
             $lastId = $lastId->no_resi;
-            $lastId = preg_replace('/INV-/', '', $lastId);
+            $lastId = preg_replace('/WY-/', '', $lastId);
             if (preg_match('/^' . $date . '/', $lastId)) {
                 $val = (int)preg_replace('/^' . $date . '/', '', $lastId) + 1;
                 $val =  str_pad($val, 3, "0", STR_PAD_LEFT);
-                return 'INV-' . $date . $val;
+                return 'WY-' . $date . $val;
             } else {
-                return 'INV-' . $date . '001';
+                return 'WY-' . $date . '001';
             }
         } else {
-            return 'INV-' . $date . '001';
+            return 'WY-' . $date . '001';
         }
     }
 

@@ -13,7 +13,7 @@ class CreateTableCetakLaporan extends Migration
      */
     public function up()
     {
-        Schema::create('table_cetak_laporan', function (Blueprint $table) {
+        Schema::create('cetak_laporan', function (Blueprint $table) {
             $table->id();
             $table->string('no_resi')->nullable();
             $table->string('id_member')->nullable();

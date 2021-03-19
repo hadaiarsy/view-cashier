@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 use Barryvdh\DomPDF\Facade as PDF;
 
 use App\Models\Transaksi;
+use App\Models\CetakLaporan;
 
 class PDFController extends Controller
 {
@@ -25,7 +27,7 @@ class PDFController extends Controller
             'num' => 1
         ];
 
-        $pdf = PDF::loadView('admin.transaksi.testlaporan', $data)->setPaper('a4', 'landscape');;
+        $pdf = PDF::loadView('admin.transaksi.testlaporan', $data)->setPaper('a4', 'landscape');
 
         return $pdf->stream('transaksi_laporan' . date('d-m-y_h-i-s') . '.pdf');
     }
@@ -54,5 +56,24 @@ class PDFController extends Controller
         $pdf = PDF::loadView('admin.transaksi.pdfpembelian', $data);
 
         return $pdf->stream('laporan-pembelian' . date('d-m-Y_h-i-s') . '.pdf');
+    }
+
+    public function lpj_harian()
+    {
+        $data = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])->where(['jenis_transaksi' => 'penjualan'])->whereDate('tanggal', now())->get();
+
+        $pdf = PDF::loadView('admin.transaksi.laporanharian', [
+            'data' => $data,
+            'number' => CetakLaporan::generateNumber(['lpj_harian', date('Y-m-d')])
+        ])->setPaper('a4', 'landscape');
+
+        // $cetak = new CetakLaporan;
+        // $cetak->id_kasir = Auth::user()->id;
+        // $cetak->tanggal = now();
+        // $cetak->jenis_laporan = 'lpj_harian';
+        // $cetak->no_cetak = CetakLaporan::generateNumber(['lpj_harian', date('d-m-Y')]);
+        // $cetak->save();
+
+        return $pdf->stream('lpj-harian' . date('d-m-Y_h-i-s') . '.pdf');
     }
 }
