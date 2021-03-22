@@ -159,7 +159,7 @@
                         <?php $tp += $transaksi->total; ?>
                         @if ($loop->last)
                             <tr>
-                                <th colspan="8" style="text-align: right">TOTAL PENJUALAN (Rp. )</th>
+                                <th colspan="8" style="text-align: right">TOTAL PEMBELIAN (Rp. )</th>
                                 <td style="text-align: center">{{ $tp }}</td>
                                 <td></td>
                                 <td></td>

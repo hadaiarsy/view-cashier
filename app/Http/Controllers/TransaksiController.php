@@ -335,4 +335,17 @@ class TransaksiController extends Controller
             'data' => $transaksi
         ]);
     }
+
+    public function daftar_piutang()
+    {
+        return view('admin.transaksi.daftarpiutang', [
+            'sideTitle' => 'daftarpiutang',
+            'data' => Transaksi::with([
+                'kasir', 'member', 'detail', 'piutang'
+            ])->where([
+                'jenis_transaksi' => 'penjualan',
+                'is_lunas' => '0'
+            ])->get()
+        ]);
+    }
 }

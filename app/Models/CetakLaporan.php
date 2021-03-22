@@ -35,6 +35,9 @@ class CetakLaporan extends Model
         } else if ($data[0] == 'lpb_harian') {
             $number = SELF::where(['jenis_laporan' => 'lpb_harian'])->whereDate('tanggal', '=', $data[1])->count();
             return $number == 0 ? 1 : $number + 1;
+        } else if ($data[0] == 'lp_piutang') {
+            $number = SELF::where(['jenis_laporan' => 'lp_piutang'])->whereMonth('tanggal', '=', $data[1])->count();
+            return $number == 0 ? 1 : $number + 1;
         }
     }
 }

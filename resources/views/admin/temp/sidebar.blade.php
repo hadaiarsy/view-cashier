@@ -98,7 +98,7 @@
 
                 {{-- piutang --}}
                 <li>
-                    <a href="#" class="<?php if ($sideTitle == 'piutang' || $sideTitle == '') {
+                    <a href="#" class="<?php if ($sideTitle == 'piutang' || $sideTitle == 'daftarpiutang') {
                         echo 'mm-active';
                     } ?>">
                         <i class="metismenu-icon pe-7s-hammer"></i>
@@ -107,7 +107,8 @@
                     </a>
                     <ul>
                         <li>
-                            <a href="" class="{{ $sideTitle == '' ? 'mm-active' : '' }}">
+                            <a href="{{ route('d-piutang') }}"
+                                class="{{ $sideTitle == 'daftarpiutang' ? 'mm-active' : '' }}">
                                 <i class="metismenu-icon"></i>
                                 Laporan Piutang
                             </a>

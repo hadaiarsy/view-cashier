@@ -126,6 +126,17 @@ Route::middleware('auth')->group(function () {
         Route::get('laporan-harian-penjualan', [PDFController::class, 'lpj_harian'])->name('lpj-harian');
 
         Route::get('laporan-harian-pembelian', [PDFController::class, 'lpb_harian'])->name('lpb-harian');
+
+        Route::get('daftar-piutang', [TransaksiController::class, 'daftar_piutang'])->name('d-piutang');
+
+        Route::get('laporan-piutang', [PDFController::class, 'lp_piutang'])->name('lp-piutang');
+        // Route::get('laporan-piutang', function () {
+        //     $data = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])->where(['jenis_transaksi' => 'penjualan', 'is_lunas' => '0'])->whereMonth('created_at', date('m'))->get();
+
+        //     return response()->json([
+        //         'data' => $data
+        //     ]);
+        // })->name('lp-piutang');
     });
 
 
