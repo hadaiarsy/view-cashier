@@ -41,6 +41,7 @@ class SatuanBarangController extends Controller
         $satuan->rasio = $request->rasio;
         $satuan->harga_beli = $request->harga_beli;
         $satuan->harga_jual = $request->harga_jual;
+        $satuan->harga_supl = $request->harga_supl;
         $satuan->save();
         if ($satuan) {
             return response()->json([
@@ -101,7 +102,8 @@ class SatuanBarangController extends Controller
                 'nama_satuan' => $request->nama_satuan,
                 'rasio' => $request->rasio,
                 'harga_beli' => $request->harga_beli,
-                'harga_jual' => $request->harga_jual
+                'harga_jual' => $request->harga_jual,
+                'harga_supl' => $request->harga_supl,
             ]);
         if ($satuanBarang) {
             return response()->json([

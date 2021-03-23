@@ -1,6 +1,6 @@
 @extends('admin.temp.template')
 
-@section('site-title', 'Daftar Transaksi')
+@section('site-title', 'Daftar Pembelian')
 
 @section('main-contents')
     <style>

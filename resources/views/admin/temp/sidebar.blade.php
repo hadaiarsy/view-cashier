@@ -127,7 +127,7 @@
                 <li class="app-sidebar__heading">STOKIS</li>
                 {{-- Barang --}}
                 <li>
-                    <a href="#" class="<?php if ($sideTitle == 'barang' || $sideTitle == '') {
+                    <a href="#" class="<?php if ($sideTitle == 'barang' || $sideTitle == 'retail') {
                         echo 'mm-active';
                     } ?>">
                         <i class="metismenu-icon pe-7s-box1"></i>
@@ -142,16 +142,17 @@
                                 Input Barang
                             </a>
                         </li>
-                        <li>
+                        <li class="d-none">
                             <a href="{{ route('barang') }}" class="{{ $sideTitle == '' ? 'mm-active' : '' }}">
                                 <i class="metismenu-icon"></i>
                                 Stok Barang
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('barang') }}" class="{{ $sideTitle == '' ? 'mm-active' : '' }}">
+                            <a href="{{ route('retail') }}"
+                                class="{{ $sideTitle == 'retail' ? 'mm-active' : '' }}">
                                 <i class="metismenu-icon"></i>
-                                Kirim Barang
+                                Penjualan Retail
                             </a>
                         </li>
                     </ul>

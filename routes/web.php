@@ -132,13 +132,10 @@ Route::middleware('auth')->group(function () {
         Route::get('daftar-piutang', [TransaksiController::class, 'daftar_piutang'])->name('d-piutang');
 
         Route::get('laporan-piutang', [PDFController::class, 'lp_piutang'])->name('lp-piutang');
-        // Route::get('laporan-piutang', function () {
-        //     $data = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])->where(['jenis_transaksi' => 'penjualan', 'is_lunas' => '0'])->whereMonth('created_at', date('m'))->get();
 
-        //     return response()->json([
-        //         'data' => $data
-        //     ]);
-        // })->name('lp-piutang');
+        Route::get('transaksi-retail', [TransaksiController::class, '__retail'])->name('retail');
+
+        Route::get('surat-jalan/{any?}', [PDFController::class, 's_jalan'])->name('s-jalan');
     });
 
 

@@ -78,6 +78,7 @@
                                 <th scope="col">Stok</th>
                                 <th scope="col">Harga Beli</th>
                                 <th scope="col">Harga Jual</th>
+                                <th scope="col">Harga Supl</th>
                                 <th scope="col">Tindakan</th>
                             </tr>
                         </thead>
@@ -90,6 +91,7 @@
                                     <td>{{ $barang[0]->stok * $sat->rasio . ' ' . $sat->nama_satuan }}</td>
                                     <td class="harga-beli-barang">{{ $sat->harga_beli }}</td>
                                     <td class="harga-jual-barang">{{ $sat->harga_jual }}</td>
+                                    <td class="harga-supl-barang">{{ $sat->harga_supl }}</td>
                                     <td>
                                         <button class="btn btn-sm btn-warning btnEditSatuan"
                                             data-dataid="{{ $sat->id }}" data-bs-toggle="modal"
@@ -209,6 +211,12 @@
                             <input type="text" class="form-control" name="harga_edit" id="hargaJualEdit">
                         </div>
                     </div>
+                    <div class="row mt-3">
+                        <label for="inputEmail3" class="col-sm-4 col-form-label">Harga Supl :</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="harga_edit" id="hargaSuplEdit">
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -255,6 +263,12 @@
                 $(hargaJualBrg[i]).html(currencyIdr(valThis, 'Rp '));
             }
 
+            let hargaSuplBrg = $(".harga-supl-barang");
+            for (let i = 0; i < hargaSuplBrg.length; i++) {
+                let valThis = $(hargaSuplBrg[i]).html();
+                $(hargaSuplBrg[i]).html(currencyIdr(valThis, 'Rp '));
+            }
+
             $("#hargaBeli").on("change paste keyup", function(e) {
                 let valThis = $(this).val();
                 $(this).val(currencyIdr(valThis, 'Rp '));
@@ -265,12 +279,22 @@
                 $(this).val(currencyIdr(valThis, 'Rp '));
             });
 
+            $("#hargaSupl").on("change paste keyup", function(e) {
+                let valThis = $(this).val();
+                $(this).val(currencyIdr(valThis, 'Rp '));
+            });
+
             $("#hargaBeliEdit").on("change paste keyup", function(e) {
                 let valThis = $(this).val();
                 $(this).val(currencyIdr(valThis, 'Rp '));
             });
 
             $("#hargaJualEdit").on("change paste keyup", function(e) {
+                let valThis = $(this).val();
+                $(this).val(currencyIdr(valThis, 'Rp '));
+            });
+
+            $("#hargaSuplEdit").on("change paste keyup", function(e) {
                 let valThis = $(this).val();
                 $(this).val(currencyIdr(valThis, 'Rp '));
             });
@@ -358,6 +382,7 @@
                         $('#rasioEdit').val(data.rasio);
                         $('#hargaBeliEdit').val(currencyIdr(String(data.harga_beli), 'Rp '));
                         $('#hargaJualEdit').val(currencyIdr(String(data.harga_jual), 'Rp '));
+                        $('#hargaSuplEdit').val(currencyIdr(String(data.harga_supl), 'Rp '));
                     }).catch((error) => {
                         console.log(error)
                     })
@@ -369,6 +394,7 @@
                 let rasio = $('#rasioEdit').val();
                 let hargaBeli = $('#hargaBeliEdit').val();
                 let hargaJual = $('#hargaJualEdit').val();
+                let hargaSupl = $('#hargaSuplEdit').val();
                 let token = document.head.querySelector('meta[name="csrf-token"]');
                 window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
                 axios.post('/update-satuan', {
@@ -378,6 +404,7 @@
                         rasio: parseFloat(rasio),
                         harga_beli: Number(hargaBeli.split(".").join("").split("Rp").join("")),
                         harga_jual: Number(hargaJual.split(".").join("").split("Rp").join("")),
+                        harga_supl: Number(hargaSupl.split(".").join("").split("Rp").join("")),
                     })
                     .then((response) => {
                         location.reload();

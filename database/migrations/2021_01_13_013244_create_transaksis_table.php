@@ -16,7 +16,7 @@ class CreateTransaksisTable extends Migration
         Schema::create('transaksi', function (Blueprint $table) {
             $table->string('no_resi')->primary();
             $table->timestamp('tanggal');
-            $table->enum('jenis_transaksi', ['pembelian', 'penjualan']);
+            $table->enum('jenis_transaksi', ['pembelian', 'penjualan', 'pengiriman']);
             $table->string('kasir_id');
             $table->index('kasir_id');
             $table->foreign('kasir_id')->references('id')->on('users')->onDelete('cascade');

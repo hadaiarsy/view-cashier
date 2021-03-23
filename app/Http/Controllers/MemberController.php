@@ -52,7 +52,7 @@ class MemberController extends Controller
         $member->kode_member = Member::incrementId((int)$request->unit);
         $member->jenis_member = $request->jenis_member;
         $member->nama = $request->nama;
-        $member->unit = $request->unit == '' ? '00' : $request->unit;
+        $member->unit = $request->unit == '' ? 0 : $request->unit;
         $member->telepon = $request->telepon;
         $member->alamat = $request->alamat;
         $member->save();

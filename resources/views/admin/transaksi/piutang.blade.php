@@ -241,23 +241,23 @@
             function memberModal(data) {
                 $('.table-data-member').find('tbody').empty();
                 data.forEach(member => {
+                    let num = 0;
                     member.transaksi.forEach(transaksi => {
-                        let num = 0;
                         if (transaksi.is_lunas == '0') num += 1;
-                        if (num > 0) {
-                            // tambah row
-                            $('.table-data-member').find('tbody').append(
-                                "<tr class='item-row'><td>" +
-                                member.kode_member +
-                                "</td><td>" + member.nama +
-                                "</td><td>" + member.unit +
-                                "</td><td>" + num +
-                                " pembelian</td><td><button class='btn btn-primary btn-sm text-light btn-tambah-member' data-kode='" +
-                                member.kode_member +
-                                "' data-bs-dismiss='modal' aria-label='Close'><i class='fas fa-plus'></i></button></td></tr>"
-                            );
-                        }
                     });
+                    if (num > 0) {
+                        // tambah row
+                        $('.table-data-member').find('tbody').append(
+                            "<tr class='item-row'><td>" +
+                            member.kode_member +
+                            "</td><td>" + member.nama +
+                            "</td><td>" + member.unit +
+                            "</td><td>" + num +
+                            " pembelian</td><td><button class='btn btn-primary btn-sm text-light btn-tambah-member' data-kode='" +
+                            member.kode_member +
+                            "' data-bs-dismiss='modal' aria-label='Close'><i class='fas fa-plus'></i></button></td></tr>"
+                        );
+                    }
                 });
                 btnModalTambahMember();
             }
@@ -281,7 +281,6 @@
             });
 
             function memberTable(data) {
-                console.log(data);
                 $('.table-member-piutang').find('tbody').empty();
                 data.forEach(piutang => {
                     let sisa = 0;

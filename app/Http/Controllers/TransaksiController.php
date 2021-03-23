@@ -239,6 +239,7 @@ class TransaksiController extends Controller
                     $satuan->rasio = 1;
                     $satuan->harga_beli = $request->detail_transaksi[$i]['harga'];
                     $satuan->harga_jual = $request->detail_transaksi[$i]['harga'];
+                    $satuan->harga_supl = $request->detail_transaksi[$i]['harga'];
                     $satuan->save();
                 }
                 // end
@@ -353,6 +354,16 @@ class TransaksiController extends Controller
                 'jenis_transaksi' => 'penjualan',
                 'is_lunas' => '0'
             ])->get()
+        ]);
+    }
+
+    public function __retail()
+    {
+        $barang = Barang::with('satuan')->get();
+        $sideTitle = "retail";
+        return view('admin.transaksi.retail', [
+            'barang' => $barang,
+            'sideTitle' => $sideTitle
         ]);
     }
 }

@@ -285,6 +285,7 @@
                         console.log(response.data);
                         $('table.table-data-supplier').find('tbody').empty();
                         let data = response.data.member;
+                        console.table(data);
                         for (let i = 0; i < data.length; i++) {
                             let dataLoop =
                                 "<tr><td><p>" +

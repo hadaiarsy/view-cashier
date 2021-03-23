@@ -74,7 +74,7 @@ class PDFController extends Controller
         $cetak->no_cetak = CetakLaporan::generateNumber(['lpj_harian', date('d-m-Y')]);
         $cetak->save();
 
-        return $pdf->stream('lpj-harian' . date('d-m-Y_h-i-s') . '.pdf');
+        return $pdf->stream('lpj_harian_' . date('d-m-Y_h-i-s') . '.pdf');
     }
 
     public function lpb_harian()
@@ -93,7 +93,7 @@ class PDFController extends Controller
         $cetak->no_cetak = CetakLaporan::generateNumber(['lpb_harian', date('d-m-Y')]);
         $cetak->save();
 
-        return $pdf->stream('lpb-harian' . date('d-m-Y_h-i-s') . '.pdf');
+        return $pdf->stream('lpb_harian_' . date('d-m-Y_h-i-s') . '.pdf');
     }
 
     public function lp_piutang()
@@ -105,13 +105,25 @@ class PDFController extends Controller
             'number' => CetakLaporan::generateNumber(['lpb_harian', date('m')])
         ])->setPaper('a4', 'landscape');
 
-        // $cetak = new CetakLaporan;
-        // $cetak->id_kasir = Auth::user()->id;
-        // $cetak->tanggal = now();
-        // $cetak->jenis_laporan = 'lpb_harian';
-        // $cetak->no_cetak = CetakLaporan::generateNumber(['lpb_harian', date('d-m-Y')]);
-        // $cetak->save();
+        $cetak = new CetakLaporan;
+        $cetak->id_kasir = Auth::user()->id;
+        $cetak->tanggal = now();
+        $cetak->jenis_laporan = 'lp_piutang';
+        $cetak->no_cetak = CetakLaporan::generateNumber(['lp_piutang', date('d-m-Y')]);
+        $cetak->save();
 
-        return $pdf->stream('lpb-harian' . date('d-m-Y_h-i-s') . '.pdf');
+        return $pdf->stream('lp_piutang_' . date('d-m-Y_h-i-s') . '.pdf');
+    }
+
+    public function s_jalan($resi = null)
+    {
+        $resi = null ? 'WY-190321001' : $resi;
+        $data = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])->where(['no_resi' => $resi])->first();
+
+        $pdf = PDF::loadView('admin.transaksi.suratjalan', [
+            'data' => $data
+        ])->setPaper('a4', 'portrait');
+
+        return $pdf->stream('wy_spb_' . date('d-m-Y_h-i-s') . '.pdf');
     }
 }

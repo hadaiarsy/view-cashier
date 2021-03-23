@@ -1,6 +1,6 @@
 @extends('admin.temp.template')
 
-@section('site-title', 'Transaksi Penjualan')
+@section('site-title', 'Transaksi Retail')
 
 @section('main-contents')
 
@@ -8,7 +8,7 @@
     <ul class="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav">
         <li class="nav-item">
             <a role="tab" class="nav-link active" id="tab-0" data-toggle="tab" href="#tab-content-penjualan">
-                <span>Penjualan</span>
+                <span>Penjualan Retail</span>
             </a>
         </li>
         {{-- <li class="nav-item">
@@ -139,8 +139,8 @@
                                         <div class="col-sm-6">
                                             <select class="form-select" aria-label="Default select example"
                                                 id="jenis_transaksi" name="jenis_transaksi">
-                                                <option value="penjualan" selected>General</option>
-                                                <option value="pengiriman">Anggota</option>
+                                                <option value="pengiriman" selected>Anggota</option>
+                                                <option value="penjualan">General</option>
                                             </select>
                                         </div>
                                         <label for="jenis_transaksi" class="col-sm-4 col-form-label">Tipe :</label>
@@ -848,7 +848,8 @@
                     replaceCurrency(data
                         .uang) + '/' + replaceCurrency(data.kmbl));
                 let tmout = setTimeout(function() {
-                    printStruk.close()
+                    printStruk.close();
+                    let printStruk = window.open(globalUrl + 'surat-jalan/' + data.noResi);
                 }, 3000);
             }
             // end

@@ -69,6 +69,13 @@
                             data-nextid="sc-6">
                     </div>
                 </div>
+                <div class="row mb-3">
+                    <label for="inputtext3" class="col-sm-4 col-form-label">Harga Supl :</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control enter-pass" id="hargaSuplBrg" name="harga_supl"
+                            data-nextid="sc-6">
+                    </div>
+                </div>
                 <button type="submit" class="btn btn-success btn-sm mt-2" id="tmbhBtn"><i class="fas fa-plus"></i>
                     Tambah</button>
             </form>
@@ -89,6 +96,7 @@
                                 <th scope="col">Stok</th>
                                 <th scope="col">Harga Beli</th>
                                 <th scope="col">Harga Jual</th>
+                                <th scope="col">Harga Supl</th>
                                 <th scope="col">Tindakan</th>
                             </tr>
                         </thead>
@@ -101,6 +109,7 @@
                                     <td>{{ $item->stok . ' ' . $item->satuan[0]->nama_satuan }}</td>
                                     <td class="harga-beli-barang">{{ $item->satuan[0]->harga_beli }}</td>
                                     <td class="harga-jual-barang">{{ $item->satuan[0]->harga_jual }}</td>
+                                    <td class="harga-supl-barang">{{ $item->satuan[0]->harga_supl }}</td>
                                     <td>
                                         <a href='show-barang/{{ $item->kode_barang }}' class='btn btn-primary btn-sm'><i
                                                 class='far fa-eye'></i></a>
@@ -132,12 +141,23 @@
                 $(hargaJualBrg[i]).html(currencyIdr(valThis, 'Rp '));
             }
 
+            let hargaSuplBrg = $(".harga-supl-barang");
+            for (let i = 0; i < hargaSuplBrg.length; i++) {
+                let valThis = $(hargaSuplBrg[i]).html();
+                $(hargaSuplBrg[i]).html(currencyIdr(valThis, 'Rp '));
+            }
+
             $("#hargaBeliBrg").on("keyup", function(e) {
                 let valThis = $(this).val();
                 $(this).val(currencyIdr(valThis, 'Rp '));
             });
 
             $("#hargaJualBrg").on("keyup", function(e) {
+                let valThis = $(this).val();
+                $(this).val(currencyIdr(valThis, 'Rp '));
+            });
+
+            $("#hargaSuplBrg").on("keyup", function(e) {
                 let valThis = $(this).val();
                 $(this).val(currencyIdr(valThis, 'Rp '));
             });

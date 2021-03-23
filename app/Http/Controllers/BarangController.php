@@ -55,6 +55,7 @@ class BarangController extends Controller
         $satuan->rasio = 1;
         $satuan->harga_beli = (int)str_replace('.', '', preg_replace('/Rp /', '', $request->harga_beli));
         $satuan->harga_jual = (int)str_replace('.', '', preg_replace('/Rp /', '', $request->harga_jual));
+        $satuan->harga_supl = (int)str_replace('.', '', preg_replace('/Rp /', '', $request->harga_supl));
 
         $barang->save();
         $satuan->save();
