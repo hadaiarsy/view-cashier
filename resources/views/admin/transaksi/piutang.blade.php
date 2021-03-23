@@ -253,13 +253,14 @@
                             "</td><td>" + member.nama +
                             "</td><td>" + member.unit +
                             "</td><td>" + num +
-                            " pembelian</td><td><button class='btn btn-primary btn-sm text-light btn-tambah-member' data-kode='" +
+                            " transaksi</td><td><button class='btn btn-primary btn-sm text-light btn-tambah-member' data-kode='" +
                             member.kode_member +
                             "' data-bs-dismiss='modal' aria-label='Close'><i class='fas fa-plus'></i></button></td></tr>"
                         );
                     }
                 });
                 btnModalTambahMember();
+                $('#tableModalMember').DataTable();
             }
 
             let btnModalTambahMember = () => $("button.btn-tambah-member").on("click", function(e) {

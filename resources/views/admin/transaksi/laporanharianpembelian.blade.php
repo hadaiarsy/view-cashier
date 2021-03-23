@@ -79,7 +79,7 @@
 
     </style>
 
-    <title>Laporan Transaksi</title>
+    <title>Laporan Pembelian Harian</title>
 </head>
 
 <body>

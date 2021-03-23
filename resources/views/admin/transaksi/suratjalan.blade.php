@@ -84,7 +84,7 @@
 
     </style>
 
-    <title>Laporan Transaksi</title>
+    <title>Surat Jalan</title>
 </head>
 
 <body>
