@@ -76,6 +76,8 @@ Route::middleware('auth')->group(function () {
 
         Route::get('getall-member', [TransaksiController::class, 'getMember']);
 
+        Route::get('getall-supplier', [TransaksiController::class, 'getSupplier']);
+
         Route::get('getall-barang', [TransaksiController::class, 'getBarang']);
 
         Route::get('daftar-transaksi', [TransaksiController::class, 'list'])->name('laporan');
@@ -167,9 +169,8 @@ Route::middleware('auth')->group(function () {
         Route::delete('delete-satuan/{any}', [SatuanBarangController::class, 'delete']);
     });
 
-    Route::get('daftar-supplier', function () {
-        return view('admin.stok.daftarsupplier');
-    });
+    // Route Supplier
+    Route::get('daftar-supplier', [MemberController::class, 'supplier'])->name('supplier');
 
     // Route Member
     Route::group([''], function () {

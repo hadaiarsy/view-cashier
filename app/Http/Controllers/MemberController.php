@@ -14,10 +14,19 @@ class MemberController extends Controller
      */
     public function index()
     {
-        $member = Member::where('nama', 'not like', '%general-%')->get();
+        $member = Member::where(['jenis_member' => 'customer'])->where('nama', 'not like', '%general-%')->get();
         return view('admin.member.daftarmember', [
             'member' => $member,
             'sideTitle' => 'member'
+        ]);
+    }
+
+    public function supplier()
+    {
+        $member = Member::where(['jenis_member' => 'supplier'])->where('nama', 'not like', '%general-%')->get();
+        return view('admin.member.daftarsupplier', [
+            'member' => $member,
+            'sideTitle' => 'supplier'
         ]);
     }
 
@@ -43,11 +52,15 @@ class MemberController extends Controller
         $member->kode_member = Member::incrementId((int)$request->unit);
         $member->jenis_member = $request->jenis_member;
         $member->nama = $request->nama;
-        $member->unit = $request->unit;
+        $member->unit = $request->unit == '' ? '00' : $request->unit;
         $member->telepon = $request->telepon;
         $member->alamat = $request->alamat;
         $member->save();
-        return redirect('/daftar-member');
+        if ($request->jenis_member == 'customer') {
+            return redirect('/daftar-member');
+        } else if ($request->jenis_member == 'supplier') {
+            return redirect('/daftar-supplier');
+        }
     }
 
     /**
@@ -100,9 +113,17 @@ class MemberController extends Controller
                 'alamat' => $request->alamat_edit
             ]);
         if ($member) {
-            return redirect('/daftar-member');
+            if ($request->jenis_member_edit == 'customer') {
+                return redirect('/daftar-member');
+            } else if ($request->jenis_member_edit == 'supplier') {
+                return redirect('/daftar-supplier');
+            }
         } else {
-            return redirect('/daftar-member');
+            if ($request->jenis_member_edit == 'customer') {
+                return redirect('/daftar-member');
+            } else if ($request->jenis_member_edit == 'supplier') {
+                return redirect('/daftar-supplier');
+            }
         }
     }
 

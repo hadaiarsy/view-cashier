@@ -74,6 +74,13 @@ class TransaksiController extends Controller
         ]);
     }
 
+    public function getSupplier()
+    {
+        return response()->json([
+            'member' => Member::where('jenis_member', 'supplier')->where('nama', 'not like', '%general-%')->get()
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -172,7 +179,7 @@ class TransaksiController extends Controller
         } else if ($request->jenis_transaksi == 'pembelian') { // pembelian
             $noResi = Transaksi::incrementId();
             $idKasir = Auth::user()->id;
-            $memberId = 'U-00-02';
+            $memberId = $request->kode_supplier == '' ? 'U-00-02' : $request->kode_supplier;
             $loopData = count(collect($request)->get('detail_transaksi'));
             $noDpb = $request->no_dpb == '' ? Transaksi::generateDpb() : $request->no_dpb;
 

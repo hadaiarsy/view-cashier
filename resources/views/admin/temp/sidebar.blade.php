@@ -168,7 +168,7 @@
                 </li>
                 {{-- Supplier --}}
                 <li>
-                    <a href="javascript:void(0)" class="{{ $sideTitle == 'supplier' ? 'mm-active' : '' }}">
+                    <a href="{{ route('supplier') }}" class="{{ $sideTitle == 'supplier' ? 'mm-active' : '' }}">
                         <i class="metismenu-icon pe-7s-id"></i>
                         Daftar Supplier
                     </a>

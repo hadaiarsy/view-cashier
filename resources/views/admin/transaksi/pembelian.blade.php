@@ -137,6 +137,17 @@
                                     </div>
                                     <div class="row d-flex flex-row-reverse mt-2">
                                         <div class="col-6 input-group">
+                                            <input type="hidden" name="hiddenKodeSupplier" id="hiddenKodeSupplier">
+                                            <input type="text" class="form-control pay-section" data-dataps="ps-1"
+                                                id="kodeSupplier" value="">
+                                            <button type="button" class="input-group-text" id="btnKodeSupplier"
+                                                data-bs-toggle="modal" data-bs-target="#supplierModal"><i
+                                                    class="fas fa-search"></i></button>
+                                        </div>
+                                        <label for="" class="col-4 col-form-label">Kode Supplier :</label>
+                                    </div>
+                                    <div class="row d-flex flex-row-reverse mt-2">
+                                        <div class="col-6 input-group">
                                             <input type="date" class="form-control pay-section" id="tanggalPembelian"
                                                 value="">
                                         </div>
@@ -150,7 +161,7 @@
                                         </div>
                                         <label for="inputPassword3" class="col-4 col-form-label">No Pembelian :</label>
                                     </div>
-                                    <div class="row d-flex flex-row-reverse mt-2">
+                                    <div class="row d-flex flex-row-reverse mt-2 d-none">
                                         <div class="col position-relative form-check d-flex justify-content-end mt-2 mb-2">
                                             <label class="form-check-label">
                                                 <input type="checkbox" class="form-check-input" id="hutangCheck"> hutang
@@ -231,11 +242,78 @@
             </div>
         </div>
     </div>
+
+    {{-- Modal Data Supplier --}}
+    <div class="modal fade" id="supplierModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="supplierModalLabel">Data Supplier</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-12">
+                        <table class="table table-striped table-hover table-data-supplier" id="tableItemsSupplier">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Kode</th>
+                                    <th scope="col">Nama</th>
+                                    <th scope="col">Alamat</th>
+                                    <th scope="col">#</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('javascript')
     <script>
         $(document).ready(function() {
+            $("#tableItemsSupplier").DataTable();
+
+            // get supplier
+            let getSupplier = () => {
+                axios.get(globalUrl + 'getall-supplier/')
+                    .then((response) => {
+                        console.log(response.data);
+                        $('table.table-data-supplier').find('tbody').empty();
+                        let data = response.data.member;
+                        for (let i = 0; i < data.length; i++) {
+                            let dataLoop =
+                                "<tr><td><p>" +
+                                data[i].kode_member +
+                                "</p></td><td><p>" +
+                                data[i].nama +
+                                "</p></td><td><p>" + data[i].alamat +
+                                "</p></td><td><button class='btn btn-info btn-sm text-light add-item-supplier' data-bs-dismiss='modal'aria-label='Close' data-datakode='" +
+                                data[i].kode_member +
+                                "'><i class='fas fa-plus text-light'></i></button></td></tr>";
+                            $('.table-data-supplier').find('tbody').append(dataLoop);
+                            btnModalTambahSupplier();
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error.response)
+                    })
+            };
+            getSupplier();
+            // end
+
+            // btn member
+            let btnModalTambahSupplier = () => $("button.add-item-supplier").on("click", function(e) {
+                var data = {
+                    kode: $(this).data('datakode'),
+                };
+                let kode = $("#kodeSupplier").val(data.kode);
+            });
+            // end
 
             // get data barang
             let getPembelianBarang = () => axios.get(globalUrl + 'getall-barang/')
@@ -483,6 +561,7 @@
                 let totalPembelian = $('#totalTextPembelian').html();
                 let row = $('.itemRowPembelian');
                 let dataBarangPembelian = [];
+                let kodeSupplier = $('#kodeSupplier').val();
                 let noDpb = $('#btnNoPembelian').val();
 
                 let d = new Date();
@@ -514,6 +593,7 @@
                 axios.post(globalUrl + 'simpan-transaksi', {
                         tanggal: $('#tanggalPembelian').val(),
                         jenis_transaksi: 'pembelian',
+                        kode_supplier: kodeSupplier,
                         no_dpb: noDpb,
                         total: replaceCurrency(totalPembelian),
                         detail_transaksi: dataBarangPembelian
