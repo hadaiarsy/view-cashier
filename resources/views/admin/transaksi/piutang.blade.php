@@ -415,7 +415,12 @@
                             sisaPiutang: replaceCurrency(sisa)
                         };
                         printStruk(dataStruk);
-                        // $('#batal').click();
+                        Swal.fire(
+                            'Berhasil',
+                            'Pembayaran Piutang Sukses!',
+                            'success'
+                        )
+                        $('#batal').click();
                     })
                     .catch((error) => {
                         console.log(error)
@@ -428,8 +433,7 @@
 
             // proses print strik
             function printStruk(data) {
-                let printStruk = window.open(globalUrl + 'struk-piutang/' + data.noResi + '/' + data.piutangId +
-                    '/' + data.saldoAwal + '/' + data.sisaPiutang);
+                let printStruk = window.open(globalUrl + 'faktur/' + data.noResi);
                 let tmout = setTimeout(function() {
                     printStruk.close()
                 }, 3000);

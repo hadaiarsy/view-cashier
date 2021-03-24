@@ -60,7 +60,7 @@ class PDFController extends Controller
 
     public function lpj_harian()
     {
-        $data = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])->where(['jenis_transaksi' => 'penjualan'])->whereDate('tanggal', now())->get();
+        $data = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])->where('jenis_transaksi', ['penjualan', 'pengiriman'])->whereDate('tanggal', now())->get();
 
         $pdf = PDF::loadView('admin.transaksi.laporanharian', [
             'data' => $data,

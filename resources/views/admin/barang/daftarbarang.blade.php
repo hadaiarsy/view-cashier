@@ -70,7 +70,7 @@
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label for="inputtext3" class="col-sm-4 col-form-label">Harga Supl :</label>
+                    <label for="inputtext3" class="col-sm-4 col-form-label">Harga Spl :</label>
                     <div class="col-sm-8">
                         <input type="text" class="form-control enter-pass" id="hargaSuplBrg" name="harga_supl"
                             data-nextid="sc-6">
@@ -96,7 +96,7 @@
                                 <th scope="col">Stok</th>
                                 <th scope="col">Harga Beli</th>
                                 <th scope="col">Harga Jual</th>
-                                <th scope="col">Harga Supl</th>
+                                <th scope="col">Harga Spl</th>
                                 <th scope="col">Tindakan</th>
                             </tr>
                         </thead>

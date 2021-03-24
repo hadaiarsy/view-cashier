@@ -194,6 +194,11 @@
                                     </div>
                                     <div class="row d-flex justify-content-end mt-2">
                                         <div class="col d-flex justify-content-end">
+                                            <a href="#" id="suratJalan" style="display: none" target="_blank">
+                                                <button type="button" class="btn btn-success btn-sm mr-2"><i
+                                                        class="fas fa-file-alt"></i>
+                                                    Download</button>
+                                            </a>
                                             <button type="button" class="btn btn-warning btn-sm mr-2" id="batal"><i
                                                     class="fas fa-times"></i> Batal</button>
                                             <button class="btn btn-info btn-sm text-light" id="slsPrintTransc"><i
@@ -447,6 +452,7 @@
                 $('#barcode').focus();
                 $('#slsPrintTransc').prop('disabled', true);
                 $('#piutangCheck').prop('checked', false);
+                $('#suratJalan').hide();
             });
             // end
 
@@ -526,11 +532,11 @@
                         let data = response.data.barang[0];
                         $('#kodeBarang').val(data.kode_barang);
                         $('#nama').val(data.nama);
-                        $('#harga').val(currencyIdr(String(data.satuan[0].harga_jual), 'Rp '));
+                        $('#harga').val(currencyIdr(String(data.satuan[0].harga_supl), 'Rp '));
                         $('#stok').val(data.stok);
                         $('#jumlah').val(1);
                         $('#btnJumlah').html(data.satuan[0].nama_satuan);
-                        $('#total').val(currencyIdr(String(data.satuan[0].harga_jual * 1), 'Rp '));
+                        $('#total').val(currencyIdr(String(data.satuan[0].harga_supl * 1), 'Rp '));
                         $('.alert-row').hide();
                         $('#tambah').prop('disabled', false);
                     }).catch((error) => {
@@ -828,7 +834,9 @@
                             textSwal,
                             'Transaksi Sukses!',
                             'success'
-                        )
+                        );
+                        $('#suratJalan').attr('href', globalUrl + 'surat-jalan/' + data['noResi']);
+                        $('#suratJalan').show();
                         // $('#batal').click();
                     })
                     .catch((error) => {
@@ -844,13 +852,11 @@
                 $(".totalHrg").each(function() {
                     total += parseInt(Number(replaceCurrency($(this).html())));
                 });
-                let printStruk = window.open(globalUrl + 'test-struk/' + data.noResi + '/' + total + '/' +
-                    replaceCurrency(data
-                        .uang) + '/' + replaceCurrency(data.kmbl));
+                let printStruk = window.open(globalUrl + 'faktur-retail/' + data.noResi);
                 let tmout = setTimeout(function() {
                     printStruk.close();
-                    let printStruk = window.open(globalUrl + 'surat-jalan/' + data.noResi);
                 }, 3000);
+                // let suratJalan = window.open(globalUrl + 'surat-jalan/' + data.noResi);
             }
             // end
 

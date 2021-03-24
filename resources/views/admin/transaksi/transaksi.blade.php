@@ -185,13 +185,17 @@
                                         </div>
                                         <label for="inputPassword3" class="col-4 col-form-label">Kembalian :</label>
                                     </div>
-                                    <div class="row d-flex flex-row-reverse mt-2">
-                                        <div class="col position-relative form-check d-flex justify-content-end mt-2 mb-2">
-                                            <label class="form-check-label">
-                                                <input type="checkbox" class="form-check-input" id="piutangCheck"> piutang
-                                            </label>
+                                    @if ($level != 3)
+                                        <div class="row d-flex flex-row-reverse mt-2">
+                                            <div
+                                                class="col position-relative form-check d-flex justify-content-end mt-2 mb-2">
+                                                <label class="form-check-label">
+                                                    <input type="checkbox" class="form-check-input" id="piutangCheck">
+                                                    piutang
+                                                </label>
+                                            </div>
                                         </div>
-                                    </div>
+                                    @endif
                                     <div class="row d-flex justify-content-end mt-2">
                                         <div class="col d-flex justify-content-end">
                                             <button type="button" class="btn btn-warning btn-sm mr-2" id="batal"><i
@@ -829,7 +833,7 @@
                             'Transaksi Sukses!',
                             'success'
                         )
-                        // $('#batal').click();
+                        $('#batal').click();
                     })
                     .catch((error) => {
                         console.log(error.response)
@@ -844,9 +848,13 @@
                 $(".totalHrg").each(function() {
                     total += parseInt(Number(replaceCurrency($(this).html())));
                 });
-                let printStruk = window.open(globalUrl + 'test-struk/' + data.noResi + '/' + total + '/' +
-                    replaceCurrency(data
-                        .uang) + '/' + replaceCurrency(data.kmbl));
+                if (piutangcheck() == '0') {
+                    let printStruk = window.open(globalUrl + 'faktur-piutang/' + data.noResi);
+                } else {
+                    let printStruk = window.open(globalUrl + 'test-struk/' + data.noResi + '/' + total + '/' +
+                        replaceCurrency(data
+                            .uang) + '/' + replaceCurrency(data.kmbl));
+                }
                 let tmout = setTimeout(function() {
                     printStruk.close()
                 }, 3000);

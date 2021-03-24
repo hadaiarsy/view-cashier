@@ -169,6 +169,26 @@ Route::middleware('auth')->group(function () {
     // Route Supplier
     Route::get('daftar-supplier', [MemberController::class, 'supplier'])->name('supplier');
 
+    Route::get('faktur-piutang/{any?}', function ($resi = null) {
+        $resi = $resi == null ? 'WY-220321002' : $resi;
+        $data = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])->where(['no_resi' => $resi])->first();
+        // $tawal = $total * 100 / (100 - $diskon);
+        // $kembali = $data->uang - $data->total;
+        return view('admin.transaksi.fakturpiutang', [
+            'data' => $data
+        ]);
+    });
+
+    Route::get('faktur-retail/{any?}', function ($resi = null) {
+        $resi = $resi == null ? 'WY-220321002' : $resi;
+        $data = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])->where(['no_resi' => $resi])->first();
+        // $tawal = $total * 100 / (100 - $diskon);
+        // $kembali = $data->uang - $data->total;
+        return view('admin.transaksi.fakturretail', [
+            'data' => $data
+        ]);
+    });
+
     // Route Member
     Route::group([''], function () {
         Route::get('daftar-member', [MemberController::class, 'index'])->name('member');

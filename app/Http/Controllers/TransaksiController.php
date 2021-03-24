@@ -99,7 +99,7 @@ class TransaksiController extends Controller
      */
     public function store(Request $request)
     {
-        if ($request->jenis_transaksi == 'penjualan') { // penjualan
+        if ($request->jenis_transaksi == 'penjualan' || $request->jenis_transaksi == 'pengiriman') { // penjualan
             $data = $request->all();
             $loopData = count(collect($request)->get('detail_transaksi'));
             $noResi = Transaksi::incrementId();
@@ -125,6 +125,7 @@ class TransaksiController extends Controller
             $transaksi->member_id = $memberId;
             $transaksi->total = $request->total;
             $transaksi->diskon = $request->diskon;
+            $transaksi->uang = $request->uang;
             $transaksi->is_lunas = $request->is_lunas;
             // End
 
@@ -274,7 +275,7 @@ class TransaksiController extends Controller
     public function list(Transaksi $transaksi)
     {
         return view('admin.transaksi.daftar', [
-            'transaksi' => $transaksi->with(['member', 'kasir'])->where('jenis_transaksi', 'penjualan')->get(),
+            'transaksi' => $transaksi->with(['member', 'kasir'])->where('jenis_transaksi', ['penjualan', 'pengiriman'])->get(),
             'sideTitle' => 'laporan'
         ]);
     }

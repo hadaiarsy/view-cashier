@@ -52,13 +52,15 @@
                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                     </a>
                     <ul>
-                        <li>
-                            <a href="{{ route('laporan') }}"
-                                class="{{ $sideTitle == 'laporan' ? 'mm-active' : '' }}">
-                                <i class="metismenu-icon"></i>
-                                Laporan Penjualan
-                            </a>
-                        </li>
+                        @if ($level != 3)
+                            <li>
+                                <a href="{{ route('laporan') }}"
+                                    class="{{ $sideTitle == 'laporan' ? 'mm-active' : '' }}">
+                                    <i class="metismenu-icon"></i>
+                                    Laporan Penjualan
+                                </a>
+                            </li>
+                        @endif
                         <li>
                             <a href="{{ route('transaksi') }}"
                                 class="{{ $sideTitle == 'transaksi' ? 'mm-active' : '' }}">
@@ -69,118 +71,123 @@
                     </ul>
                 </li>
 
-                {{-- pembelian --}}
-                <li>
-                    <a href="#" class="<?php if ($sideTitle == 'pembelian' || $sideTitle == 'lpembelian') {
+                @if ($level != 3)
+                    {{-- pembelian --}}
+                    <li>
+                        <a href="#" class="<?php if ($sideTitle == 'pembelian' || $sideTitle == 'lpembelian') {
                         echo 'mm-active';
                     } ?>">
-                        <i class="metismenu-icon pe-7s-back-2"></i>
-                        Pembelian
-                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
-                    </a>
-                    <ul>
-                        <li>
-                            <a href="{{ route('daftar-pembelian') }}"
-                                class="{{ $sideTitle == 'lpembelian' ? 'mm-active' : '' }}">
-                                <i class="metismenu-icon"></i>
-                                Laporan Pembelian
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('pembelian') }}"
-                                class="{{ $sideTitle == 'pembelian' ? 'mm-active' : '' }}">
-                                <i class="metismenu-icon"></i>
-                                Pembelian
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                            <i class="metismenu-icon pe-7s-back-2"></i>
+                            Pembelian
+                            <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                        </a>
+                        <ul>
+                            <li>
+                                <a href="{{ route('daftar-pembelian') }}"
+                                    class="{{ $sideTitle == 'lpembelian' ? 'mm-active' : '' }}">
+                                    <i class="metismenu-icon"></i>
+                                    Laporan Pembelian
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('pembelian') }}"
+                                    class="{{ $sideTitle == 'pembelian' ? 'mm-active' : '' }}">
+                                    <i class="metismenu-icon"></i>
+                                    Pembelian
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
 
-                {{-- piutang --}}
-                <li>
-                    <a href="#" class="<?php if ($sideTitle == 'piutang' || $sideTitle == 'daftarpiutang') {
+                    {{-- piutang --}}
+                    <li>
+                        <a href="#" class="<?php if ($sideTitle == 'piutang' || $sideTitle == 'daftarpiutang') {
                         echo 'mm-active';
                     } ?>">
-                        <i class="metismenu-icon pe-7s-hammer"></i>
-                        Piutang
-                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
-                    </a>
-                    <ul>
-                        <li>
-                            <a href="{{ route('d-piutang') }}"
-                                class="{{ $sideTitle == 'daftarpiutang' ? 'mm-active' : '' }}">
-                                <i class="metismenu-icon"></i>
-                                Laporan Piutang
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('piutang') }}"
-                                class="{{ $sideTitle == 'piutang' ? 'mm-active' : '' }}">
-                                <i class="metismenu-icon"></i>
-                                Input Piutang
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                            <i class="metismenu-icon pe-7s-hammer"></i>
+                            Piutang
+                            <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                        </a>
+                        <ul>
+                            <li>
+                                <a href="{{ route('d-piutang') }}"
+                                    class="{{ $sideTitle == 'daftarpiutang' ? 'mm-active' : '' }}">
+                                    <i class="metismenu-icon"></i>
+                                    Laporan Piutang
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('piutang') }}"
+                                    class="{{ $sideTitle == 'piutang' ? 'mm-active' : '' }}">
+                                    <i class="metismenu-icon"></i>
+                                    Input Piutang
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
 
 
-                <li class="app-sidebar__heading">STOKIS</li>
-                {{-- Barang --}}
-                <li>
-                    <a href="#" class="<?php if ($sideTitle == 'barang' || $sideTitle == 'retail') {
+                    <li class="app-sidebar__heading">STOKIS</li>
+                    {{-- Barang --}}
+                    <li>
+                        <a href="#" class="<?php if ($sideTitle == 'barang' || $sideTitle == 'retail') {
                         echo 'mm-active';
                     } ?>">
-                        <i class="metismenu-icon pe-7s-box1"></i>
-                        Barang
-                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
-                    </a>
-                    <ul>
-                        <li>
-                            <a href="{{ route('barang') }}"
-                                class="{{ $sideTitle == 'barang' ? 'mm-active' : '' }}">
-                                <i class="metismenu-icon"></i>
-                                Input Barang
-                            </a>
-                        </li>
-                        <li class="d-none">
-                            <a href="{{ route('barang') }}" class="{{ $sideTitle == '' ? 'mm-active' : '' }}">
-                                <i class="metismenu-icon"></i>
-                                Stok Barang
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ route('retail') }}"
-                                class="{{ $sideTitle == 'retail' ? 'mm-active' : '' }}">
-                                <i class="metismenu-icon"></i>
-                                Penjualan Retail
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                            <i class="metismenu-icon pe-7s-box1"></i>
+                            Barang
+                            <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                        </a>
+                        <ul>
+                            <li>
+                                <a href="{{ route('barang') }}"
+                                    class="{{ $sideTitle == 'barang' ? 'mm-active' : '' }}">
+                                    <i class="metismenu-icon"></i>
+                                    Input Barang
+                                </a>
+                            </li>
+                            <li class="d-none">
+                                <a href="{{ route('barang') }}" class="{{ $sideTitle == '' ? 'mm-active' : '' }}">
+                                    <i class="metismenu-icon"></i>
+                                    Stok Barang
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('retail') }}"
+                                    class="{{ $sideTitle == 'retail' ? 'mm-active' : '' }}">
+                                    <i class="metismenu-icon"></i>
+                                    Penjualan Retail
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
 
-                {{-- Human Resource --}}
-                <li class="app-sidebar__heading">HR</li>
-                {{-- Anggota --}}
-                <li>
-                    <a href="{{ route('member') }}" class="{{ $sideTitle == 'member' ? 'mm-active' : '' }}">
-                        <i class="metismenu-icon pe-7s-diamond"></i>
-                        Daftar Anggota
-                    </a>
-                </li>
-                {{-- Supplier --}}
-                <li>
-                    <a href="{{ route('supplier') }}" class="{{ $sideTitle == 'supplier' ? 'mm-active' : '' }}">
-                        <i class="metismenu-icon pe-7s-id"></i>
-                        Daftar Supplier
-                    </a>
-                </li>
-                {{-- User --}}
-                <li>
-                    <a href="{{ route('user') }}" class="{{ $sideTitle == 'user' ? 'mm-active' : '' }}">
-                        <i class="metismenu-icon pe-7s-users"></i>
-                        Info User
-                    </a>
-                </li>
+                    {{-- Human Resource --}}
+                    <li class="app-sidebar__heading">HR</li>
+                    {{-- Anggota --}}
+                    <li>
+                        <a href="{{ route('member') }}" class="{{ $sideTitle == 'member' ? 'mm-active' : '' }}">
+                            <i class="metismenu-icon pe-7s-diamond"></i>
+                            Daftar Anggota
+                        </a>
+                    </li>
+                    {{-- Supplier --}}
+                    <li>
+                        <a href="{{ route('supplier') }}"
+                            class="{{ $sideTitle == 'supplier' ? 'mm-active' : '' }}">
+                            <i class="metismenu-icon pe-7s-id"></i>
+                            Daftar Supplier
+                        </a>
+                    </li>
+                    @if ($level == 1)
+                        {{-- User --}}
+                        <li>
+                            <a href="{{ route('user') }}" class="{{ $sideTitle == 'user' ? 'mm-active' : '' }}">
+                                <i class="metismenu-icon pe-7s-users"></i>
+                                Info User
+                            </a>
+                        </li>
+                    @endif
+                @endif
 
         </div>
     </div>

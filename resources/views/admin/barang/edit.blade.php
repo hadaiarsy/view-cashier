@@ -78,7 +78,7 @@
                                 <th scope="col">Stok</th>
                                 <th scope="col">Harga Beli</th>
                                 <th scope="col">Harga Jual</th>
-                                <th scope="col">Harga Supl</th>
+                                <th scope="col">Harga Spl</th>
                                 <th scope="col">Tindakan</th>
                             </tr>
                         </thead>
@@ -166,6 +166,12 @@
                             <input type="text" class="form-control" name="harga" id="hargaJual">
                         </div>
                     </div>
+                    <div class="row mt-3">
+                        <label for="inputEmail3" class="col-sm-4 col-form-label">Harga Spl:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="harga" id="hargaSupl">
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -212,7 +218,7 @@
                         </div>
                     </div>
                     <div class="row mt-3">
-                        <label for="inputEmail3" class="col-sm-4 col-form-label">Harga Supl :</label>
+                        <label for="inputEmail3" class="col-sm-4 col-form-label">Harga Spl :</label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control" name="harga_edit" id="hargaSuplEdit">
                         </div>

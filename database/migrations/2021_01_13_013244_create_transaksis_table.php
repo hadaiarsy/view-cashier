@@ -25,7 +25,7 @@ class CreateTransaksisTable extends Migration
             $table->foreign('member_id')->references('kode_member')->on('member')->onDelete('cascade');
             $table->integer('total');
             $table->float('diskon')->nullable();
-            $table->float('uang')->nullable();
+            $table->double('uang', 12, 2)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
