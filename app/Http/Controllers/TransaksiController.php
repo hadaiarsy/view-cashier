@@ -197,7 +197,7 @@ class TransaksiController extends Controller
             $transaksi->member_id = $memberId;
             $transaksi->total = $request->total;
             $transaksi->diskon = null;
-            $transaksi->is_lunas = true;
+            $transaksi->is_lunas = $request->is_lunas;
             $transaksi->save();
             // End
 

@@ -17,6 +17,14 @@ class DetailPiutangController extends Controller
         ]);
     }
 
+    public function hutang()
+    {
+        $sideTitle = "hutang";
+        return view('admin.transaksi.hutang', [
+            'sideTitle' => $sideTitle
+        ]);
+    }
+
     public function show($resi)
     {
         $transaksi = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])->where(['no_resi' => $resi, 'is_lunas' => '0'])->get();

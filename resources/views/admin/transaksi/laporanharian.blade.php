@@ -9,8 +9,8 @@
 
     <style>
         * {
-            font-family: arial, sans-serif;
-            font-size: 1rem;
+            font-family: arial, Calibri;
+            font-size: 0.88rem;
         }
 
         body {
@@ -111,8 +111,7 @@
                         <th scope="col" colspan="2" style="width: 14%">FAKTUR</th>
                         <th scope="col" rowspan="2">NAMA PEMBELI</th>
                         <th scope="col" rowspan="2">NAMA BARANG</th>
-                        <th scope="col" rowspan="2" style="width: 8%">BANYAKNYA</th>
-                        <th scope="col" rowspan="2">HARGA SATUAN (Rp.)</th>
+                        <th scope="col" rowspan="2" style="width: 8%">JUMLAH</th>
                         <th scope="col" rowspan="2">JUMLAH HARGA (Rp.)</th>
                         <th scope="col" rowspan="2">TOTAL FAKTUR (Rp.)</th>
                         <th scope="col" rowspan="2">TANGGAL LUNAS</th>
@@ -134,7 +133,7 @@
                             <td rowspan="{{ count($transaksi->detail) }}">{{ $transaksi->member->nama }}</td>
                             <td>{{ $transaksi->detail[0]->nama_barang }}</td>
                             <td>{{ $transaksi->detail[0]->jumlah . ' ' . $transaksi->detail[0]->satuan }}</td>
-                            <td>{{ (int) $transaksi->detail[0]->harga / (int) $transaksi->detail[0]->jumlah }}</td>
+                            </td>
                             <td>{{ $transaksi->detail[0]->harga }}</td>
                             <td rowspan="{{ count($transaksi->detail) }}">{{ $transaksi->total }}</td>
                             <td rowspan="{{ count($transaksi->detail) }}">
@@ -150,8 +149,6 @@
                                     <td>{{ $transaksi->detail[$i]->nama_barang }}</td>
                                     <td>{{ $transaksi->detail[$i]->jumlah . ' ' . $transaksi->detail[$i]->satuan }}
                                     </td>
-                                    <td>{{ (int) $transaksi->detail[$i]->harga / (int) $transaksi->detail[$i]->jumlah }}
-                                    </td>
                                     <td>{{ $transaksi->detail[$i]->harga }}</td>
                                 </tr>
                             @endfor
@@ -159,7 +156,7 @@
                         <?php $tp += $transaksi->total; ?>
                         @if ($loop->last)
                             <tr>
-                                <th colspan="8" style="text-align: right">TOTAL PENJUALAN (Rp. )</th>
+                                <th colspan="7" style="text-align: right">TOTAL PENJUALAN (Rp. )</th>
                                 <td style="text-align: center">{{ $tp }}</td>
                                 <td></td>
                                 <td></td>

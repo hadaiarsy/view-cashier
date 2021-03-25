@@ -165,4 +165,13 @@ class MemberController extends Controller
             'data' => $member
         ]);
     }
+
+    public function supplier_search()
+    {
+        $member = Member::with(['transaksi'])->where('jenis_member', 'supplier')->get();
+        return response()->json([
+            'message' => 'success',
+            'data' => $member
+        ]);
+    }
 }

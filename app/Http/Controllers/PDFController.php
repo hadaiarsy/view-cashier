@@ -72,7 +72,7 @@ class PDFController extends Controller
         $cetak->tanggal = now();
         $cetak->jenis_laporan = 'lpj_harian';
         $cetak->no_cetak = CetakLaporan::generateNumber(['lpj_harian', date('d-m-Y')]);
-        $cetak->save();
+        // $cetak->save();
 
         return $pdf->stream('lpj_harian_' . date('d-m-Y_h-i-s') . '.pdf');
     }

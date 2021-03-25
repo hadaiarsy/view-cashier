@@ -75,8 +75,8 @@
                     {{-- pembelian --}}
                     <li>
                         <a href="#" class="<?php if ($sideTitle == 'pembelian' || $sideTitle == 'lpembelian') {
-                        echo 'mm-active';
-                    } ?>">
+                            echo 'mm-active';
+                        } ?>">
                             <i class="metismenu-icon pe-7s-back-2"></i>
                             Pembelian
                             <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
@@ -101,9 +101,9 @@
 
                     {{-- piutang --}}
                     <li>
-                        <a href="#" class="<?php if ($sideTitle == 'piutang' || $sideTitle == 'daftarpiutang') {
-                        echo 'mm-active';
-                    } ?>">
+                        <a href="#" class="<?php if ($sideTitle == 'piutang' || $sideTitle == 'daftarpiutang' || $sideTitle == '') {
+                            echo 'mm-active';
+                        } ?>">
                             <i class="metismenu-icon pe-7s-hammer"></i>
                             Piutang
                             <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
@@ -126,13 +126,33 @@
                         </ul>
                     </li>
 
+                    {{-- hutang --}}
+                    <li>
+                        <a href="#" class="<?php if ($sideTitle == '' || $sideTitle == '' || $sideTitle == 'hutang') {
+                            echo 'mm-active';
+                        } ?>">
+                            <i class="metismenu-icon pe-7s-cash"></i>
+                            Hutang
+                            <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                        </a>
+                        <ul>
+                            <li>
+                                <a href="{{ route('hutang') }}"
+                                    class="{{ $sideTitle == 'hutang' ? 'mm-active' : '' }}">
+                                    <i class="metismenu-icon"></i>
+                                    Input Hutang
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
 
                     <li class="app-sidebar__heading">STOKIS</li>
                     {{-- Barang --}}
                     <li>
                         <a href="#" class="<?php if ($sideTitle == 'barang' || $sideTitle == 'retail') {
-                        echo 'mm-active';
-                    } ?>">
+                            echo 'mm-active';
+                        } ?>">
                             <i class="metismenu-icon pe-7s-box1"></i>
                             Barang
                             <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>

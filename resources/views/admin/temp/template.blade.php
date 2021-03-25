@@ -144,6 +144,9 @@
     <!-- FontAwesome cdn -->
     <script src="{{ asset('assets/fontawesome/js/all.js') }}" crossorigin="anonymous"></script>
 
+    <!-- Date JS -->
+    <script src="{{ asset('assets/js/date.min.js') }}" crossorigin="anonymous"></script>
+
     <!-- SweetAlert 2 -->
     <script src="{{ asset('assets/js/sweetalert2.all.min.js') }}" crossorigin="anonymous"></script>
 

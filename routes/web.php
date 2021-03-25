@@ -52,6 +52,8 @@ Route::middleware('auth')->group(function () {
 
         Route::get('piutang', [DetailPiutangController::class, 'index'])->name('piutang');
 
+        Route::get('hutang', [DetailPiutangController::class, 'hutang'])->name('hutang');
+
         Route::get('get-piutang/{any}', [DetailPiutangController::class, 'show']);
 
         Route::post('store-piutang', [DetailPiutangController::class, 'store']);
@@ -104,6 +106,8 @@ Route::middleware('auth')->group(function () {
         Route::get('get-member-piutang/{kode}', [TransaksiController::class, 'member_piutang']);
 
         Route::get('get-member-search', [MemberController::class, 'member_search']);
+
+        Route::get('get-supplier-search', [MemberController::class, 'supplier_search']);
 
         Route::get('test-struk/{any}/{total}/{uang}/{kembali}', function ($kode, $total, $uang, $kembali) {
             $data = Transaksi::with(['detail', 'kasir', 'member'])->where('no_resi', $kode)->get();
@@ -197,8 +201,6 @@ Route::middleware('auth')->group(function () {
         Route::get('show-member/{any}', [MemberController::class, 'show']);
         Route::post('update-member', [MemberController::class, 'update']);
         Route::get('getname-member', function () {
-            // return \App\Models\Transaksi::incrementId();
-            // return view('admin.transaksi.test');
             // return response()->json([
             //     \App\Models\Transaksi::whereDate('tanggal', '>=', Carbon::parse('2021-02-01')->format('Y-m-d'))
             //         ->whereDate('tanggal', '<=', Carbon::parse('2021-02-05')->format('Y-m-d'))
@@ -211,23 +213,12 @@ Route::middleware('auth')->group(function () {
             ]);
             // return Carbon::now('Asia/Bangkok')->format('Y-m-d H:i:s');
 
-            // return \App\Models\Barang::where('kode_barang', 'B-210114001')->first()->stok;
-
-            // return \App\Models\Member::checkName('asd bambang_M-210127001');
-            // return \App\Models\Member::incrementId(10);
-
             // return csrf_token();
 
             // $data = \App\Models\Transaksi::with(['kasir', 'member', 'detail'])->offset(2)->first()->member->nama;
             // $data = \App\Models\Transaksi::with(['kasir', 'member', 'detail'])->select('member_id')->distinct('member_id')->get();
-            // return ($data == null ? 'none' : $data);
-
-            // return \App\Models\User::with(['transaksi', 'detailTransaksi'])->get();
 
             // return \Illuminate\Support\Facades\DB::select(\Illuminate\Support\Facades\DB::raw('SELECT * FROM user_level'));
-
-            // return '';
-            // return redirect('/');
         });
     });
 

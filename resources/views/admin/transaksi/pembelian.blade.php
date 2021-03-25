@@ -553,6 +553,8 @@
                 $('.itemRowPembelian').remove();
                 $('#noPembelian').val('');
                 $('#tanggalPembelian').val('');
+                $('#kodeSupplier').val('');
+                $('#hutangCheck').prop('checked', false);
                 totalHargaPembelian();
             });
             // end
@@ -597,6 +599,7 @@
                         kode_supplier: kodeSupplier,
                         no_dpb: noDpb,
                         total: replaceCurrency(totalPembelian),
+                        is_lunas: hutangcheck(),
                         detail_transaksi: dataBarangPembelian
                     })
                     .then((response) => {
@@ -615,6 +618,16 @@
 
             function pdfOut(resi) {
                 window.open(globalUrl + 'pdf-pembelian/' + resi);
+            }
+
+            function hutangcheck() {
+                let hutang;
+                if ($('#hutangCheck').is(':checked')) {
+                    hutang = '0';
+                } else {
+                    hutang = '1';
+                }
+                return hutang;
             }
 
         })

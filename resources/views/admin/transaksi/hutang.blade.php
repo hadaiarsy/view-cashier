@@ -1,6 +1,6 @@
 @extends('admin.temp.template')
 
-@section('site-title', 'Pembayaran Piutang')
+@section('site-title', 'Pembayaran Hutang')
 
 @section('main-contents')
 
@@ -17,7 +17,7 @@
                                 <div id="headingOne">
                                     <h5 class="card-title collapsed" id="titleMemberSearch" data-toggle="collapse"
                                         data-target="#dataPiutangMember" aria-expanded="true" aria-controls="collapseOne">
-                                        Search Member
+                                        Search Supplier
                                         <button class="btn btn-sm text-primary" style="margin-top: -10px">
                                             <i class="fas fa-sort-down"></i>
                                         </button>
@@ -30,7 +30,7 @@
                                             <div class="col-6">
                                                 <div class="row mb-3">
                                                     <label for="inputPassword3" class="col-sm-4 col-form-label">Kode
-                                                        Member</label>
+                                                        Supplier</label>
                                                     <div class="col-sm-8">
                                                         <div class="input-group">
                                                             <input type="text" class="form-control trans-section"
@@ -59,8 +59,8 @@
                                                         <tr>
                                                             <th scope="col">No Resi</th>
                                                             <th scope="col">Tanggal</th>
-                                                            <th scope="col">Piutang</th>
-                                                            <th scope="col">Sisa Piutang</th>
+                                                            <th scope="col">Hutang</th>
+                                                            <th scope="col">Sisa Hutang</th>
                                                             <th scope="col">Jatuh Tempo</th>
                                                             <th scope="col">Tindakan</th>
                                                         </tr>
@@ -84,11 +84,11 @@
                 <div class="col-lg">
                     <div class="main-card mb-3 card">
                         <div class="card-body">
-                            <h5 class="card-title">Data Piutang</h5>
+                            <h5 class="card-title">Data Hutang</h5>
                             <div class="row alert-row" style="display: none">
                                 <div class="alert alert-danger alert-row" data-start="true" role="alert">
-                                    Data Piutang <strong>Tidak</strong> Tersedia! Harap cek kembali form
-                                    <strong>Piutang</strong> di bawah!
+                                    Data Hutang <strong>Tidak</strong> Tersedia! Harap cek kembali form
+                                    <strong>Hutang</strong> di bawah!
                                 </div>
                             </div>
                             <div class="row">
@@ -132,7 +132,7 @@
                                 <div class="col-4">
                                     <div class="row d-flex flex-row-reverse">
                                         <div class="col d-flex justify-content-end">
-                                            <p><strong>sisa piutang</strong></p>
+                                            <p><strong>sisa hutang</strong></p>
                                         </div>
                                     </div>
                                     <div class="row d-flex flex-row-reverse">
@@ -145,7 +145,7 @@
                                             <input type="text" class="form-control pay-section" data-dataps="ps-1"
                                                 id="kodeMember" value="" disabled>
                                         </div>
-                                        <label for="" class="col-4 col-form-label">Kode Member :</label>
+                                        <label for="" class="col-4 col-form-label">Kode Supplier :</label>
                                     </div>
                                     <div class="row d-flex flex-row-reverse mt-2">
                                         <div class="col-6 input-group">
@@ -167,7 +167,7 @@
                                             <input type="text" class="form-control pay-section" data-dataps="ps-4"
                                                 id="sisaPiutang" value="" disabled>
                                         </div>
-                                        <label for="inputPassword3" class="col-4 col-form-label">Sisa Piutang :</label>
+                                        <label for="inputPassword3" class="col-4 col-form-label">Sisa Hutang :</label>
                                     </div>
                                     <div class="row flex-row-reverse mt-2 text-alert-lunas" style="display: none">
                                         <div class="col mt-2 text-end">
@@ -201,7 +201,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="memberModalLabel">Data Member</h5>
+                    <h5 class="modal-title" id="memberModalLabel">Data Supplier</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -209,10 +209,9 @@
                         <table class="table table-striped table-hover table-data-member" id="tableModalMember">
                             <thead>
                                 <tr>
-                                    <th scope="col">Kode Member</th>
+                                    <th scope="col">Kode Supplier</th>
                                     <th scope="col">Nama</th>
-                                    <th scope="col">Unit</th>
-                                    <th scope="col">Piutang</th>
+                                    <th scope="col">Hutang</th>
                                     <th scope="col">Tindakan</th>
                                 </tr>
                             </thead>
@@ -232,7 +231,7 @@
 
             // member
             $('#btnMemberSearch').on('click', function() {
-                axios.get(globalUrl + 'get-member-search/')
+                axios.get(globalUrl + 'get-supplier-search/')
                     .then((response) => {
                         let data = response.data.data;
                         memberModal(data);
@@ -254,7 +253,6 @@
                             "<tr class='item-row'><td>" +
                             member.kode_member +
                             "</td><td>" + member.nama +
-                            "</td><td>" + member.unit +
                             "</td><td>" + num +
                             " transaksi</td><td><button class='btn btn-primary btn-sm text-light btn-tambah-member' data-kode='" +
                             member.kode_member +
@@ -318,11 +316,11 @@
                     tSisa += piutang.total - sisa;
                 });
                 $('#tableJumlahPiutang').append(
-                    "<tr class='row-table-member-piutang'><th scope='col' collapse='4' class='text-end'>Total Piutang</th><td>" +
+                    "<tr class='row-table-member-piutang'><th scope='col' collapse='4' class='text-end'>Total Hutang</th><td>" +
                     currencyIdr(String(tPiutang), 'Rp ') +
                     "</td></tr><tr class='row-table-member-piutang'><th scope='col' collapse='4' class='text-end'>Total Bayar</th><td>" +
                     currencyIdr(String(tBayar), 'Rp ') +
-                    "</td></tr><tr class='row-table-member-piutang'><th scope='col' collapse='4' class='text-end'>Total Sisa Piutang</th><td>" +
+                    "</td></tr><tr class='row-table-member-piutang'><th scope='col' collapse='4' class='text-end'>Total Sisa Hutang</th><td>" +
                     currencyIdr(String(tSisa), 'Rp ') + "</td></tr>"
                 );
                 btnTambahPiutang();
@@ -364,7 +362,7 @@
                     $('#tableItem').find('tbody').append(dataLoop);
                 }
                 let dataTotal = "<tr class='item-row'><td colspan='3'><strong>DISKON</strong></td><td><strong>" +
-                    diskon +
+                    (diskon == null ? '0' : diskon) +
                     " %</strong></td></tr><tr class='item-row'><td colspan='3'><strong>TOTAL</strong></td><td><strong>" +
                     currencyIdr(String(total),
                         'Rp ') +
