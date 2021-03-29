@@ -17,7 +17,8 @@ class Barang extends Model
     protected $fillable = [
         'kode_barang',
         'nama',
-        'stok'
+        'stok',
+        'id_jenis'
     ];
     public $timestamps = true;
 
@@ -43,5 +44,10 @@ class Barang extends Model
     public function satuan()
     {
         return $this->hasMany(SatuanBarang::class, 'kode_barang', 'kode_barang');
+    }
+
+    public function jenis()
+    {
+        return $this->hasOne(JenisBarang::class, 'id', 'id_jenis');
     }
 }

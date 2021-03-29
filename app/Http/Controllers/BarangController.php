@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barang;
+use App\Models\JenisBarang;
 use App\Models\SatuanBarang;
 use Illuminate\Http\Request;
 
@@ -18,6 +19,7 @@ class BarangController extends Controller
         $barang = Barang::with('satuan')->get();
         return view('admin.barang.daftarbarang', [
             'barang' => $barang,
+            'jenis' => JenisBarang::all(),
             'date' => Barang::incrementId(),
             'sideTitle' => 'barang'
         ]);
@@ -48,6 +50,7 @@ class BarangController extends Controller
         $barang->barcode = $request->barcode;
         $barang->nama = $request->nama;
         $barang->stok = $request->stok;
+        $barang->id_jenis = $request->id_jenis;
 
         $satuan = new SatuanBarang;
         $satuan->kode_barang = $kodeBarang;
@@ -74,6 +77,7 @@ class BarangController extends Controller
         if ($data->count() > 0) {
             return view('admin.barang.edit', [
                 'barang' => $data,
+                'jenis' => JenisBarang::all(),
                 'sideTitle' => 'barang'
             ]);
         } else {
@@ -105,7 +109,8 @@ class BarangController extends Controller
             ->update([
                 'barcode' => $request->barcode,
                 'nama' => $request->nama,
-                'stok' => $request->stok
+                'stok' => $request->stok,
+                'id_jenis' => $request->id_jenis
             ]);
         if ($barang) {
             return response()->json([

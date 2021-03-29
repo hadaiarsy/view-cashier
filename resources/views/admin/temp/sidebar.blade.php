@@ -165,10 +165,11 @@
                                     Input Barang
                                 </a>
                             </li>
-                            <li class="d-none">
-                                <a href="{{ route('barang') }}" class="{{ $sideTitle == '' ? 'mm-active' : '' }}">
+                            <li>
+                                <a href="{{ route('jenis') }}"
+                                    class="{{ $sideTitle == 'jenis-barang' ? 'mm-active' : '' }}">
                                     <i class="metismenu-icon"></i>
-                                    Stok Barang
+                                    Tambah Jenis Barang
                                 </a>
                             </li>
                             <li>

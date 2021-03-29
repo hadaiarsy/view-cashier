@@ -48,6 +48,17 @@
                 </div>
             </div>
             <div class="row mb-3">
+                <label for="jenis" class="col-sm-4 col-form-label">Jenis Barang :</label>
+                <div class="col-sm-8">
+                    <select class="form-select enter-pass" id="id_jenis" name="id_jenis" data-nextid="sc-2">
+                        @foreach ($jenis as $item)
+                            <option value="{{ $item->id }}" {{ $barang[0]->id_jenis == $item->id ? 'selected' : '' }}>
+                                {{ $item->nama_jenis }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="row mb-3">
                 <label for="inputtext3" class="col-sm-4 col-form-label">Stok :</label>
                 <div class="col-sm-8">
                     <input type="text" aria-label="First name" class="form-control enter-pass" id="jumlahBrg"
@@ -328,12 +339,14 @@
                 let barcode = ($('#barcode').val() == '-') ? '' : $('#barcode').val();
                 let namaBrg = $('#namaBrg').val();
                 let jumlahBrg = $('#jumlahBrg').val();
+                let jenis = $('#id_jenis').val();
                 let token = document.head.querySelector('meta[name="csrf-token"]');
                 window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
                 axios.post('/update-barang', {
                         kode_barang: kodeBarang,
                         barcode: barcode,
                         nama: namaBrg,
+                        id_jenis: jenis,
                         stok: Number(jumlahBrg)
                     })
                     .then((response) => {

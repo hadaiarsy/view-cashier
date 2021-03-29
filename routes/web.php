@@ -6,6 +6,7 @@ use App\Http\Controllers\BarangController;
 use App\Http\Controllers\SatuanBarangController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\DetailPiutangController;
+use App\Http\Controllers\JenisBarangController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\UserController;
 use App\Models\Transaksi;
@@ -142,9 +143,15 @@ Route::middleware('auth')->group(function () {
         Route::get('surat-jalan/{any?}', [PDFController::class, 's_jalan'])->name('s-jalan');
     });
 
+    Route::get('jenis-barang', [JenisBarangController::class, 'index'])->name('jenis');
+    Route::get('show-jenis-barang/{id}', [JenisBarangController::class, 'show']);
+    Route::post('store-jenis-barang', [JenisBarangController::class, 'store']);
+    Route::post('update-jenis-barang', [JenisBarangController::class, 'update']);
 
     Route::get('stok', function () {
-        return view('admin.stok.stok');
+        return view('admin.stok.stok', [
+            'sideTitle' => '-'
+        ]);
     });
 
     Route::get('stok-pdf', [PDFController::class, 'stok']);

@@ -44,6 +44,16 @@
                     </div>
                 </div>
                 <div class="row mb-3">
+                    <label for="jenis" class="col-sm-4 col-form-label">Jenis Barang :</label>
+                    <div class="col-sm-8">
+                        <select class="form-select enter-pass" id="id_jenis" name="id_jenis" data-nextid="sc-2">
+                            @foreach ($jenis as $item)
+                                <option value="{{ $item->id }}">{{ $item->nama_jenis }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-3">
                     <label for="inputtext3" class="col-sm-4 col-form-label">Stok :</label>
                     {{-- <div class="col-sm-8">
                     <input type="text" class="form-control" id="jumlahBrg" name="jumlahBrg" placeholder="">
@@ -94,9 +104,7 @@
                                 <th scope="col">Kode</th>
                                 <th scope="col">Nama</th>
                                 <th scope="col">Stok</th>
-                                <th scope="col">Harga Beli</th>
-                                <th scope="col">Harga Jual</th>
-                                <th scope="col">Harga Spl</th>
+                                <th scope="col">Jenis</th>
                                 <th scope="col">Tindakan</th>
                             </tr>
                         </thead>
@@ -107,9 +115,7 @@
                                     <td>{{ $item->kode_barang }}</td>
                                     <td>{{ $item->nama }}</td>
                                     <td>{{ $item->stok . ' ' . $item->satuan[0]->nama_satuan }}</td>
-                                    <td class="harga-beli-barang">{{ $item->satuan[0]->harga_beli }}</td>
-                                    <td class="harga-jual-barang">{{ $item->satuan[0]->harga_jual }}</td>
-                                    <td class="harga-supl-barang">{{ $item->satuan[0]->harga_supl }}</td>
+                                    <td>{{ $jenis[$item->id_jenis - 1]->nama_jenis }}</td>
                                     <td>
                                         <a href='show-barang/{{ $item->kode_barang }}' class='btn btn-primary btn-sm'><i
                                                 class='far fa-eye'></i></a>
