@@ -9,6 +9,9 @@ use Barryvdh\DomPDF\Facade as PDF;
 
 use App\Models\Transaksi;
 use App\Models\CetakLaporan;
+use App\Models\JenisBarang;
+use App\Models\SatuanBarang;
+use App\Models\Member;
 
 class PDFController extends Controller
 {
@@ -125,5 +128,32 @@ class PDFController extends Controller
         ])->setPaper('a4', 'portrait');
 
         return $pdf->stream('wy_spb_' . date('d-m-Y_h-i-s') . '.pdf');
+    }
+
+    public function son()
+    {
+        $jenis = JenisBarang::with(['barang'])->get();
+        $transaksi = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])->whereMonth('tanggal', date('m'))->get();
+
+        $pdf = PDF::loadView('admin.barang.stockopname', [
+            'jenis' => $jenis,
+            'transaksi' => $transaksi,
+            'satuan' => SatuanBarang::all(),
+        ])->setPaper('a4', 'portrait');
+
+        return $pdf->stream('son_' . date('d-m-Y_h-i-s') . '.pdf');
+    }
+
+    public function m_piutang()
+    {
+        $transaksi = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])->where('jenis_transaksi', 'penjualan')->orWhere('jenis_transaksi', 'pengiriman')->get();
+
+        $pdf = PDF::loadView('admin.transaksi.mpiutang', [
+            'transaksi' => $transaksi,
+            'member' => Member::all(),
+            'unit' => Member::select('unit')->where('unit', '!=', 0)->distinct('unit')->get(),
+        ])->setPaper('a4', 'portrait');
+
+        return $pdf->stream('mpiutang_' . date('d-m-Y_h-i-s') . '.pdf');
     }
 }

@@ -144,7 +144,7 @@
         </div>
     </div>
 
-    <div class="row mt-3">
+    <div class="row mt-3 d-none">
         {{-- <div class="d-none"> --}}
         <div class="col-lg-5 form-inline d-flex">
             {{-- <input type="date" class="form-control mr-2" name="" id="tanggal_awal" value="{{ date('Y-m-d') }}"> --}}
@@ -228,8 +228,8 @@
                         Laporan</button></a>
             </div>
             <div class="d-block m-2">
-                <button type="button" class="btn btn-success pl-2" id="laporanPembelian">Laporan
-                    Member</button>
+                <a href="{{ route('m-piutang') }}" target="_blank"><button type="button" class="btn btn-success pl-2">Mutasi
+                        Piutang</button></a>
             </div>
         </div>
     </div>

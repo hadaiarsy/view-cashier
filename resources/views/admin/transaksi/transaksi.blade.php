@@ -845,13 +845,14 @@
             // proses print strik
             function printStruk(data) {
                 let total = 0;
+                let printStruk;
                 $(".totalHrg").each(function() {
                     total += parseInt(Number(replaceCurrency($(this).html())));
                 });
                 if (piutangcheck() == '0') {
-                    let printStruk = window.open(globalUrl + 'faktur-piutang/' + data.noResi);
+                    printStruk = window.open(globalUrl + 'faktur-piutang/' + data.noResi);
                 } else {
-                    let printStruk = window.open(globalUrl + 'test-struk/' + data.noResi + '/' + total + '/' +
+                    printStruk = window.open(globalUrl + 'test-struk/' + data.noResi + '/' + total + '/' +
                         replaceCurrency(data
                             .uang) + '/' + replaceCurrency(data.kmbl));
                 }

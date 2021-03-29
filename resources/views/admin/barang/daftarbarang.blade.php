@@ -6,8 +6,11 @@
     <div class="row">
         <div class="col-sm-2">
             <h4>Daftar Barang</h4>
-            <hr class="divider">
         </div>
+        <div class="col-sm-2">
+            <a href="/stok" target="_blank"><button type="button" class="btn btn-success">Laporan Stock Opname</button></a>
+        </div>
+        <hr class="divider">
     </div>
 
     <div class="row d-flex justify-content-between">

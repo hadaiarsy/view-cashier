@@ -458,7 +458,7 @@
 
             // proses print strik
             function printStruk(data) {
-                let printStruk = window.open(globalUrl + 'faktur/' + data.noResi);
+                let printStruk = window.open(globalUrl + 'faktur-piutang/' + data.noResi);
                 let tmout = setTimeout(function() {
                     printStruk.close()
                 }, 3000);

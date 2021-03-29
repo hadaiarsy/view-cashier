@@ -138,6 +138,8 @@ Route::middleware('auth')->group(function () {
 
         Route::get('laporan-piutang', [PDFController::class, 'lp_piutang'])->name('lp-piutang');
 
+        Route::get('mutasi-piutang', [PDFController::class, 'm_piutang'])->name('m-piutang');
+
         Route::get('transaksi-retail', [TransaksiController::class, '__retail'])->name('retail');
 
         Route::get('surat-jalan/{any?}', [PDFController::class, 's_jalan'])->name('s-jalan');
@@ -148,11 +150,7 @@ Route::middleware('auth')->group(function () {
     Route::post('store-jenis-barang', [JenisBarangController::class, 'store']);
     Route::post('update-jenis-barang', [JenisBarangController::class, 'update']);
 
-    Route::get('stok', function () {
-        return view('admin.stok.stok', [
-            'sideTitle' => '-'
-        ]);
-    });
+    Route::get('stok', [PDFController::class, 'son']);
 
     Route::get('stok-pdf', [PDFController::class, 'stok']);
 
@@ -216,7 +214,9 @@ Route::middleware('auth')->group(function () {
             return response()->json([
                 // \App\Models\Transaksi::whereYear('tanggal', '=', '2021')->whereMonth('tanggal', '=', '02')->get()
                 // \App\Models\Transaksi::whereDay('tanggal', '=', date('d'))->get()
-                \App\Models\Transaksi::generateDpb()
+                // \App\Models\Transaksi::generateDpb()
+                // 'sata' => App\Models\Member::select('unit')->distinct('unit')->get(),
+                'data' => date('my', strtotime('29-03-2020')) == date('my') ? date('my') : NULL
             ]);
             // return Carbon::now('Asia/Bangkok')->format('Y-m-d H:i:s');
 

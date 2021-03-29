@@ -58,7 +58,8 @@ class DetailPiutangController extends Controller
 
             if ($request->is_lunas == '1') {
                 Transaksi::where(['no_resi' => $noResi])->update([
-                    'is_lunas' => '1'
+                    'is_lunas' => '1',
+                    'tanggal_lunas' => now()
                 ]);
             }
 

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Helper\Helper;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
@@ -47,7 +48,8 @@ class AppServiceProvider extends ServiceProvider
             $view->with([
                 'level' => $level,
                 'username' => $username,
-                'userid' => $userid
+                'userid' => $userid,
+                'helper' => new Helper
             ]);
         });
     }

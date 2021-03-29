@@ -177,7 +177,7 @@
             <tr>
                 <td>Kembali</td>
                 <td>:</td>
-                <td>{{ $kembali = $bayar - $sp < 0 ? '-' : $kembali }}</td>
+                <td>{{ $kembali = $bayar - $sp < 0 ? '-' : $bayar - $sp }}</td>
             </tr>
             <tr>
                 <td>Sisa Piutang</td>
