@@ -35,7 +35,7 @@
             <ul class="vertical-nav-menu">
                 <li class="app-sidebar__heading">Dashboards</li>
                 <li>
-                    <a href="{{ route('home') }}" class="<?php if ($sideTitle == 'dashboard') {
+                    <a href="/" class="<?php if ($sideTitle == 'dashboard') {
                         echo 'mm-active';
                     } ?>">
                         <i class="metismenu-icon pe-7s-rocket"></i>
