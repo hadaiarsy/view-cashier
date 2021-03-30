@@ -191,7 +191,8 @@ Route::middleware('auth')->group(function () {
         // $tawal = $total * 100 / (100 - $diskon);
         // $kembali = $data->uang - $data->total;
         return view('admin.transaksi.fakturpiutang', [
-            'data' => $data
+            'data' => $data,
+            'member' => Transaksi::with(['kasir', 'member', 'detail', 'piutang'])->where(['member_id' => $data->member_id, 'is_lunas' => '0'])->get()
         ]);
     });
 
@@ -218,6 +219,7 @@ Route::middleware('auth')->group(function () {
             //         ->whereDate('tanggal', '<=', Carbon::parse('2021-02-05')->format('Y-m-d'))
             //         ->get()
             // ]);
+            $data = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])->where(['no_resi' => 'WY-290321003'])->first();
             return response()->json([
                 // \App\Models\Transaksi::whereYear('tanggal', '=', '2021')->whereMonth('tanggal', '=', '02')->get()
                 // \App\Models\Transaksi::whereDay('tanggal', '=', date('d'))->get()
@@ -225,7 +227,8 @@ Route::middleware('auth')->group(function () {
                 // 'sata' => App\Models\Member::select('unit')->distinct('unit')->get(),
                 // 'data' => date('my', strtotime('29-03-2020')) == date('my') ? date('my') : NULL
                 // 'data' => DetailPiutang::select('transaksi_id')->distinct('transaksi_id')->get()
-                'data' => DetailPiutang::with('transaksi')->get()
+                'data' => $data,
+                'member' => Transaksi::with(['kasir', 'member', 'detail', 'piutang'])->where(['member_id' => $data->member_id])->get()
             ]);
             // return Carbon::now('Asia/Bangkok')->format('Y-m-d H:i:s');
 

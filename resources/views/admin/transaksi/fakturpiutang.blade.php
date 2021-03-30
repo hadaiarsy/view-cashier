@@ -37,6 +37,19 @@
 
 <body style="width: 100%">
 
+    <?php
+    $tpiutang = 0;
+    $bayar = 0;
+    $total = 0;
+    ?>
+    @foreach ($member as $transaksi)
+        <?php $tpiutang += $transaksi->total; ?>
+        @foreach ($transaksi->piutang as $piutang)
+            <?php $bayar += $piutang->uang; ?>
+        @endforeach
+        <?php $total = $tpiutang - $bayar; ?>
+    @endforeach
+
     <table id="headFaktur" style="width: 100%; padding-top: 40px">
         <tr>
             <td class="text-center"><strong>PIUTANG</strong></td>
@@ -89,22 +102,25 @@
 
     <table id="dataBarang" style="margin: 20px 20px 0; width: 95%">
         @if (count($data->piutang) != 0)
-            <tr>
-                <td><strong>Cicilan ke-{{ count($data->piutang) }}</strong></td>
-            </tr>
+        <tr>
+            <td><strong>Cicilan ke-{{ count($data->piutang) }}</strong></td>
+        </tr>
         @endif
     </table>
     <table class="border-table" id="dataBarang" style="margin: auto; width: 85%">
-        <thead>
-            <th scope="col">No.</th>
-            <th scope="col">Kode Barang</th>
-            <th scope="col">Nama Barang</th>
-            <th scope="col">Jumlah Item</th>
-            <th scope="col">Harga</th>
-            <th scope="col">Total</th>
-        </thead>
+        @if (count($data->piutang) == 0 || date('dmy', strtotime($data->tanggal)) == date('dmy', strtotime($data->piutang[count($data->piutang) - 1]->tanggal)))
+            <thead>
+                <th scope="col">No.</th>
+                <th scope="col">Kode Barang</th>
+                <th scope="col">Nama Barang</th>
+                <th scope="col">Jumlah Item</th>
+                <th scope="col">Harga</th>
+                <th scope="col">Total</th>
+            </thead>
+        @endif
         <tbody>
-            @foreach ($data->detail as $barang)
+            @if (count($data->piutang) == 0 || date('dmy', strtotime($data->tanggal)) == date('dmy', strtotime($data->piutang[count($data->piutang) - 1]->tanggal)))
+                @foreach ($data->detail as $barang)
                 <tr>
                     <th scope="col">{{ $loop->iteration }}</th>
                     <td class="text-center">{{ $barang->kode_barang }}</td>
@@ -113,7 +129,8 @@
                     <td class="text-center">{{ $barang->harga / $barang->jumlah }}</td>
                     <td class="text-center">{{ $barang->harga }}</td>
                 </tr>
-            @endforeach
+                @endforeach
+            @endif
             <tr>
                 <th scope="col" colspan="5" style="text-align: right">Total Piutang</th>
                 <td class="text-center">{{ $data->total }}</td>
@@ -180,13 +197,18 @@
                 <td>{{ $kembali = $bayar - $sp < 0 ? '-' : $bayar - $sp }}</td>
             </tr>
             <tr>
-                <td>Sisa Piutang</td>
+                <td>Sisa Piutang Faktur</td>
                 <td>:</td>
                 <td>{{ $sisa = $sp - $bayar < 0 ? 0 : $sp - $bayar }}</td>
             </tr>
+            <tr>
+                <td>Sisa Piutang Keseluruhan</td>
+                <td>:</td>
+                <td>{{ $total }}</td>
+            </tr>
             @if ($data->is_lunas == '1')
                 <tr>
-                    <td colspan="3" style="text-align: right; padding: 12px; font-size: 1rem">LUNAS</td>
+                    <td colspan="3" style="text-align: right; padding: 12px; font-size: 1rem">LUNAS PER FAKTUR</td>
                 </tr>
             @endif
         </table>
@@ -241,7 +263,7 @@
                 text: 'https://www.yamughnibandung.org/'
             });
 
-            window.print();
+            // window.print();
 
         })
 
