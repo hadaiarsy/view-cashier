@@ -83,7 +83,7 @@
 
     </style>
 
-    <title>MUTASI PIUTANG</title>
+    <title>MUTASI HUTANG</title>
 </head>
 
 <body>
@@ -93,7 +93,7 @@
                 <thead>
                     <tr class="head-list">
                         <th colspan="2">
-                            <h4>MUTASI PIUTANG DAGANG UNIT REGULER</h4>
+                            <h4>MUTASI HUTANG DAGANG UNIT REGULER</h4>
                             <h4 style="margin-top: -16px">KOPERASI YAMUGHNI</h4>
                             <h4 style="margin-top: -16px">
                                 <?php
@@ -129,7 +129,7 @@
                         $tsaldoakhirunit = 0;
                         ?>
                         <tr>
-                            <th scope="col" colspan="6" style="text-align: left">UNIT {{ $u->unit }}</th>
+                            <th scope="col" colspan="6" style="text-align: left">SUPPLIER</th>
                         </tr>
                         @foreach ($member as $m)
                             @if ($m->unit == $u->unit)
@@ -194,10 +194,18 @@
                             @if ($loop->last)
                                 <tr>
                                     <th scope="col" colspan="2">TOTAL</th>
-                                    <td style="text-align: right"><strong>{{ $helper->money_format($tsaldoawalunit) }}</strong></td>
-                                    <td style="text-align: right"><strong>{{ $helper->money_format($tpenambahanunit) }}</strong></td>
-                                    <td style="text-align: right"><strong>{{ $helper->money_format($tpembayaranunit) }}</strong></td>
-                                    <td style="text-align: right"><strong>{{ $helper->money_format($tsaldoakhirunit) }}</strong></td>
+                                    <td style="text-align: right">
+                                        <strong>{{ $helper->money_format($tsaldoawalunit) }}</strong>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <strong>{{ $helper->money_format($tpenambahanunit) }}</strong>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <strong>{{ $helper->money_format($tpembayaranunit) }}</strong>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <strong>{{ $helper->money_format($tsaldoakhirunit) }}</strong>
+                                    </td>
                                 </tr>
                             @endif
                         @endforeach

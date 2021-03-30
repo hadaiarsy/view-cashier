@@ -128,7 +128,7 @@
 
                     {{-- hutang --}}
                     <li>
-                        <a href="#" class="<?php if ($sideTitle == '' || $sideTitle == '' || $sideTitle == 'hutang') {
+                        <a href="#" class="<?php if ($sideTitle == 'daftarhutang' || $sideTitle == '' || $sideTitle == 'hutang') {
                             echo 'mm-active';
                         } ?>">
                             <i class="metismenu-icon pe-7s-cash"></i>
@@ -136,6 +136,13 @@
                             <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                         </a>
                         <ul>
+                            <li>
+                                <a href="{{ route('d-hutang') }}"
+                                    class="{{ $sideTitle == 'daftarhutang' ? 'mm-active' : '' }}">
+                                    <i class="metismenu-icon"></i>
+                                    Laporan Piutang
+                                </a>
+                            </li>
                             <li>
                                 <a href="{{ route('hutang') }}"
                                     class="{{ $sideTitle == 'hutang' ? 'mm-active' : '' }}">

@@ -140,6 +140,12 @@ Route::middleware('auth')->group(function () {
 
         Route::get('mutasi-piutang', [PDFController::class, 'm_piutang'])->name('m-piutang');
 
+        Route::get('daftar-hutang', [TransaksiController::class, 'daftar_hutang'])->name('d-hutang');
+
+        Route::get('laporan-hutang', [PDFController::class, 'lp_hutang'])->name('lp-hutang');
+
+        Route::get('mutasi-hutang', [PDFController::class, 'm_hutang'])->name('m-hutang');
+
         Route::get('transaksi-retail', [TransaksiController::class, '__retail'])->name('retail');
 
         Route::get('surat-jalan/{any?}', [PDFController::class, 's_jalan'])->name('s-jalan');

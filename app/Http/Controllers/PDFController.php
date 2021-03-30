@@ -101,11 +101,11 @@ class PDFController extends Controller
 
     public function lp_piutang()
     {
-        $data = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])->where(['jenis_transaksi' => 'penjualan'])->whereMonth('created_at', date('m'))->get();
+        $data = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])->where(['jenis_transaksi' => 'penjualan'])->orWhere(['jenis_transaksi' => 'pengiriman'])->whereMonth('created_at', date('m'))->get();
 
         $pdf = PDF::loadView('admin.transaksi.laporanpiutang', [
             'data' => $data,
-            'number' => CetakLaporan::generateNumber(['lpb_harian', date('m')])
+            'number' => CetakLaporan::generateNumber(['lp_piutang', date('m')])
         ])->setPaper('a4', 'landscape');
 
         $cetak = new CetakLaporan;
@@ -116,6 +116,25 @@ class PDFController extends Controller
         $cetak->save();
 
         return $pdf->stream('lp_piutang_' . date('d-m-Y_h-i-s') . '.pdf');
+    }
+
+    public function lp_hutang()
+    {
+        $data = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])->where(['jenis_transaksi' => 'pembelian'])->whereMonth('created_at', date('m'))->get();
+
+        $pdf = PDF::loadView('admin.transaksi.laporanhutang', [
+            'data' => $data,
+            'number' => CetakLaporan::generateNumber(['lp_hutang', date('m')])
+        ])->setPaper('a4', 'landscape');
+
+        $cetak = new CetakLaporan;
+        $cetak->id_kasir = Auth::user()->id;
+        $cetak->tanggal = now();
+        $cetak->jenis_laporan = 'lp_hutang';
+        $cetak->no_cetak = CetakLaporan::generateNumber(['lp_hutang', date('d-m-Y')]);
+        $cetak->save();
+
+        return $pdf->stream('lp_hutang_' . date('d-m-Y_h-i-s') . '.pdf');
     }
 
     public function s_jalan($resi = null)
@@ -155,5 +174,18 @@ class PDFController extends Controller
         ])->setPaper('a4', 'portrait');
 
         return $pdf->stream('mpiutang_' . date('d-m-Y_h-i-s') . '.pdf');
+    }
+
+    public function m_hutang()
+    {
+        $transaksi = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])->where('jenis_transaksi', 'pembelian')->get();
+
+        $pdf = PDF::loadView('admin.transaksi.mhutang', [
+            'transaksi' => $transaksi,
+            'member' => Member::all(),
+            'unit' => Member::select('unit')->where('unit', 0)->distinct('unit')->get(),
+        ])->setPaper('a4', 'portrait');
+
+        return $pdf->stream('mhutang_' . date('d-m-Y_h-i-s') . '.pdf');
     }
 }

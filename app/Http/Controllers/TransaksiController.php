@@ -354,6 +354,22 @@ class TransaksiController extends Controller
             ])->where([
                 'jenis_transaksi' => 'penjualan',
                 'is_lunas' => '0'
+            ])->orWhere([
+                'jenis_transaksi' => 'pengiriman',
+                'is_lunas' => '0'
+            ])->get()
+        ]);
+    }
+
+    public function daftar_hutang()
+    {
+        return view('admin.transaksi.daftarhutang', [
+            'sideTitle' => 'daftarhutang',
+            'data' => Transaksi::with([
+                'kasir', 'member', 'detail', 'piutang'
+            ])->where([
+                'jenis_transaksi' => 'pembelian',
+                'is_lunas' => '0'
             ])->get()
         ]);
     }

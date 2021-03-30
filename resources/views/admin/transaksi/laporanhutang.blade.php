@@ -84,7 +84,7 @@
 
     </style>
 
-    <title>Laporan Piutang</title>
+    <title>Laporan Hutang</title>
 </head>
 
 <body>
@@ -94,7 +94,7 @@
                 <thead>
                     <tr class="head-list">
                         <th colspan="2">
-                            <h4>BUKU PIUTANG</h4>
+                            <h4>BUKU HUTANG</h4>
                             <h4 style="margin-top: -16px">KOPERASI YAMUGHNI</h4>
                         </th>
                     </tr>
@@ -114,7 +114,7 @@
                     <tr style="height: 30px;">
                         <th scope="col" rowspan="2" style="width: 3%">NO.</th>
                         <th scope="col" colspan="2" style="width: 14%">FAKTUR</th>
-                        <th scope="col" rowspan="2">NAMA PEMBELI</th>
+                        <th scope="col" rowspan="2">NAMA SUPPLIER</th>
                         <th scope="col" rowspan="2">NAMA BARANG</th>
                         <th scope="col" rowspan="2" style="width: 8%">BANYAKNYA</th>
                         <th scope="col" rowspan="2">HARGA SATUAN (Rp.)</th>
@@ -189,7 +189,7 @@
                         @endif
                         @if ($loop->last)
                             <tr>
-                                <th colspan="8" style="text-align: right">TOTAL PIUTANG (Rp. )</th>
+                                <th colspan="8" style="text-align: right">TOTAL HUTANG (Rp. )</th>
                                 <td style="text-align: center">{{ $tp }}</td>
                                 <td style="text-align: center">{{ $tsp }}</td>
                                 <td></td>

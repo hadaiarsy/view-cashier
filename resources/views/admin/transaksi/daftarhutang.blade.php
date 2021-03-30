@@ -1,6 +1,6 @@
 @extends('admin.temp.template')
 
-@section('site-title', 'Daftar Piutang')
+@section('site-title', 'Daftar Hutang')
 
 @section('main-contents')
     <style>
@@ -139,7 +139,7 @@
 
     <div class="row">
         <div class="col-sm-3">
-            <h4>Daftar Piutang</h4>
+            <h4>Daftar Hutang</h4>
             <hr class="divider">
         </div>
     </div>
@@ -193,7 +193,7 @@
                         <th scope="col">No Resi</th>
                         <th scope="col">Tanggal</th>
                         <th scope="col">ID Kasir</th>
-                        <th scope="col">ID Member</th>
+                        <th scope="col">ID Supplier</th>
                         <th scope="col">Nama Member</th>
                         <th scope="col">Batas Waktu</th>
                         <th scope="col">Ket</th>
@@ -223,14 +223,14 @@
         {{-- </div> --}}
         <div class="col-lg d-flex flex-row-reverse">
             <div class="d-block m-2">
-                <a href="{{ route('lp-piutang') }}" target="_blank"><button type="button" class="btn btn-success pl-2"
+                <a href="{{ route('lp-hutang') }}" target="_blank"><button type="button" class="btn btn-success pl-2"
                         id="laporanPiutang">Generate
                         Laporan</button></a>
             </div>
             <div class="d-block m-2">
-                <a href="{{ route('m-piutang') }}" target="_blank"><button type="button"
+                <a href="{{ route('m-hutang') }}" target="_blank"><button type="button"
                         class="btn btn-success pl-2">Mutasi
-                        Piutang</button></a>
+                        Hutang</button></a>
             </div>
         </div>
     </div>
