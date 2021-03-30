@@ -144,7 +144,7 @@
         </div>
     </div>
 
-    <div class="row mt-3">
+    <div class="row mt-3 d-none">
         {{-- <div class="d-none"> --}}
         <div class="col-lg-5 form-inline d-flex">
             {{-- <input type="date" class="form-control mr-2" name="" id="tanggal_awal" value="{{ date('Y-m-d') }}"> --}}

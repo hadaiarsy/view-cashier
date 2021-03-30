@@ -20,6 +20,6 @@ class DetailPiutang extends Model
 
     public function transaksi()
     {
-        return $this->hasOne(Transaksi::class, 'transaksi_id', 'no_resi');
+        return $this->hasOne(Transaksi::class, 'no_resi', 'transaksi_id');
     }
 }

@@ -9,6 +9,7 @@ use App\Http\Controllers\DetailPiutangController;
 use App\Http\Controllers\JenisBarangController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\UserController;
+use App\Models\DetailPiutang;
 use App\Models\Transaksi;
 use Carbon\Carbon;
 use Facade\FlareClient\View;
@@ -222,7 +223,9 @@ Route::middleware('auth')->group(function () {
                 // \App\Models\Transaksi::whereDay('tanggal', '=', date('d'))->get()
                 // \App\Models\Transaksi::generateDpb()
                 // 'sata' => App\Models\Member::select('unit')->distinct('unit')->get(),
-                'data' => date('my', strtotime('29-03-2020')) == date('my') ? date('my') : NULL
+                // 'data' => date('my', strtotime('29-03-2020')) == date('my') ? date('my') : NULL
+                // 'data' => DetailPiutang::select('transaksi_id')->distinct('transaksi_id')->get()
+                'data' => DetailPiutang::with('transaksi')->get()
             ]);
             // return Carbon::now('Asia/Bangkok')->format('Y-m-d H:i:s');
 
