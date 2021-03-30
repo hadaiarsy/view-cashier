@@ -113,9 +113,9 @@
                         <th scope="col" rowspan="2">NAMA BARANG</th>
                         <th scope="col" rowspan="2" style="width: 6%">JUMLAH</th>
                         <th scope="col" rowspan="2">JUMLAH HARGA (Rp.)</th>
-                        <th scope="col" rowspan="2">TOTAL TUNAI (Rp.)</th>
-                        <th scope="col" rowspan="2">TAMBAHAN KREDIT (Rp.)</th>
-                        <th scope="col" rowspan="2">TAMBAHAN CICILAN (Rp.)</th>
+                        <th scope="col" rowspan="2">PENJUALAN TUNAI (Rp.)</th>
+                        <th scope="col" rowspan="2">PENJUALAN KREDIT (Rp.)</th>
+                        <th scope="col" rowspan="2">PEMBAYARAN CICILAN (Rp.)</th>
                         <th scope="col" rowspan="2">KET.</th>
                     </tr>
                     <tr style="height: 30px;">
