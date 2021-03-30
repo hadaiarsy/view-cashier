@@ -159,7 +159,7 @@
         if (is_login == 'succesful') {
             const Toast = Swal.mixin({
                 toast: true,
-                position: 'top-end',
+                position: 'top',
                 showConfirmButton: false,
                 timer: 3200,
                 timerProgressBar: true,

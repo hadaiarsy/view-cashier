@@ -42,10 +42,8 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
-        if ($user->level == 1 || $user->level == 2) {
-            $request->session()->flash('login', 'succesful');
-            return redirect('/transaksi');
-        }
+        $request->session()->flash('login', 'succesful');
+        return redirect('/');
     }
 
     /**

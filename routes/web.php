@@ -28,16 +28,13 @@ use Illuminate\Support\Facades\Auth;
 
 Route::middleware('auth')->group(function () {
     Route::get('/', function () {
-        return redirect('/dashboard');
-    });
+        return view('admin.dashboard', [
+            'sideTitle' => 'dashboard'
+        ]);
+    })->name('home');
 
     Route::get('login', function () {
         return view('admin.login');
-    });
-
-    Route::get('dashboard', function () {
-        // return view('admin.dashboard');
-        return redirect('/transaksi');
     });
 
     // Route Transaksi
