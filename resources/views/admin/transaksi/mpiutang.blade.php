@@ -81,12 +81,43 @@
             margin-top: 40px;
         }
 
+        @page {
+            margin: 100px 25px;
+        }
+
+        header {
+            position: fixed;
+            top: -60px;
+            left: 0px;
+            right: 0px;
+            height: 50px;
+        }
+
+        footer {
+            position: fixed;
+            bottom: -60px;
+            left: 0px;
+            right: 0px;
+            height: 50px;
+        }
+
+        p {
+            page-break-after: always;
+        }
+
+        p:last-child {
+            page-break-after: never;
+        }
+
     </style>
 
     <title>MUTASI PIUTANG</title>
 </head>
 
 <body>
+    {{-- <header>header on each page</header>
+    <footer>footer on each page</footer> --}}
+
     <div class="container">
         <div id="">
             <table id="dataMember">
@@ -194,10 +225,18 @@
                             @if ($loop->last)
                                 <tr>
                                     <th scope="col" colspan="2">TOTAL</th>
-                                    <td style="text-align: right"><strong>{{ $helper->money_format($tsaldoawalunit) }}</strong></td>
-                                    <td style="text-align: right"><strong>{{ $helper->money_format($tpenambahanunit) }}</strong></td>
-                                    <td style="text-align: right"><strong>{{ $helper->money_format($tpembayaranunit) }}</strong></td>
-                                    <td style="text-align: right"><strong>{{ $helper->money_format($tsaldoakhirunit) }}</strong></td>
+                                    <td style="text-align: right">
+                                        <strong>{{ $helper->money_format($tsaldoawalunit) }}</strong>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <strong>{{ $helper->money_format($tpenambahanunit) }}</strong>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <strong>{{ $helper->money_format($tpembayaranunit) }}</strong>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <strong>{{ $helper->money_format($tsaldoakhirunit) }}</strong>
+                                    </td>
                                 </tr>
                             @endif
                         @endforeach

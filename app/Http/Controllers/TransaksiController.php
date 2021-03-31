@@ -126,6 +126,7 @@ class TransaksiController extends Controller
             $transaksi->total = $request->total;
             $transaksi->diskon = $request->diskon;
             $transaksi->uang = $request->uang;
+            $transaksi->donasi = $request->donasi;
             $transaksi->is_lunas = $request->is_lunas;
             // End
 

@@ -210,7 +210,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('delete-member/{any}', [MemberController::class, 'delete']);
         Route::get('show-member/{any}', [MemberController::class, 'show']);
         Route::post('update-member', [MemberController::class, 'update']);
-        Route::get('getname-member', function () {
+        Route::get('getname-member/{any?}', function ($any = null) {
             // return response()->json([
             //     \App\Models\Transaksi::whereDate('tanggal', '>=', Carbon::parse('2021-02-01')->format('Y-m-d'))
             //         ->whereDate('tanggal', '<=', Carbon::parse('2021-02-05')->format('Y-m-d'))
@@ -224,8 +224,9 @@ Route::middleware('auth')->group(function () {
                 // 'sata' => App\Models\Member::select('unit')->distinct('unit')->get(),
                 // 'data' => date('my', strtotime('29-03-2020')) == date('my') ? date('my') : NULL
                 // 'data' => DetailPiutang::select('transaksi_id')->distinct('transaksi_id')->get()
-                'data' => $data,
-                'member' => Transaksi::with(['kasir', 'member', 'detail', 'piutang'])->where(['member_id' => $data->member_id])->get()
+                // 'data' => $data,
+                // 'member' => Transaksi::with(['kasir', 'member', 'detail', 'piutang'])->where(['member_id' => $data->member_id])->get()
+                // 'data' => (int)str_replace('.', '', preg_replace('/Rp /', '', $any))
             ]);
             // return Carbon::now('Asia/Bangkok')->format('Y-m-d H:i:s');
 

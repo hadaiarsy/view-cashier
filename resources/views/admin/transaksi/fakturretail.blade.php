@@ -113,9 +113,14 @@
                 </tr>
             @endforeach
             <tr>
-                <td colspan="3"><strong><i>Terbilang:</i></strong></td>
+                <td colspan="3" style="border: 0px"></td>
                 <th style="text-align: right; padding: 10px;">Total (Rp. )</th>
                 <td class="text-center">{{ $data->total }}</td>
+            </tr>
+            <tr>
+                <td colspan="3" style="border: 0px"></td>
+                <th style="text-align: right; padding: 10px;">Donasi (Rp. )</th>
+                <td class="text-center">{{ $data->donasi }}</td>
             </tr>
         </tbody>
     </table>

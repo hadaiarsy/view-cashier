@@ -64,7 +64,7 @@ class PDFController extends Controller
 
     public function lpj_harian()
     {
-        $data = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])->where('jenis_transaksi', ['penjualan', 'pengiriman'])->get();
+        $data = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])->where('jenis_transaksi', 'penjualan')->orWhere('jenis_transaksi', 'pengiriman')->get();
 
         $pdf = PDF::loadView('admin.transaksi.laporanharian', [
             'data' => $data,
@@ -76,7 +76,7 @@ class PDFController extends Controller
         $cetak->tanggal = now();
         $cetak->jenis_laporan = 'lpj_harian';
         $cetak->no_cetak = CetakLaporan::generateNumber(['lpj_harian', date('d-m-Y')]);
-        // $cetak->save();
+        $cetak->save();
 
         return $pdf->stream('lpj_harian_' . date('d-m-Y_h-i-s') . '.pdf');
     }
@@ -95,7 +95,7 @@ class PDFController extends Controller
         $cetak->tanggal = now();
         $cetak->jenis_laporan = 'lpb_harian';
         $cetak->no_cetak = CetakLaporan::generateNumber(['lpb_harian', date('d-m-Y')]);
-        // $cetak->save();
+        $cetak->save();
 
         return $pdf->stream('lpb_harian_' . date('d-m-Y_h-i-s') . '.pdf');
     }
@@ -114,7 +114,7 @@ class PDFController extends Controller
         $cetak->tanggal = now();
         $cetak->jenis_laporan = 'lp_piutang';
         $cetak->no_cetak = CetakLaporan::generateNumber(['lp_piutang', date('d-m-Y')]);
-        // $cetak->save();
+        $cetak->save();
 
         return $pdf->stream('lp_piutang_' . date('d-m-Y_h-i-s') . '.pdf');
     }
@@ -133,7 +133,7 @@ class PDFController extends Controller
         $cetak->tanggal = now();
         $cetak->jenis_laporan = 'lp_hutang';
         $cetak->no_cetak = CetakLaporan::generateNumber(['lp_hutang', date('d-m-Y')]);
-        // $cetak->save();
+        $cetak->save();
 
         return $pdf->stream('lp_hutang_' . date('d-m-Y_h-i-s') . '.pdf');
     }

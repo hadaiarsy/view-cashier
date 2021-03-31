@@ -23,8 +23,9 @@ class Transaksi extends Model
         'total',
         'diskon',
         'uang',
+        'donasi',
         'is_lunas',
-        'batas_waktu'
+        'batas_waktu',
     ];
 
     public static function incrementId()

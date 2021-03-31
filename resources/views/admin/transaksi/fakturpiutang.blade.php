@@ -263,7 +263,7 @@
                 text: 'https://www.yamughnibandung.org/'
             });
 
-            // window.print();
+            window.print();
 
         })
 
