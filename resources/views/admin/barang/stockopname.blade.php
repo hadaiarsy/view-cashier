@@ -120,28 +120,31 @@
                 </thead>
                 <tbody>
                     @foreach ($jenis as $j)
-                        <tr>
-                            <th scope="col">{{ $loop->iteration }}</th>
-                            <td colspan="4" style="text-align: left">
-                                <strong>{{ strtoupper($j->nama_jenis) }}</strong>
-                            </td>
-                        </tr>
-                        @foreach ($j->barang as $barang)
+                        @if (count($j->barang) > 0)
                             <tr>
-                                <td style="text-align: right">{{ $loop->iteration }}</td>
-                                <td style="text-align: left">{{ strtoupper($barang->nama) }}</td>
-                                <td style="text-align: right">
-                                    @foreach ($satuan as $s)
-                                        @if ($s->kode_barang == $barang->kode_barang)
-                                            {{ number_format($hb = $s->harga_beli, 0, ',', '.') }}
-                                        @endif
-                                    @endforeach
+                                <th scope="col">{{ $loop->iteration }}</th>
+                                <td colspan="4" style="text-align: left">
+                                    <strong>{{ strtoupper($j->nama_jenis) }}</strong>
                                 </td>
-                                <td style="text-align: right">{{ number_format($stok = $barang->stok, 0, ',', '.') }}
-                                </td>
-                                <td style="text-align: right">{{ number_format($hb * $stok, 0, ',', '.') }}</td>
                             </tr>
-                        @endforeach
+                            @foreach ($j->barang as $barang)
+                                <tr>
+                                    <td style="text-align: right">{{ $loop->iteration }}</td>
+                                    <td style="text-align: left">{{ strtoupper($barang->nama) }}</td>
+                                    <td style="text-align: right">
+                                        @foreach ($satuan as $s)
+                                            @if ($s->kode_barang == $barang->kode_barang)
+                                                {{ $helper->money_format($hb = $s->harga_beli) }}
+                                            @endif
+                                        @endforeach
+                                    </td>
+                                    <td style="text-align: right">
+                                        {{ $helper->money_format($stok = $barang->stok) }}
+                                    </td>
+                                    <td style="text-align: right">{{ $helper->money_format($hb * $stok) }}</td>
+                                </tr>
+                            @endforeach
+                        @endif
                     @endforeach
                 </tbody>
             </table>

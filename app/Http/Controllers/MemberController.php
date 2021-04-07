@@ -14,7 +14,7 @@ class MemberController extends Controller
      */
     public function index()
     {
-        $member = Member::where(['jenis_member' => 'customer'])->where('nama', 'not like', '%general-%')->get();
+        $member = Member::where(['jenis_member' => 'customer'])->where('nama', 'not like', '%general-%')->orderBy('unit', 'asc')->orderBy('no_anggota', 'asc')->get();
         return view('admin.member.daftarmember', [
             'member' => $member,
             'sideTitle' => 'member'
@@ -50,6 +50,7 @@ class MemberController extends Controller
     {
         $member = new Member;
         $member->kode_member = Member::incrementId((int)$request->unit);
+        $member->no_anggota = $request->no_anggota;
         $member->jenis_member = $request->jenis_member;
         $member->nama = $request->nama;
         $member->unit = $request->unit == '' ? 0 : $request->unit;
@@ -107,6 +108,7 @@ class MemberController extends Controller
         $member->where('kode_member', $request->kode_member_edit)
             ->update([
                 'jenis_member' => $request->jenis_member_edit,
+                'no_anggota' => $request->no_anggota_edit,
                 'nama' => $request->nama_edit,
                 'unit' => $request->unit_edit,
                 'telepon' => $request->telepon_edit,

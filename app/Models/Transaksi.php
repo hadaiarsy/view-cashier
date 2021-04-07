@@ -31,7 +31,7 @@ class Transaksi extends Model
     public static function incrementId()
     {
         $date = date('dmy');
-        $lastId = Self::withTrashed()->orderBy('no_resi', 'desc')->first();
+        $lastId = Self::withTrashed()->where('no_resi', 'like', '%WY-' . $date . '%')->orderBy('no_resi', 'desc')->first();
         if ($lastId) {
             $lastId = $lastId->no_resi;
             $lastId = preg_replace('/WY-/', '', $lastId);

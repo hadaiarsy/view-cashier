@@ -17,7 +17,7 @@ class CreateBarangsTable extends Migration
             $table->string('kode_barang')->primary();
             $table->string('barcode')->nullable();
             $table->string('nama');
-            $table->float('stok');
+            $table->double('stok', 12, 5);
             $table->timestamps();
             $table->softDeletes();
         });

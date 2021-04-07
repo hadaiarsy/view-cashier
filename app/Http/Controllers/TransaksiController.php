@@ -22,10 +22,12 @@ class TransaksiController extends Controller
     {
         $noResi = Transaksi::incrementId();
         $barang = Barang::with('satuan')->get();
+        $member = Member::where('jenis_member', 'customer')->where('unit', '!=', 0)->get();
         $sideTitle = "transaksi";
         return view('admin.transaksi.transaksi', [
             'noResi' => $noResi,
             'barang' => $barang,
+            'member' => $member,
             'sideTitle' => $sideTitle
         ]);
     }
@@ -34,10 +36,12 @@ class TransaksiController extends Controller
     {
         $noResi = Transaksi::incrementId();
         $barang = Barang::with('satuan')->get();
+        $member = Member::where('jenis_member', 'supplier')->where('unit', 'not like', 'general-')->get();
         $sideTitle = "pembelian";
         return view('admin.transaksi.pembelian', [
             'noResi' => $noResi,
             'barang' => $barang,
+            'member' => $member,
             'sideTitle' => $sideTitle
         ]);
     }
@@ -119,7 +123,7 @@ class TransaksiController extends Controller
             // Transaksi
             $transaksi = new Transaksi;
             $transaksi->no_resi = $noResi;
-            $transaksi->tanggal = $tanggal;
+            $transaksi->tanggal = $request->tanggal == '' ? $tanggal : $request->tanggal;
             $transaksi->jenis_transaksi = $request->jenis_transaksi;
             $transaksi->kasir_id = $idKasir;
             $transaksi->member_id = $memberId;
@@ -378,9 +382,11 @@ class TransaksiController extends Controller
     public function __retail()
     {
         $barang = Barang::with('satuan')->get();
+        $member = Member::where('jenis_member', 'customer')->where('unit', '!=', 0)->get();
         $sideTitle = "retail";
         return view('admin.transaksi.retail', [
             'barang' => $barang,
+            'member' => $member,
             'sideTitle' => $sideTitle
         ]);
     }

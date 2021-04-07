@@ -4,12 +4,17 @@ namespace App\Helper;
 
 class Helper
 {
-    public function money_format($number = 0, $currency = '')
+    public static function money_format($number = 0, $currency = '')
     {
-        return $currency . number_format($number, 0, ',', '.');
+        if (strpos(strval($number), '.')) {
+            $number = explode('.', $number);
+            return $currency . number_format($number[0], 0, ',', '.') . ',' . $number[1];
+        } else {
+            return $currency . number_format($number, 0, ',', '.');
+        }
     }
 
-    public function replace_money($number = 0)
+    public static function replace_money($number = 0)
     {
         return (int)str_replace('.', '', preg_replace('/Rp /', '', $number));
     }

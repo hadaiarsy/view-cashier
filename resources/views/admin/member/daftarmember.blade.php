@@ -5,7 +5,7 @@
 @section('main-contents')
     <div class="row">
         <div class="col-sm-3">
-            <h4>Daftar Member</h4>
+            <h4>Daftar Anggota</h4>
             <hr class="divider">
         </div>
     </div>
@@ -14,11 +14,11 @@
         <div class="col-md-3 border p-2">
             <form action="/store-member" method="post">
                 @csrf
-                <h5 class="mt-2 mb-3"><i class="fas fa-plus"></i> Tambah Member</h5>
+                <h5 class="mt-2 mb-3"><i class="fas fa-plus"></i> Tambah Anggota</h5>
                 <div class="row">
                     <div class="col">
                         <h6>
-                            <small class="text-muted">Data Member</small>
+                            <small class="text-muted">Data Anggota</small>
                         </h6>
                         <hr class="divider">
                     </div>
@@ -30,6 +30,12 @@
                             name="jenis_member">
                             <option value="customer">Customer</option>
                         </select>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="no_anggota" class="col-sm-4 col-form-label">No Anggota</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="no_anggota" name="no_anggota" placeholder="">
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -64,14 +70,14 @@
         <div class="col-md-8 border">
             <div class="p-2">
                 <div class="row">
-                    <h5 class="mt-2 mb-3"><i class="fas fa-cart-plus"></i> Detail Member</h5>
+                    <h5 class="mt-2 mb-3"><i class="fas fa-cart-plus"></i> Detail Anggota</h5>
                 </div>
                 <div class="row mt-3 overflow-auto">
                     <table class="table table-striped table-hover" id="tableMember">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Kode</th>
+                                <th scope="col">No Anggota</th>
                                 <th scope="col">Nama</th>
                                 <th scope="col">Unit</th>
                                 <th scope="col">Alamat</th>
@@ -82,7 +88,7 @@
                             @foreach ($member as $m)
                                 <tr>
                                     <th scope="col">{{ $loop->iteration }}</th>
-                                    <td>{{ $m->kode_member }}</td>
+                                    <td>{{ $m->no_anggota }}</td>
                                     <td>{{ $m->nama }}</td>
                                     <td>{{ $m->unit == null ? 'tidak ada' : $m->unit }}</td>
                                     <td>{{ $m->alamat }}</td>
@@ -91,8 +97,8 @@
                                             data-bs-toggle="modal" data-bs-target="#editModal"><i
                                                 class='fas fa-edit'></i></button>
                                         <button class="btn btn-sm btn-danger btnHapus" data-dataid="{{ $m->kode_member }}"
-                                            data-bs-toggle="modal" data-bs-target="#hapusModal"><i
-                                                class='fas fa-trash-alt'></i></button>
+                                            data-datanama="{{ $m->no_anggota . ' - ' . $m->nama }}" data-bs-toggle="modal"
+                                            data-bs-target="#hapusModal"><i class='fas fa-trash-alt'></i></button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -105,12 +111,12 @@
 @endsection
 
 @section('modals')
-    {{-- Modal Edit Satuan --}}
+    {{-- Modal Edit Anggota --}}
     <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel">Edit User</h5>
+                    <h5 class="modal-title" id="editModalLabel">Edit Anggota</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="/update-member" method="post">
@@ -124,6 +130,12 @@
                                     name="jenis_member_edit">
                                     <option value="customer">Customer</option>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <label for="no_anggota_edit" class="col-sm-4 col-form-label">No Anggota</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" name="no_anggota_edit" id="no_anggota_edit">
                             </div>
                         </div>
                         <div class="row mt-3">
@@ -160,17 +172,17 @@
         </div>
     </div>
 
-    {{-- Modal Hapus Satuan --}}
+    {{-- Modal Hapus Anggota --}}
     <div class="modal fade" id="hapusModal" tabindex="-1" aria-labelledby="hapusModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title text-danger" id="hapusModalLabel">Hapus User</h5>
+                    <h5 class="modal-title text-danger" id="hapusModalLabel">Hapus Anggota</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" name="kode_member_hapus" id="kode_member_hapus">
-                    <h6>Apa anda yakin akan menghapus?</h6>
+                    <h6>Apa anda yakin akan menghapus <strong><span id="nama_member_edit"></span></strong>?</h6>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -185,35 +197,49 @@
     <script>
         $(document).ready(function() {
             $("#tableMember").DataTable();
-            let btnEdit = $('.btnEdit');
-            for (let i = 0; i < btnEdit.length; i++) {
-                $(btnEdit[i]).on('click', function(e) {
-                    let kode = $(this).data('dataid');
-                    let token = document.head.querySelector('meta[name="csrf-token"]');
-                    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
-                    axios.get('/show-member/' + kode)
-                        .then((response) => {
-                            let member = response.data.member[0];
-                            console.log(member);
-                            $('#kode_member_edit').val(member.kode_member);
-                            $('#jenis_member_edit').val(member.jenis_member);
-                            $('#nama_edit').val(member.nama);
-                            $('#unit_edit').val(member.unit);
-                            $('#telepon_edit').val(member.telepon);
-                            $('#alamat_edit').val(member.alamat);
-                        }).catch((error) => {
-                            console.log(error)
-                        })
-                });
-            }
 
-            let btnHapus = $('.btnHapus');
-            for (let i = 0; i < btnHapus.length; i++) {
-                $(btnHapus[i]).on('click', function(e) {
-                    let kode = $(this).data('dataid');
-                    $('#kode_member_hapus').val(kode);
-                });
+            const fEdit = () => {
+                let btnEdit = $('.btnEdit');
+                for (let i = 0; i < btnEdit.length; i++) {
+                    $(btnEdit[i]).on('click', function(e) {
+                        let kode = $(this).data('dataid');
+                        let token = document.head.querySelector('meta[name="csrf-token"]');
+                        window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+                        axios.get('/show-member/' + kode)
+                            .then((response) => {
+                                let member = response.data.member[0];
+                                console.log(member);
+                                $('#kode_member_edit').val(member.kode_member);
+                                $('#no_anggota_edit').val(member.no_anggota);
+                                $('#jenis_member_edit').val(member.jenis_member);
+                                $('#nama_edit').val(member.nama);
+                                $('#unit_edit').val(member.unit);
+                                $('#telepon_edit').val(member.telepon);
+                                $('#alamat_edit').val(member.alamat);
+                            }).catch((error) => {
+                                console.log(error)
+                            })
+                    });
+                }
             }
+            setInterval(function() {
+                fEdit();
+            }, 1000);
+
+            const fHapus = () => {
+                let btnHapus = $('.btnHapus');
+                for (let i = 0; i < btnHapus.length; i++) {
+                    $(btnHapus[i]).on('click', function(e) {
+                        let kode = $(this).data('dataid');
+                        let nama = $(this).data('datanama');
+                        $('#kode_member_hapus').val(kode);
+                        $('#nama_member_edit').html(nama);
+                    });
+                }
+            }
+            setInterval(function() {
+                fHapus();
+            }, 1000);
 
             $('#btnModalHapus').on('click', function(e) {
                 let kode = $('#kode_member_hapus').val();

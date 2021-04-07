@@ -314,6 +314,7 @@
                 };
                 let kode = $("#kodeSupplier").val(data.kode);
             });
+            btnModalTambahSupplier();
             // end
 
             // get data barang
@@ -369,6 +370,7 @@
                 $('#namaSatuanPembelian').val(data.namaSatuan);
                 $('.alert-row-pembelian').hide();
             });
+            btnModalTambahPembelian();
             // end
 
             // check barang baru

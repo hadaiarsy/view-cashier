@@ -1,5 +1,6 @@
 <?php
 
+use App\Helper\Helper;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\BarangController;
@@ -216,7 +217,7 @@ Route::middleware('auth')->group(function () {
             //         ->whereDate('tanggal', '<=', Carbon::parse('2021-02-05')->format('Y-m-d'))
             //         ->get()
             // ]);
-            $data = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])->where(['no_resi' => 'WY-290321003'])->first();
+            // $data = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])->where(['no_resi' => 'WY-290321003'])->first();
             return response()->json([
                 // \App\Models\Transaksi::whereYear('tanggal', '=', '2021')->whereMonth('tanggal', '=', '02')->get()
                 // \App\Models\Transaksi::whereDay('tanggal', '=', date('d'))->get()
@@ -227,6 +228,7 @@ Route::middleware('auth')->group(function () {
                 // 'data' => $data,
                 // 'member' => Transaksi::with(['kasir', 'member', 'detail', 'piutang'])->where(['member_id' => $data->member_id])->get()
                 // 'data' => (int)str_replace('.', '', preg_replace('/Rp /', '', $any))
+                'data' => Helper::money_format($any)
             ]);
             // return Carbon::now('Asia/Bangkok')->format('Y-m-d H:i:s');
 

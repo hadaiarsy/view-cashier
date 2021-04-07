@@ -106,10 +106,11 @@
                                                     class='fas fa-edit'></i></button>
                                             <button class="btn btn-sm btn-danger btnHapus"
                                                 data-dataid="{{ $u->id }}" data-bs-toggle="modal"
-                                                data-bs-target="#hapusModal"><i class='fas fa-trash-alt'></i></button>
+                                                data-datanama="{{ $u->name }}" data-bs-target="#hapusModal"><i
+                                                    class='fas fa-trash-alt'></i></button>
                                             <button class="btn btn-sm btn-info ubah-password" id="ubahPassword"
-                                                data-dataid="{{ $u->id }}" data-bs-toggle="modal"
-                                                data-bs-target="#passwordModal"><i
+                                                data-dataid="{{ $u->id }}" data-datanama="{{ $u->name }}"
+                                                data-bs-toggle="modal" data-bs-target="#passwordModal"><i
                                                     class="fas fa-key text-white"></i></button>
                                         @endif
                                     </td>
@@ -124,7 +125,7 @@
 @endsection
 
 @section('modals')
-    {{-- Modal Edit Satuan --}}
+    {{-- Modal Edit User --}}
     <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -177,7 +178,7 @@
         </div>
     </div>
 
-    {{-- Modal Hapus Satuan --}}
+    {{-- Modal Hapus User --}}
     <div class="modal fade" id="hapusModal" tabindex="-1" aria-labelledby="hapusModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -187,7 +188,7 @@
                 </div>
                 <div class="modal-body">
                     <input type="hidden" name="id_hapus" id="idHapus">
-                    <h6>Apa anda yakin akan menghapus?</h6>
+                    <h6>Apa anda yakin akan menghapus <strong><span id="nama_member_edit"></span></strong>?</h6>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -230,34 +231,47 @@
     <script>
         $(document).ready(function() {
             $("#tableUser").DataTable();
-            let btnEdit = $('.btnEdit');
-            for (let i = 0; i < btnEdit.length; i++) {
-                $(btnEdit[i]).on('click', function(e) {
-                    let kode = $(this).data('dataid');
-                    let token = document.head.querySelector('meta[name="csrf-token"]');
-                    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
-                    axios.get('/show-user/' + kode)
-                        .then((response) => {
-                            let user = response.data.user[0];
-                            $('#id_edit').val(user.id);
-                            $('#email_modal').val(user.email);
-                            $('#name_modal').val(user.name);
-                            $('#no_hp_modal').val(user.no_hp);
-                            $('#no_hp_modal').val(user.no_hp);
-                            $('#level_modal').val(user.level);
-                        }).catch((error) => {
-                            console.log(error.response.data)
-                        })
-                });
-            }
 
-            let btnHapus = $('.btnHapus');
-            for (let i = 0; i < btnHapus.length; i++) {
-                $(btnHapus[i]).on('click', function(e) {
-                    let kode = $(this).data('dataid');
-                    $('#idHapus').val(kode);
-                });
+            const fEdit = () => {
+                let btnEdit = $('.btnEdit');
+                for (let i = 0; i < btnEdit.length; i++) {
+                    $(btnEdit[i]).on('click', function(e) {
+                        let kode = $(this).data('dataid');
+                        let token = document.head.querySelector('meta[name="csrf-token"]');
+                        window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+                        axios.get('/show-user/' + kode)
+                            .then((response) => {
+                                let user = response.data.user[0];
+                                $('#id_edit').val(user.id);
+                                $('#email_modal').val(user.email);
+                                $('#name_modal').val(user.name);
+                                $('#no_hp_modal').val(user.no_hp);
+                                $('#no_hp_modal').val(user.no_hp);
+                                $('#level_modal').val(user.level);
+                            }).catch((error) => {
+                                console.log(error.response.data)
+                            })
+                    });
+                }
             }
+            setInterval(function() {
+                fEdit();
+            }, 1000);
+
+            const fHapus = () => {
+                let btnHapus = $('.btnHapus');
+                for (let i = 0; i < btnHapus.length; i++) {
+                    $(btnHapus[i]).on('click', function(e) {
+                        let kode = $(this).data('dataid');
+                        let nama = $(this).data('datanama');
+                        $('#nama_member_edit').html(nama);
+                        $('#idHapus').val(kode);
+                    });
+                }
+            }
+            setInterval(function() {
+                fHapus();
+            }, 1000);
 
             $('#btnModalHapus').on('click', function(e) {
                 let kode = $('#idHapus').val();

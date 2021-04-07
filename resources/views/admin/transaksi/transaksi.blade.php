@@ -145,6 +145,12 @@
                                         </div>
                                         <label for="jenis_transaksi" class="col-sm-4 col-form-label">Tipe :</label>
                                     </div>
+                                    <div class="row d-flex flex-row-reverse mt-2">
+                                        <div class="col-6 input-group">
+                                            <input type="date" class="form-control pay-section" id="tanggal" value="">
+                                        </div>
+                                        <label for="inputPassword3" class="col-4 col-form-label">Tanggal :</label>
+                                    </div>
                                     {{-- <div style="display: none"> --}}
                                     <div class="row d-flex flex-row-reverse mt-2">
                                         <div class="col-6 input-group">
@@ -185,7 +191,7 @@
                                         </div>
                                         <label for="inputPassword3" class="col-4 col-form-label">Kembalian :</label>
                                     </div>
-                                    @if ($level != 3)
+                                    @if ($level != 5)
                                         <div class="row d-flex flex-row-reverse mt-2">
                                             <div
                                                 class="col position-relative form-check d-flex justify-content-end mt-2 mb-2">
@@ -236,7 +242,6 @@
                         <table class="table table-striped table-hover table-data-barang" id="tableItems">
                             <thead>
                                 <tr>
-                                    <th scope="col">Kode</th>
                                     <th scope="col">Barcode</th>
                                     <th scope="col">Barang</th>
                                     <th scope="col">Stok</th>
@@ -245,6 +250,24 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach ($barang as $b)
+                                    <tr>
+                                        <td>{{ $b->barcode }}</td>
+                                        <td>{{ $b->nama }}</td>
+                                        <td>{{ $b->stok . ' ' . $b->satuan[0]->nama_satuan }}</td>
+                                        <td>{{ $helper->money_format($b->satuan[0]->harga_jual, 'Rp ') }}</td>
+                                        <td>
+                                            <button class="btn btn-info btn-sm text-light add-item" data-bs-dismiss="modal"
+                                                aria-label="Close" id="addItem[]" data-datakode="{{ $b->kode_barang }}"
+                                                data-databarcode="{{ $b->barcode }}" data-datanama="{{ $b->nama }}"
+                                                data-datastok="{{ $b->stok * $b->satuan[0]->rasio }}"
+                                                data-datasatuan="{{ $b->satuan[0]->nama_satuan }}"
+                                                data-datarasio="{{ $b->satuan[0]->rasio }}"
+                                                data-dataharga="{{ $b->satuan[0]->harga_jual }}"><i
+                                                    class="fas fa-plus text-light"></i></button>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -288,7 +311,7 @@
                         <table class="table table-striped table-hover table-data-member" id="tableItemsMember">
                             <thead>
                                 <tr>
-                                    <th scope="col">Kode</th>
+                                    <th scope="col">No Anggota</th>
                                     <th scope="col">Nama</th>
                                     <th scope="col">Unit</th>
                                     <th scope="col">Alamat</th>
@@ -296,6 +319,18 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach ($member as $m)
+                                    <tr>
+                                        <td>{{ $m->no_anggota }}</td>
+                                        <td>{{ $m->nama }}</td>
+                                        <td>{{ $m->unit }}</td>
+                                        <td>{{ $m->alamat }}</td>
+                                        <td><button class="btn btn-info btn-sm text-light add-item-member"
+                                                data-bs-dismiss="modal" aria-label="Close"
+                                                data-datakode="{{ $m->kode_member }}"><i
+                                                    class="fas fa-plus text-light"></i></button></td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -319,10 +354,6 @@
             (alertCheck) ? $('#tambah').prop('disabled', true): $('#tambah').prop('disabled', false);
             $('#batal').click();
 
-            $('div#tableItems_length label select').on('change', function(e) {
-                btnModalTambah();
-            });
-
             $('div#tableItems_filter label input').on('change paste keyup', function(e) {
                 btnModalTambah();
             });
@@ -331,12 +362,24 @@
                 btnModalTambah();
             });
 
+            $('.paginate_button').each(function(e) {
+                $(this).on('click', function(e) {
+                    btnModalTambah();
+                })
+            });
+
             $('div#tableItemsMember_length label select').on('change', function(e) {
                 btnModalTambahMember();
             });
 
             $('div#tableItemsMember_filter label input').on('change paste keyup', function(e) {
                 btnModalTambahMember();
+            });
+
+            $('div#tableItemsMember_paginate a.paginate_button').each(function(e) {
+                $(this).on('click', function(e) {
+                    btnModalTambahMember();
+                })
             });
 
             // set focus
@@ -352,71 +395,73 @@
             // end
 
             // get data barang
-            let getBarang = () => axios.get(globalUrl + 'getall-barang/')
-                .then((response) => {
-                    let tipe = $('#jenis_transaksi').val();
-                    $('table.table-data-barang').find('tbody').empty();
-                    let data = response.data.barang;
-                    for (let i = 0; i < data.length; i++) {
-                        let dataLoop =
-                            "<tr><td><p>" +
-                            data[i].kode_barang +
-                            "</p></td><td><p>" +
-                            (data[i].barcode == null ? '-' : data[i].barcode) +
-                            "</p></td><td><p>" + data[i].nama +
-                            "</p></td><td><p>" + data[i].stok + ' ' + data[i].satuan[0].nama_satuan +
-                            "</p></td><td><p>" + currencyIdr(String((tipe == 'penjualan' ? data[i].satuan[0]
-                                .harga_jual : data[i]
-                                .satuan[0].harga_supl)), 'Rp ') +
-                            ' / ' +
-                            data[i]
-                            .satuan[
-                                0].nama_satuan +
-                            "</p></td><td><button class='btn btn-info btn-sm text-light add-item' data-bs-dismiss='modal'aria-label='Close' id='addItem[]' data-datakode='" +
-                            data[i].kode_barang + "' data-databarcode='" + data[i].barcode +
-                            "' data-datanama='" + data[i].nama + "' data-datastok='" + data[i].stok * data[i]
-                            .satuan[0].rasio + "' data-datasatuan='" + data[i].satuan[0].nama_satuan +
-                            "' data-datarasio='" + data[i].satuan[0].rasio +
-                            "' data-dataharga='" + (tipe == 'penjualan' ? data[i].satuan[0].harga_jual : data[i]
-                                .satuan[0].harga_supl) +
-                            "'><i class='fas fa-plus text-light'></i></button></td></tr>";
-                        $('.table-data-barang').find('tbody').append(dataLoop);
-                        btnModalTambah();
-                    }
-                }).catch((error) => {
-                    console.log(error);
-                })
-            getBarang();
+            // let getBarang = () => axios.get(globalUrl + 'getall-barang/')
+            //     .then((response) => {
+            //         let tipe = $('#jenis_transaksi').val();
+            //         $('table.table-data-barang').find('tbody').empty();
+            //         let data = response.data.barang;
+            //         for (let i = 0; i < data.length; i++) {
+            //             let dataLoop =
+            //                 "<tr><td><p>" +
+            //                 data[i].kode_barang +
+            //                 "</p></td><td><p>" +
+            //                 (data[i].barcode == null ? '-' : data[i].barcode) +
+            //                 "</p></td><td><p>" + data[i].nama +
+            //                 "</p></td><td><p>" + data[i].stok + ' ' + data[i].satuan[0].nama_satuan +
+            //                 "</p></td><td><p>" + currencyIdr(String((tipe == 'penjualan' ? data[i].satuan[0]
+            //                     .harga_jual : data[i]
+            //                     .satuan[0].harga_supl)), 'Rp ') +
+            //                 ' / ' +
+            //                 data[i]
+            //                 .satuan[
+            //                     0].nama_satuan +
+            //                 "</p></td><td><button class='btn btn-info btn-sm text-light add-item' data-bs-dismiss='modal'aria-label='Close' id='addItem[]' data-datakode='" +
+            //                 data[i].kode_barang + "' data-databarcode='" + data[i].barcode +
+            //                 "' data-datanama='" + data[i].nama + "' data-datastok='" + data[i].stok * data[i]
+            //                 .satuan[0].rasio + "' data-datasatuan='" + data[i].satuan[0].nama_satuan +
+            //                 "' data-datarasio='" + data[i].satuan[0].rasio +
+            //                 "' data-dataharga='" + (tipe == 'penjualan' ? data[i].satuan[0].harga_jual : data[i]
+            //                     .satuan[0].harga_supl) +
+            //                 "'><i class='fas fa-plus text-light'></i></button></td></tr>";
+            //             $('.table-data-barang').find('tbody').append(dataLoop);
+            //             btnModalTambah();
+            //             $("#tableItems").DataTable();
+            //         }
+            //     }).catch((error) => {
+            //         console.log(error);
+            //     })
+            // getBarang();
             // end
 
             // tipe
-            $('#jenis_transaksi').change(function(e) {
-                getBarang();
-            });
+            // $('#jenis_transaksi').change(function(e) {
+            //     getBarang();
+            // });
             // end
 
             // get data member
-            let getMember = () => axios.get(globalUrl + 'getall-member/')
-                .then((response) => {
-                    $('table.table-data-member').find('tbody').empty();
-                    let data = response.data.member;
-                    for (let i = 0; i < data.length; i++) {
-                        let dataLoop =
-                            "<tr><td><p>" +
-                            data[i].kode_member +
-                            "</p></td><td><p>" +
-                            data[i].nama +
-                            "</p></td><td><p>" + data[i].unit +
-                            "</p></td><td><p>" + data[i].alamat +
-                            "</p></td><td><button class='btn btn-info btn-sm text-light add-item-member' data-bs-dismiss='modal'aria-label='Close' data-datakode='" +
-                            data[i].kode_member + "'><i class='fas fa-plus text-light'></i></button></td></tr>";
-                        $('.table-data-member').find('tbody').append(dataLoop);
-                        btnModalTambahMember();
-                    }
-                }).catch((error) => {
-                    console.log(error);
-                })
-            getMember();
+            // let getMember = () => axios.get(globalUrl + 'getall-member/')
+            //     .then((response) => {
+            //         $('table.table-data-member').find('tbody').empty();
+            //         let data = response.data.member;
+            //         for (let i = 0; i < data.length; i++) {
+            //             let dataLoop =
+            //                 "<tr><td><p>" +
+            //                 data[i].kode_member +
+            //                 "</p></td><td><p>" +
+            //                 data[i].nama +
+            //                 "</p></td><td><p>" + data[i].unit +
+            //                 "</p></td><td><p>" + data[i].alamat +
+            //                 "</p></td><td><button class='btn btn-info btn-sm text-light add-item-member' data-bs-dismiss='modal'aria-label='Close' data-datakode='" +
+            //                 data[i].kode_member + "'><i class='fas fa-plus text-light'></i></button></td></tr>";
+            //             $('.table-data-member').find('tbody').append(dataLoop);
+            //             btnModalTambahMember();
+            //             $("#tableItemsMember").DataTable();
+            //         }
+            //     }).catch((error) => {
+            //         console.log(error);
+            //     })
+            // getMember();
             // end
 
             // btn member
@@ -426,6 +471,9 @@
                 };
                 let kode = $("#kodeMember").val(data.kode);
             });
+            setInterval(function() {
+                btnModalTambahMember();
+            }, 1000);
             // end
 
             // button batal
@@ -633,6 +681,9 @@
                 $('#tambah').prop('disabled', false);
                 $('#diskon').change();
             });
+            setInterval(function() {
+                btnModalTambah();
+            }, 1000);
             // end
 
             // tambah row transaksi
@@ -768,12 +819,7 @@
                 let teleponMember = $('#teleponCust').val();
                 let alamatMember = $('#alamatCust').val();
                 let isLunas = piutangcheck();
-                let d = new Date();
-                let month = d.getMonth() + 1;
-                let day = d.getDate();
-                let outputDate = (day < 10 ? '0' : '') + day + '-' +
-                    (month < 10 ? '0' : '') + month + '-' +
-                    d.getFullYear();
+                let tanggal = $('#tanggal').val();
                 let noResi = $("#noResi").val();
                 let ttlSm = $("#totalText").html();
                 let diskon = Number($("#diskon").val());
@@ -791,7 +837,7 @@
                     });
                 }
                 let data = {
-                    outputDate: outputDate,
+                    tanggal: tanggal,
                     ttlSm: ttlSm,
                     isLunas: isLunas,
                     diskon: diskon,
@@ -804,7 +850,7 @@
                 window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
                 axios.post(globalUrl + 'simpan-transaksi', {
                         no_resi: noResi,
-                        tanggal: outputDate,
+                        tanggal: tanggal,
                         jenis_transaksi: $('#jenis_transaksi').val(),
                         kasir_id: idKasir,
                         nama_member: namaMember,
@@ -823,8 +869,8 @@
                         console.log(response.data);
                         data['idKasir'] = response.data.id_kasir;
                         data['noResi'] = response.data.no_resi;
-                        getMember();
-                        getBarang();
+                        // getMember();
+                        // getBarang();
                         printStruk(data);
                         let kmblText = $('#kmblTotal').val() == '' ? '-' : $('#kmblTotal').val();
                         let textSwal = "KEMBALI : " + kmblText;
@@ -832,8 +878,10 @@
                             textSwal,
                             'Transaksi Sukses!',
                             'success'
-                        )
-                        $('#batal').click();
+                        ).then((result) => {
+                            $('#batal').click();
+                            location.reload();
+                        })
                     })
                     .catch((error) => {
                         console.log(error.response)
