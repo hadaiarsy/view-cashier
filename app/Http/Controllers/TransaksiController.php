@@ -304,7 +304,7 @@ class TransaksiController extends Controller
         $transaksi = $transaksi->with(['detail', 'kasir', 'member'])->find(['no_resi', $kode])->first();
         return response()->json([
             'transaksi' => $transaksi
-        ], 500);
+        ], 200);
     }
 
     /**
@@ -339,6 +339,17 @@ class TransaksiController extends Controller
     public function destroy(Transaksi $transaksi)
     {
         //
+    }
+
+    public function delete(Request $request, Transaksi $transaksi)
+    {
+        if ($transaksi->where('no_resi', $request->id_hapus)->delete()) {
+            $request->session()->flash('hapus', 'succesful');
+            return redirect('daftar-transaksi');
+        } else {
+            $request->session()->flash('hapus', 'unsuccess');
+            return redirect('daftar-transaksi');
+        }
     }
 
     public function member_piutang($kode)

@@ -4,7 +4,7 @@
 
 @section('main-contents')
     <div class="row">
-        <div class="col-sm-2">
+        <div class="col-sm-3">
             <h4>Daftar Jenis Barang</h4>
             <hr class="divider">
         </div>

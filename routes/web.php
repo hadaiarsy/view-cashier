@@ -42,6 +42,8 @@ Route::middleware('auth')->group(function () {
     Route::group([''], function () {
         Route::get('transaksi', [TransaksiController::class, 'index'])->name('transaksi');
 
+        Route::post('hapus-transaksi', [TransaksiController::class, 'delete'])->name('hapus-transaksi');
+
         Route::get('pembelian', [TransaksiController::class, '__pembelian'])->name('pembelian');
 
         Route::get('get-no-dpb', function () {

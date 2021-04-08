@@ -85,8 +85,10 @@
                                 @if ($level == 1)
                                     Super Admin
                                 @elseif($level == 2)
-                                    Administrator
-                                @elseif($level == 3)
+                                    Accounting
+                                @elseif($level == 3 || $level == 4)
+                                    Admin
+                                @elseif($level == 5)
                                     Kasir
                                 @endif
                             </div>

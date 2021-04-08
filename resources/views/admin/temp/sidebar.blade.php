@@ -135,7 +135,7 @@
                                     <a href="{{ route('piutang') }}"
                                         class="{{ $sideTitle == 'piutang' ? 'mm-active' : '' }}">
                                         <i class="metismenu-icon"></i>
-                                        Input Piutang
+                                        Cicilan Piutang
                                     </a>
                                 </li>
                             </ul>
@@ -164,7 +164,7 @@
                                     <a href="{{ route('hutang') }}"
                                         class="{{ $sideTitle == 'hutang' ? 'mm-active' : '' }}">
                                         <i class="metismenu-icon"></i>
-                                        Input Hutang
+                                        Cicilan Hutang
                                     </a>
                                 </li>
                             </ul>

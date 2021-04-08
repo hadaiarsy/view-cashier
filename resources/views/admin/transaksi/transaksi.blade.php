@@ -251,22 +251,26 @@
                             </thead>
                             <tbody>
                                 @foreach ($barang as $b)
-                                    <tr>
-                                        <td>{{ $b->barcode }}</td>
-                                        <td>{{ $b->nama }}</td>
-                                        <td>{{ $b->stok . ' ' . $b->satuan[0]->nama_satuan }}</td>
-                                        <td>{{ $helper->money_format($b->satuan[0]->harga_jual, 'Rp ') }}</td>
-                                        <td>
-                                            <button class="btn btn-info btn-sm text-light add-item" data-bs-dismiss="modal"
-                                                aria-label="Close" id="addItem[]" data-datakode="{{ $b->kode_barang }}"
-                                                data-databarcode="{{ $b->barcode }}" data-datanama="{{ $b->nama }}"
-                                                data-datastok="{{ $b->stok * $b->satuan[0]->rasio }}"
-                                                data-datasatuan="{{ $b->satuan[0]->nama_satuan }}"
-                                                data-datarasio="{{ $b->satuan[0]->rasio }}"
-                                                data-dataharga="{{ $b->satuan[0]->harga_jual }}"><i
-                                                    class="fas fa-plus text-light"></i></button>
-                                        </td>
-                                    </tr>
+                                    @if (count($b->satuan) > 0)
+                                        <tr>
+                                            <td>{{ $b->barcode }}</td>
+                                            <td>{{ $b->nama }}</td>
+                                            <td>{{ $b->stok . ' ' . $b->satuan[0]->nama_satuan }}</td>
+                                            <td>{{ $helper->money_format($b->satuan[0]->harga_jual, 'Rp ') }}</td>
+                                            <td>
+                                                <button class="btn btn-info btn-sm text-light add-item"
+                                                    data-bs-dismiss="modal" aria-label="Close" id="addItem[]"
+                                                    data-datakode="{{ $b->kode_barang }}"
+                                                    data-databarcode="{{ $b->barcode }}"
+                                                    data-datanama="{{ $b->nama }}"
+                                                    data-datastok="{{ $b->stok * $b->satuan[0]->rasio }}"
+                                                    data-datasatuan="{{ $b->satuan[0]->nama_satuan }}"
+                                                    data-datarasio="{{ $b->satuan[0]->rasio }}"
+                                                    data-dataharga="{{ $b->satuan[0]->harga_jual }}"><i
+                                                        class="fas fa-plus text-light"></i></button>
+                                            </td>
+                                        </tr>
+                                    @endif
                                 @endforeach
                             </tbody>
                         </table>
