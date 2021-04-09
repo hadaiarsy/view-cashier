@@ -35,13 +35,13 @@
                 <div class="row mb-3">
                     <label for="no_anggota" class="col-sm-4 col-form-label">No Anggota</label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="no_anggota" name="no_anggota" placeholder="">
+                        <input type="text" class="form-control" id="no_anggota" name="no_anggota" placeholder="" required>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <label for="nama" class="col-sm-4 col-form-label">Nama :</label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="nama" name="nama" placeholder="">
+                        <input type="text" class="form-control" id="nama" name="nama" placeholder="" required>
                     </div>
                 </div>
                 <div class="row mb-3 d-none">
@@ -53,7 +53,7 @@
                 <div class="row mb-3">
                     <label for="unit" class="col-sm-4 col-form-label">Unit :</label>
                     <div class="col-sm-8">
-                        <input type="number" class="form-control" id="unit" name="unit" placeholder="">
+                        <input type="number" class="form-control" id="unit" name="unit" placeholder="" required>
                     </div>
                 </div>
                 <div class="row mb-3">

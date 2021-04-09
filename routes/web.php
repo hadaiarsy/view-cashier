@@ -230,7 +230,7 @@ Route::middleware('auth')->group(function () {
                 // 'data' => $data,
                 // 'member' => Transaksi::with(['kasir', 'member', 'detail', 'piutang'])->where(['member_id' => $data->member_id])->get()
                 // 'data' => (int)str_replace('.', '', preg_replace('/Rp /', '', $any))
-                'data' => Helper::money_format($any)
+                'data' => range('A', 'ZZZ')
             ]);
             // return Carbon::now('Asia/Bangkok')->format('Y-m-d H:i:s');
 

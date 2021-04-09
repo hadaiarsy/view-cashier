@@ -119,17 +119,21 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <?php
+                    $noJenis = 0;
+                    $alphabet = range('A', 'Z');
+                    ?>
                     @foreach ($jenis as $j)
                         @if (count($j->barang) > 0)
                             <tr>
-                                <th scope="col">{{ $loop->iteration }}</th>
+                                <th scope="col">{{ $alphabet[$noJenis] }}.</th>
                                 <td colspan="4" style="text-align: left">
                                     <strong>{{ strtoupper($j->nama_jenis) }}</strong>
                                 </td>
                             </tr>
                             @foreach ($j->barang as $barang)
                                 <tr>
-                                    <td style="text-align: right">{{ $loop->iteration }}</td>
+                                    <td style="text-align: right">{{ $loop->iteration }}.</td>
                                     <td style="text-align: left">{{ strtoupper($barang->nama) }}</td>
                                     <td style="text-align: right">
                                         @foreach ($satuan as $s)
@@ -144,6 +148,7 @@
                                     <td style="text-align: right">{{ $helper->money_format($hb * $stok) }}</td>
                                 </tr>
                             @endforeach
+                            <?php $noJenis += 1; ?>
                         @endif
                     @endforeach
                 </tbody>

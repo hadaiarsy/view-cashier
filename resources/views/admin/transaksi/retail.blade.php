@@ -145,6 +145,12 @@
                                         </div>
                                         <label for="jenis_transaksi" class="col-sm-4 col-form-label">Tipe :</label>
                                     </div>
+                                    <div class="row d-flex flex-row-reverse mt-2">
+                                        <div class="col-6 input-group">
+                                            <input type="date" class="form-control pay-section" id="tanggal" value="">
+                                        </div>
+                                        <label for="inputPassword3" class="col-4 col-form-label">Tanggal :</label>
+                                    </div>
                                     {{-- <div style="display: none"> --}}
                                     <div class="row d-flex flex-row-reverse mt-2">
                                         <div class="col-6 input-group">
@@ -741,12 +747,7 @@
                 let teleponMember = $('#teleponCust').val();
                 let alamatMember = $('#alamatCust').val();
                 let isLunas = piutangcheck();
-                let d = new Date();
-                let month = d.getMonth() + 1;
-                let day = d.getDate();
-                let outputDate = (day < 10 ? '0' : '') + day + '-' +
-                    (month < 10 ? '0' : '') + month + '-' +
-                    d.getFullYear();
+                let tanggal = $('#tanggal').val();
                 let noResi = $("#noResi").val();
                 let ttlSm = $("#totalText").html();
                 let diskon = Number($("#diskon").val());
@@ -765,7 +766,7 @@
                     });
                 }
                 let data = {
-                    outputDate: outputDate,
+                    tanggal: tanggal,
                     ttlSm: ttlSm,
                     isLunas: isLunas,
                     diskon: diskon,
@@ -779,7 +780,7 @@
                 window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
                 axios.post(globalUrl + 'simpan-transaksi', {
                         no_resi: noResi,
-                        tanggal: outputDate,
+                        tanggal: tanggal,
                         jenis_transaksi: $('#jenis_transaksi').val(),
                         kasir_id: idKasir,
                         nama_member: namaMember,

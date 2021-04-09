@@ -49,6 +49,11 @@ class Member extends Model
             $lastId = (int)$lastId[1] + 1;
             $lastId = str_pad($lastId, 2, "0", STR_PAD_LEFT);
             $lastId = 'U-' . str_pad($unit, 2, "0", STR_PAD_LEFT) . '-' . $lastId;
+            // $x = 1;
+            // while (Self::withTrashed()->where('kode_member', $lastId)->first()) {
+            //     $lastId = 'U-' . str_pad($unit, 2, "0", STR_PAD_LEFT) . '-' . ($lastId + $x);
+            //     ++$x;
+            // }
             return $lastId;
         } else {
             return 'U-' . str_pad($unit, 2, "0", STR_PAD_LEFT) . '-01';

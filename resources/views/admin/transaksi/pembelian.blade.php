@@ -314,7 +314,9 @@
                 };
                 let kode = $("#kodeSupplier").val(data.kode);
             });
-            btnModalTambahSupplier();
+            setInterval(function() {
+                btnModalTambahSupplier();
+            }, 1000)
             // end
 
             // get data barang
@@ -350,7 +352,9 @@
                 }).catch((error) => {
                     console.log(error);
                 })
-            getPembelianBarang();
+            setInterval(function() {
+                getPembelianBarang();
+            }, 1000)
             // end
 
             // isi form transaksi tombol modal tambah
@@ -370,7 +374,9 @@
                 $('#namaSatuanPembelian').val(data.namaSatuan);
                 $('.alert-row-pembelian').hide();
             });
-            btnModalTambahPembelian();
+            setInterval(function() {
+                btnModalTambahPembelian();
+            }, 1000)
             // end
 
             // check barang baru
