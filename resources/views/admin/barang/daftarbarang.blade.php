@@ -113,17 +113,19 @@
                         </thead>
                         <tbody>
                             @foreach ($barang as $item)
-                                <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $item->kode_barang }}</td>
-                                    <td>{{ $item->nama }}</td>
-                                    <td>{{ $item->stok . ' ' . $item->satuan[0]->nama_satuan }}</td>
-                                    <td>{{ $jenis[$item->id_jenis - 1]->nama_jenis }}</td>
-                                    <td>
-                                        <a href='show-barang/{{ $item->kode_barang }}' class='btn btn-primary btn-sm'><i
-                                                class='far fa-eye'></i></a>
-                                    </td>
-                                </tr>
+                                @if (count($item->satuan) > 0)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $item->kode_barang }}</td>
+                                        <td>{{ $item->nama }}</td>
+                                        <td>{{ $item->stok . ' ' . $item->satuan[0]->nama_satuan }}</td>
+                                        <td>{{ $jenis[$item->id_jenis - 1]->nama_jenis }}</td>
+                                        <td>
+                                            <a href='show-barang/{{ $item->kode_barang }}' class='btn btn-primary btn-sm'><i
+                                                    class='far fa-eye'></i></a>
+                                        </td>
+                                    </tr>
+                                @endif
                             @endforeach
                         </tbody>
                     </table>
