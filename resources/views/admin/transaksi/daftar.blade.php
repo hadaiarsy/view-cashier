@@ -194,8 +194,8 @@
                         <th scope="col">No Resi</th>
                         <th scope="col">Tanggal</th>
                         <th scope="col">ID Kasir</th>
-                        <th scope="col">ID Member</th>
-                        <th scope="col">Nama Member</th>
+                        <th scope="col">Unit Anggota</th>
+                        <th scope="col">Nama Anggota</th>
                         <th scope="col">Total</th>
                         <th scope="col">Ket</th>
                         <th scope="col">Option</th>
@@ -208,7 +208,7 @@
                             <td>{{ $t->no_resi }}</td>
                             <td>{{ date('Y-m-d', strtotime($t->tanggal)) }}</td>
                             <td>{{ $t->kasir->name }}</td>
-                            <td>{{ $t->member->kode_member }}</td>
+                            <td>{{ $t->member->unit == 0 ? '-' : $t->member->unit }}</td>
                             <td>{{ $t->member->nama }}</td>
                             <td class="total-row">{{ $t->total }}</td>
                             <td>{{ $t->is_lunas ? 'Lunas' : 'Piutang' }}</td>
@@ -257,6 +257,7 @@
                     @csrf
                     <div class="modal-body">
                         <input type="hidden" name="id_hapus" id="idHapus">
+                        <input type="hidden" name="jenis_hapus" id="jenisHapus" value="penjualan">
                         <h6>Apa anda yakin akan menghapus transaksi <strong><span id="transaksi_edit"></span></strong>?</h6>
                     </div>
                     <div class="modal-footer">

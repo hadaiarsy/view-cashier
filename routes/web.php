@@ -56,6 +56,8 @@ Route::middleware('auth')->group(function () {
 
         Route::get('hutang', [DetailPiutangController::class, 'hutang'])->name('hutang');
 
+        Route::get('input-saldo-awal-hutang', [DetailPiutangController::class, 'sa-hutang'])->name('sa-hutang');
+
         Route::get('get-piutang/{any}', [DetailPiutangController::class, 'show']);
 
         Route::post('store-piutang', [DetailPiutangController::class, 'store']);

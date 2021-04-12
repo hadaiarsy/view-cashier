@@ -193,8 +193,8 @@
                         <th scope="col">No Resi</th>
                         <th scope="col">Tanggal</th>
                         <th scope="col">ID Kasir</th>
-                        <th scope="col">ID Member</th>
-                        <th scope="col">Nama Member</th>
+                        <th scope="col">ID Anggota</th>
+                        <th scope="col">Nama Anggota</th>
                         <th scope="col">Batas Waktu</th>
                         <th scope="col">Ket</th>
                         <th scope="col">Option</th>

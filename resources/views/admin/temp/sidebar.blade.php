@@ -145,7 +145,7 @@
                     {{-- hutang --}}
                     @if ($level == 1 || $level == 2 || $level == 4)
                         <li>
-                            <a href="#" class="<?php if ($sideTitle == 'daftarhutang' || $sideTitle == '' || $sideTitle == 'hutang') {
+                            <a href="#" class="<?php if ($sideTitle == 'daftarhutang' || $sideTitle == 'sa-hutang' || $sideTitle == 'hutang') {
                                 echo 'mm-active';
                             } ?>">
                                 <i class="metismenu-icon pe-7s-cash"></i>
@@ -165,6 +165,13 @@
                                         class="{{ $sideTitle == 'hutang' ? 'mm-active' : '' }}">
                                         <i class="metismenu-icon"></i>
                                         Cicilan Hutang
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('sa-hutang') }}"
+                                        class="{{ $sideTitle == 'sa-hutang' ? 'mm-active' : '' }}">
+                                        <i class="metismenu-icon"></i>
+                                        Input Saldo Awal Hutang
                                     </a>
                                 </li>
                             </ul>

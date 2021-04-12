@@ -213,6 +213,41 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach ($barang as $b)
+                                    @if (count($b->satuan) > 0)
+                                        <tr>
+                                            <td>
+                                                <p>{{ $b->kode_barang }}</p>
+                                            </td>
+                                            <td>
+                                                <p>{{ $b->barcode }}</p>
+                                            </td>
+                                            <td>
+                                                <p>{{ $b->nama }}</p>
+                                            </td>
+                                            <td>
+                                                <p>{{ $b->stok * $b->satuan[0]->rasio . ' / ' . $b->satuan[0]->nama_satuan }}
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p>{{ $helper->money_format($b->satuan[0]->harga_beli, 'Rp ') }}</p>
+                                            </td>
+                                            <td>
+                                                <button class='btn btn-info btn-sm text-light add-item-pembelian-modal'
+                                                    data-bs-dismiss='modal' aria-label='Close' id='addItemPembelianModal[]'
+                                                    data-datakode='{{ $b->kode_barang }}'
+                                                    data-databarcode='{{ $b->barcode }}'
+                                                    data-datanama='{{ $b->nama }}'
+                                                    data-datastok='{{ $b->stok * $b->satuan[0]->rasio }}'
+                                                    data-datasatuan='{{ $b->satuan[0]->nama_satuan }}'
+                                                    data-datarasio='{{ $b->satuan[0]->rasio }}'
+                                                    data-datahargabeli='{{ $b->satuan[0]->harga_beli }}'>
+                                                    <i class='fas fa-plus text-light'></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -264,6 +299,26 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach ($member as $sup)
+                                    <tr>
+                                        <td>
+                                            <p>{{ $sup->kode_member }}</p>
+                                        </td>
+                                        <td>
+                                            <p>{{ $sup->nama }}</p>
+                                        </td>
+                                        <td>
+                                            <p>{{ $sup->alamat }}</p>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-info btn-sm text-light add-item-supplier"
+                                                data-bs-dismiss="modal" aria-label="Close"
+                                                data-datakode="{{ $sup->kode_member }}">
+                                                <i class="fas fa-plus text-light"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -277,34 +332,35 @@
     <script>
         $(document).ready(function() {
             $("#tableItemsSupplier").DataTable();
+            $("#tableItemsPembelianModal").DataTable();
 
             // get supplier
-            let getSupplier = () => {
-                axios.get(globalUrl + 'getall-supplier/')
-                    .then((response) => {
-                        console.log(response.data);
-                        $('table.table-data-supplier').find('tbody').empty();
-                        let data = response.data.member;
-                        console.table(data);
-                        for (let i = 0; i < data.length; i++) {
-                            let dataLoop =
-                                "<tr><td><p>" +
-                                data[i].kode_member +
-                                "</p></td><td><p>" +
-                                data[i].nama +
-                                "</p></td><td><p>" + data[i].alamat +
-                                "</p></td><td><button class='btn btn-info btn-sm text-light add-item-supplier' data-bs-dismiss='modal'aria-label='Close' data-datakode='" +
-                                data[i].kode_member +
-                                "'><i class='fas fa-plus text-light'></i></button></td></tr>";
-                            $('.table-data-supplier').find('tbody').append(dataLoop);
-                            btnModalTambahSupplier();
-                        }
-                    })
-                    .catch((error) => {
-                        console.log(error.response)
-                    })
-            };
-            getSupplier();
+            // let getSupplier = () => {
+            //     axios.get(globalUrl + 'getall-supplier/')
+            //         .then((response) => {
+            //             console.log(response.data);
+            //             $('table.table-data-supplier').find('tbody').empty();
+            //             let data = response.data.member;
+            //             console.table(data);
+            //             for (let i = 0; i < data.length; i++) {
+            //                 let dataLoop =
+            //                     "<tr><td><p>" +
+            //                     data[i].kode_member +
+            //                     "</p></td><td><p>" +
+            //                     data[i].nama +
+            //                     "</p></td><td><p>" + data[i].alamat +
+            //                     "</p></td><td><button class='btn btn-info btn-sm text-light add-item-supplier' data-bs-dismiss='modal'aria-label='Close' data-datakode='" +
+            //                     data[i].kode_member +
+            //                     "'><i class='fas fa-plus text-light'></i></button></td></tr>";
+            //                 $('.table-data-supplier').find('tbody').append(dataLoop);
+            //                 btnModalTambahSupplier();
+            //             }
+            //         })
+            //         .catch((error) => {
+            //             console.log(error.response)
+            //         })
+            // };
+            // getSupplier();
             // end
 
             // btn member
@@ -320,41 +376,41 @@
             // end
 
             // get data barang
-            let getPembelianBarang = () => axios.get(globalUrl + 'getall-barang/')
-                .then((response) => {
-                    $('table.table-data-barang-pembelian-modal').find('tbody').empty();
-                    let data = response.data.barang;
-                    for (let i = 0; i < data.length; i++) {
-                        let dataLoop =
-                            "<tr><td><p>" +
-                            data[i].kode_barang +
-                            "</p></td><td><p>" +
-                            (data[i].barcode == null ? '-' : data[i].barcode) +
-                            "</p></td><td><p>" + data[i].nama +
-                            "</p></td><td><p>" + data[i].stok + ' ' + data[i].satuan[0].nama_satuan +
-                            "</p></td><td><p>" + currencyIdr(String(data[i].satuan[0].harga_beli), 'Rp ') +
-                            ' / ' +
-                            data[i]
-                            .satuan[
-                                0].nama_satuan +
-                            "</p></td><td><button class='btn btn-info btn-sm text-light add-item-pembelian-modal' data-bs-dismiss='modal'aria-label='Close' id='addItemPembelianModal[]' data-datakode='" +
-                            data[i].kode_barang + "' data-databarcode='" + data[i].barcode +
-                            "' data-datanama='" + data[i].nama + "' data-datastok='" + data[i].stok * data[
-                                i]
-                            .satuan[0].rasio + "' data-datasatuan='" + data[i].satuan[0].nama_satuan +
-                            "' data-datarasio='" + data[i].satuan[0].rasio +
-                            "' data-datahargabeli='" + data[i].satuan[0].harga_beli +
-                            "'><i class='fas fa-plus text-light'></i></button></td></tr>";
-                        $('.table-data-barang-pembelian-modal').find('tbody').append(dataLoop);
-                        btnModalTambahPembelian();
-                        $("#tableItemsPembelianModal").DataTable();
-                    }
-                }).catch((error) => {
-                    console.log(error);
-                })
-            setInterval(function() {
-                getPembelianBarang();
-            }, 1000)
+            // let getPembelianBarang = () => axios.get(globalUrl + 'getall-barang/')
+            //     .then((response) => {
+            //         $('table.table-data-barang-pembelian-modal').find('tbody').empty();
+            //         let data = response.data.barang;
+            //         for (let i = 0; i < data.length; i++) {
+            //             let dataLoop =
+            //                 "<tr><td><p>" +
+            //                 data[i].kode_barang +
+            //                 "</p></td><td><p>" +
+            //                 (data[i].barcode == null ? '-' : data[i].barcode) +
+            //                 "</p></td><td><p>" + data[i].nama +
+            //                 "</p></td><td><p>" + data[i].stok + ' ' + data[i].satuan[0].nama_satuan +
+            //                 "</p></td><td><p>" + currencyIdr(String(data[i].satuan[0].harga_beli), 'Rp ') +
+            //                 ' / ' +
+            //                 data[i]
+            //                 .satuan[
+            //                     0].nama_satuan +
+            //                 "</p></td><td><button class='btn btn-info btn-sm text-light add-item-pembelian-modal' data-bs-dismiss='modal'aria-label='Close' id='addItemPembelianModal[]' data-datakode='" +
+            //                 data[i].kode_barang + "' data-databarcode='" + data[i].barcode +
+            //                 "' data-datanama='" + data[i].nama + "' data-datastok='" + data[i].stok * data[
+            //                     i]
+            //                 .satuan[0].rasio + "' data-datasatuan='" + data[i].satuan[0].nama_satuan +
+            //                 "' data-datarasio='" + data[i].satuan[0].rasio +
+            //                 "' data-datahargabeli='" + data[i].satuan[0].harga_beli +
+            //                 "'><i class='fas fa-plus text-light'></i></button></td></tr>";
+            //             $('.table-data-barang-pembelian-modal').find('tbody').append(dataLoop);
+            //             btnModalTambahPembelian();
+            //             $("#tableItemsPembelianModal").DataTable();
+            //         }
+            //     }).catch((error) => {
+            //         console.log(error);
+            //     })
+            // setInterval(function() {
+            //     getPembelianBarang();
+            // }, 1000)
             // end
 
             // isi form transaksi tombol modal tambah

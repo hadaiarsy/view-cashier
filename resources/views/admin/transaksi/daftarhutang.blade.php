@@ -194,7 +194,7 @@
                         <th scope="col">Tanggal</th>
                         <th scope="col">ID Kasir</th>
                         <th scope="col">ID Supplier</th>
-                        <th scope="col">Nama Member</th>
+                        <th scope="col">Nama Supplier</th>
                         <th scope="col">Batas Waktu</th>
                         <th scope="col">Ket</th>
                         <th scope="col">Option</th>

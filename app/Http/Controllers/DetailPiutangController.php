@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Transaksi;
 use App\Models\DetailPiutang;
+use App\Models\Member;
 use Illuminate\Support\Facades\Auth;
 
 class DetailPiutangController extends Controller

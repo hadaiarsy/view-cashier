@@ -36,7 +36,7 @@ class TransaksiController extends Controller
     {
         $noResi = Transaksi::incrementId();
         $barang = Barang::with('satuan')->get();
-        $member = Member::where('jenis_member', 'supplier')->where('unit', 'not like', 'general-')->get();
+        $member = Member::where('jenis_member', 'supplier')->where('nama', 'not like', '%general-%')->get();
         $sideTitle = "pembelian";
         return view('admin.transaksi.pembelian', [
             'noResi' => $noResi,
@@ -280,7 +280,7 @@ class TransaksiController extends Controller
     public function list(Transaksi $transaksi)
     {
         return view('admin.transaksi.daftar', [
-            'transaksi' => $transaksi->with(['member', 'kasir'])->where('jenis_transaksi', ['penjualan', 'pengiriman'])->get(),
+            'transaksi' => $transaksi->with(['member', 'kasir'])->where('jenis_transaksi', ['penjualan', 'pengiriman'])->orderBy('tanggal', 'desc')->get(),
             'sideTitle' => 'laporan'
         ]);
     }
@@ -288,7 +288,7 @@ class TransaksiController extends Controller
     public function listPembelian(Transaksi $transaksi)
     {
         return view('admin.transaksi.daftarpembelian', [
-            'transaksi' => $transaksi->with(['member', 'kasir'])->where('jenis_transaksi', 'pembelian')->get(),
+            'transaksi' => $transaksi->with(['member', 'kasir'])->where('jenis_transaksi', 'pembelian')->orderBy('tanggal', 'desc')->get(),
             'sideTitle' => 'lpembelian'
         ]);
     }
@@ -345,10 +345,18 @@ class TransaksiController extends Controller
     {
         if ($transaksi->where('no_resi', $request->id_hapus)->delete()) {
             $request->session()->flash('hapus', 'succesful');
-            return redirect('daftar-transaksi');
+            if ($request->jenis_hapus === 'penjualan') {
+                return redirect('daftar-transaksi');
+            } else if ($request->jenis_hapus === 'pembelian') {
+                return redirect('daftar-transaksi-pembelian');
+            }
         } else {
             $request->session()->flash('hapus', 'unsuccess');
-            return redirect('daftar-transaksi');
+            if ($request->jenis_hapus === 'penjualan') {
+                return redirect('daftar-transaksi');
+            } else if ($request->jenis_hapus === 'pembelian') {
+                return redirect('daftar-transaksi-pembelian');
+            }
         }
     }
 

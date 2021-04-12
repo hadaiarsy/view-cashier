@@ -119,7 +119,14 @@
                                         <td>{{ $item->kode_barang }}</td>
                                         <td>{{ $item->nama }}</td>
                                         <td>{{ $item->stok . ' ' . $item->satuan[0]->nama_satuan }}</td>
-                                        <td>{{ $jenis[$item->id_jenis - 1]->nama_jenis }}</td>
+                                        @if ($item->id_jenis < 1)
+                                            <td>-</td>
+                                        @endif
+                                        @foreach ($jenis as $j)
+                                            @if ($j->id == $item->id_jenis)
+                                                <td>{{ $j->nama_jenis }}</td>
+                                            @endif
+                                        @endforeach
                                         <td>
                                             <a href='show-barang/{{ $item->kode_barang }}' class='btn btn-primary btn-sm'><i
                                                     class='far fa-eye'></i></a>
