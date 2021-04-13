@@ -373,15 +373,12 @@ class TransaksiController extends Controller
     {
         return view('admin.transaksi.daftarpiutang', [
             'sideTitle' => 'daftarpiutang',
-            'data' => Transaksi::with([
-                'kasir', 'member', 'detail', 'piutang'
-            ])->where([
-                'jenis_transaksi' => 'penjualan',
-                'is_lunas' => '0'
-            ])->orWhere([
-                'jenis_transaksi' => 'pengiriman',
-                'is_lunas' => '0'
-            ])->get()
+            'data' => Transaksi::with(['kasir', 'member', 'detail', 'piutang'])
+                ->where('is_lunas', '=', '0')
+                ->where(function ($query) {
+                    $query->where('jenis_transaksi', '=', 'penjualan')
+                        ->orWhere('jenis_transaksi', '=', 'pengiriman');
+                })->get()
         ]);
     }
 

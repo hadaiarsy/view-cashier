@@ -116,7 +116,7 @@
                     {{-- piutang --}}
                     @if ($level == 1 || $level == 2 || $level == 3)
                         <li>
-                            <a href="#" class="<?php if ($sideTitle == 'piutang' || $sideTitle == 'daftarpiutang' || $sideTitle == '') {
+                            <a href="#" class="<?php if ($sideTitle == 'piutang' || $sideTitle == 'daftarpiutang' || $sideTitle == 'sa-piutang') {
                                 echo 'mm-active';
                             } ?>">
                                 <i class="metismenu-icon pe-7s-hammer"></i>
@@ -136,6 +136,13 @@
                                         class="{{ $sideTitle == 'piutang' ? 'mm-active' : '' }}">
                                         <i class="metismenu-icon"></i>
                                         Cicilan Piutang
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('sa-piutang') }}"
+                                        class="{{ $sideTitle == 'sa-piutang' ? 'mm-active' : '' }}">
+                                        <i class="metismenu-icon"></i>
+                                        Input Saldo Awal Piutang
                                     </a>
                                 </li>
                             </ul>

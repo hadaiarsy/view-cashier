@@ -1,6 +1,6 @@
 @extends('admin.temp.template')
 
-@section('site-title', 'Saldo Awal Hutang')
+@section('site-title', 'Saldo Awal Piutang')
 
 @section('main-contents')
     <div id="message" data-msg="{{ session('add') }}"></div>
@@ -8,15 +8,15 @@
         <div class="col-lg">
             <div class="main-card mb-3 card">
                 <div class="card-body">
-                    <h5 class="card-title">Input Hutang (Per FAKTUR)</h5>
+                    <h5 class="card-title">Input Piutang (Per FAKTUR)</h5>
                     <div class="row">
-                        <form action="{{ route('sa-hutang') }}" method="post">
+                        <form action="{{ route('sa-piutang') }}" method="post">
                             @csrf
                             <div class="col-8">
                                 <div class="row d-flex">
                                     <div class="col-6">
                                         <div class="row mb-3">
-                                            <label for="kodeMember" class="col-sm-5 col-form-label">ID Supplier</label>
+                                            <label for="kodeMember" class="col-sm-5 col-form-label">ID Anggota</label>
                                             <div class="col-sm-7">
                                                 <div class="input-group">
                                                     <input type="text" class="form-control trans-section" data-datats="ts-1"
@@ -28,20 +28,18 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row mb-3">
+                                        {{-- <div class="row mb-3">
                                             <label for="noDpb" class="col-sm-5 col-form-label">No DPB</label>
                                             <div class="col-sm-7">
                                                 <div class="input-group">
                                                     <input type="text" class="form-control trans-section" data-datats="ts-1"
                                                         id="noDpb" name="noDpb">
-                                                    <button type="button" class="input-group-text" id="btnNoDpb"
-                                                        data-bs-toggle="tooltip" data-bs-placement="right"
-                                                        title="generate nomor dpb">
+                                                    <button type="button" class="input-group-text" id="btnNoDpb">
                                                         <i class="fas fa-key"></i>
                                                     </button>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         <div class="row mb-3">
                                             <label for="noFaktur" class="col-sm-5 col-form-label">No Faktur</label>
                                             <div class="col-sm-7">
@@ -52,7 +50,7 @@
                                             </div>
                                         </div>
                                         <div class="row mb-3">
-                                            <label for="tanggal" class="col-sm-5 col-form-label">Tanggal Hutang</label>
+                                            <label for="tanggal" class="col-sm-5 col-form-label">Tanggal Piutang</label>
                                             <div class="col-sm-7">
                                                 <div class="input-group">
                                                     <input type="date" class="form-control trans-section" data-datats="ts-1"
@@ -106,7 +104,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="memberModalLabel">Data Supplier</h5>
+                    <h5 class="modal-title" id="memberModalLabel">Data Anggota</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -115,8 +113,9 @@
                             <thead>
                                 <tr>
                                     <th scope="col">No.</th>
-                                    <th scope="col">Kode Supplier</th>
+                                    <th scope="col">Kode Anggota</th>
                                     <th scope="col">Nama</th>
+                                    <th scope="col">Unit</th>
                                     <th scope="col">Alamat</th>
                                     <th scope="col">Tindakan</th>
                                 </tr>
@@ -127,6 +126,7 @@
                                         <th scope="col">{{ $loop->iteration }}</th>
                                         <td>{{ $m->kode_member }}</td>
                                         <td>{{ $m->nama }}</td>
+                                        <td>{{ $m->unit }}</td>
                                         <td>{{ $m->alamat == '' ? '-' : $m->alamat }}</td>
                                         <td>
                                             <button class="btn btn-info btn-sm text-light add-item-member"

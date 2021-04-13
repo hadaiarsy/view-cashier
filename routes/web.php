@@ -56,7 +56,9 @@ Route::middleware('auth')->group(function () {
 
         Route::get('hutang', [DetailPiutangController::class, 'hutang'])->name('hutang');
 
-        Route::get('input-saldo-awal-hutang', [DetailPiutangController::class, 'sa-hutang'])->name('sa-hutang');
+        Route::match(['get', 'post'], 'input-saldo-awal-piutang', [DetailPiutangController::class, 'sa_piutang'])->name('sa-piutang');
+
+        Route::match(['get', 'post'], 'input-saldo-awal-hutang', [DetailPiutangController::class, 'sa_hutang'])->name('sa-hutang');
 
         Route::get('get-piutang/{any}', [DetailPiutangController::class, 'show']);
 
@@ -232,7 +234,7 @@ Route::middleware('auth')->group(function () {
                 // 'data' => $data,
                 // 'member' => Transaksi::with(['kasir', 'member', 'detail', 'piutang'])->where(['member_id' => $data->member_id])->get()
                 // 'data' => (int)str_replace('.', '', preg_replace('/Rp /', '', $any))
-                'data' => range('A', 'ZZZ')
+                'data' => Helper::replace_money($any)
             ]);
             // return Carbon::now('Asia/Bangkok')->format('Y-m-d H:i:s');
 

@@ -113,8 +113,9 @@
                     <tr style="height: 30px;">
                         <th scope="col" style="width: 5%">NO.</th>
                         <th scope="col" style="width: 50%">Nama Barang</th>
-                        <th scope="col" style="width: ">Harga Beli</th>
                         <th scope="col" style="width: ">Stock Akhir</th>
+                        <th scope="col" style="width: ">Satuan</th>
+                        <th scope="col" style="width: ">Harga Beli</th>
                         <th scope="col" style="width: ">Jumlah Harga</th>
                     </tr>
                 </thead>
@@ -127,7 +128,7 @@
                         @if (count($j->barang) > 0)
                             <tr>
                                 <th scope="col">{{ $alphabet[$noJenis] }}.</th>
-                                <td colspan="4" style="text-align: left">
+                                <td colspan="5" style="text-align: left">
                                     <strong>{{ strtoupper($j->nama_jenis) }}</strong>
                                 </td>
                             </tr>
@@ -136,14 +137,22 @@
                                     <td style="text-align: right">{{ $loop->iteration }}.</td>
                                     <td style="text-align: left">{{ strtoupper($barang->nama) }}</td>
                                     <td style="text-align: right">
+                                        <?php $stok = $barang->stok; ?>
+                                        {{ str_replace('.', ',', strval($barang->stok)) }}
+                                    </td>
+                                    <td style="text-align: left">
+                                        @foreach ($satuan as $s)
+                                            @if ($s->kode_barang == $barang->kode_barang)
+                                                {{ $s->nama_satuan }}
+                                            @endif
+                                        @endforeach
+                                    </td>
+                                    <td style="text-align: right">
                                         @foreach ($satuan as $s)
                                             @if ($s->kode_barang == $barang->kode_barang)
                                                 {{ $helper->money_format($hb = $s->harga_beli) }}
                                             @endif
                                         @endforeach
-                                    </td>
-                                    <td style="text-align: right">
-                                        {{ $helper->money_format($stok = $barang->stok) }}
                                     </td>
                                     <td style="text-align: right">{{ $helper->money_format($hb * $stok) }}</td>
                                 </tr>
