@@ -44,7 +44,7 @@ Route::middleware('auth')->group(function () {
 
         Route::post('hapus-transaksi', [TransaksiController::class, 'delete'])->name('hapus-transaksi');
 
-        Route::get('print-struk', [TransaksiController::class, 'printstruk'])->name('printstruk');
+        Route::get('print-struk/{resi?}', [TransaksiController::class, 'printstruk'])->name('printstruk');
 
         Route::get('pembelian', [TransaksiController::class, '__pembelian'])->name('pembelian');
 

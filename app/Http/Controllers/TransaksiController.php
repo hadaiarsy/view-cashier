@@ -408,18 +408,26 @@ class TransaksiController extends Controller
         ]);
     }
 
-    public function printstruk()
+    public function printstruk($resi = NULL)
     {
-        $data = Transaksi::with(['kasir', 'member'])
-            ->where('is_print', '=', '0')
-            ->orWhere('jenis_transaksi', '=', 'pengiriman')
-            ->orderBy('jenis_transaksi', 'asc')
-            ->get();
+        if ($resi == NULL) {
+            $data = Transaksi::with(['kasir', 'member'])
+                ->whereDate('tanggal', '=', now())
+                ->where(function ($query) {
+                    $query->where('is_print', '=', 0)
+                        ->orWhere('jenis_transaksi', '=', 'pengiriman');
+                })
+                ->orderBy('jenis_transaksi', 'asc')
+                ->get();
+        } else {
+            $data = Transaksi::with(['kasir', 'member'])->where('no_resi', '=', $resi)->get();
+        }
         // return response()->json([
         //     'data' => $data
         // ]);
         return view('admin.transaksi.printstruk', [
             'data' => $data,
+            'faktur' => $resi,
             'sideTitle' => 'printstruk'
         ]);
     }

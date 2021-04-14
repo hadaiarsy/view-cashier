@@ -8,9 +8,12 @@
         <div class="col-lg">
             <div class="main-card mb-3 card">
                 <div class="card-body">
-                    <h5 class="card-title">Daftar Faktur</h5>
+                    <h5 class="card-title d-inline-block mr-3">Daftar Faktur</h5>
+                    <a href="{{ route('printstruk') }}" class="btn btn-warning d-inline-block"><i
+                            class="fas fa-sync-alt"></i>
+                        Refresh</a>
                     <hr>
-                    <div class="row d-none">
+                    <div class="row">
                         <div class="col-8">
                             <div class="row d-flex">
                                 <div class="col-6">
@@ -19,7 +22,7 @@
                                         <div class="col-sm-7">
                                             <div class="input-group">
                                                 <input type="text" class="form-control trans-section" data-datats="ts-1"
-                                                    id="noFaktur" name="noFaktur" required>
+                                                    id="noFaktur" name="noFaktur" value="{{ $faktur }}" required>
                                                 <button type="button" class="input-group-text" id="btnnoFaktur">
                                                     <i class="fas fa-search"></i>
                                                 </button>
@@ -30,6 +33,8 @@
                             </div>
                         </div>
                     </div>
+
+                    <hr>
 
                     <div class="row">
                         <div class="col">
@@ -81,6 +86,15 @@
     <script>
         (function() {
             $('#tableFaktur').DataTable();
+            let btnFaktur = document.querySelector('#btnnoFaktur');
+            btnFaktur.addEventListener('click', function(e) {
+                let faktur = document.querySelector('#noFaktur').value;
+                if (faktur == '') {
+                    alert('Masukkan No Faktur');
+                } else {
+                    window.location.replace(`${globalUrl}print-struk/${faktur}`);
+                }
+            });
         })();
 
     </script>
