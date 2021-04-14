@@ -60,10 +60,17 @@
                                     <img width="42" id="fotoUser" class="rounded-circle"
                                         src="{{ asset('assets/vendor/architectui/assets/images/avatars/admin.png') }}"
                                         alt="">
+                                    <span class="badge bg-danger">{{ $notPrint }}</span>
                                     <i class="fa fa-angle-down ml-2 opacity-8"></i>
                                 </a>
                                 <div tabindex="-1" role="menu" aria-hidden="true"
                                     class="dropdown-menu dropdown-menu-right">
+                                    @if ($level != 5)
+                                        <a href="#" type="button" tabindex="0" class="dropdown-item">
+                                            <span class="mr-3">Print Struk</span>
+                                            <span class="badge bg-danger">{{ $notPrint }}</span>
+                                        </a>
+                                    @endif
                                     <button type="button" tabindex="0" class="dropdown-item">User
                                         Account</button>
                                     <button type="button" tabindex="0" class="dropdown-item">Settings</button>

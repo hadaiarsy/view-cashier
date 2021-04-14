@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Helper\Helper;
+use App\Models\Transaksi;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
@@ -45,11 +46,13 @@ class AppServiceProvider extends ServiceProvider
                 $userid = '';
             }
 
+            $notPrint = Transaksi::where('is_print', '=', 0)->get();
             $view->with([
                 'level' => $level,
                 'username' => $username,
                 'userid' => $userid,
-                'helper' => new Helper
+                'helper' => new Helper,
+                'notPrint' => $notPrint->count()
             ]);
         });
     }

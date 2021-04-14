@@ -191,17 +191,14 @@
                                         </div>
                                         <label for="inputPassword3" class="col-4 col-form-label">Kembalian :</label>
                                     </div>
-                                    @if ($level != 5)
-                                        <div class="row d-flex flex-row-reverse mt-2">
-                                            <div
-                                                class="col position-relative form-check d-flex justify-content-end mt-2 mb-2">
-                                                <label class="form-check-label">
-                                                    <input type="checkbox" class="form-check-input" id="piutangCheck">
-                                                    piutang
-                                                </label>
-                                            </div>
+                                    <div class="row d-flex flex-row-reverse mt-2">
+                                        <div class="col position-relative form-check d-flex justify-content-end mt-2 mb-2">
+                                            <label class="form-check-label">
+                                                <input type="checkbox" class="form-check-input" id="piutangCheck">
+                                                piutang
+                                            </label>
                                         </div>
-                                    @endif
+                                    </div>
                                     <div class="row d-flex justify-content-end mt-2">
                                         <div class="col d-flex justify-content-end">
                                             <button type="button" class="btn btn-warning btn-sm mr-2" id="batal"><i
@@ -867,6 +864,7 @@
                         diskon: diskon,
                         is_lunas: isLunas,
                         uang: replaceCurrency(uang),
+                        is_print: piutangcheck() == '0' ? 0 : 1,
                         detail_transaksi: dataBarang
                     })
                     .then((response) => {
@@ -902,7 +900,8 @@
                     total += parseInt(Number(replaceCurrency($(this).html())));
                 });
                 if (piutangcheck() == '0') {
-                    printStruk = window.open(globalUrl + 'faktur-piutang/' + data.noResi);
+                    // printStruk = window.open(globalUrl + 'faktur-piutang/' + data.noResi);
+                    return false;
                 } else {
                     printStruk = window.open(globalUrl + 'test-struk/' + data.noResi + '/' + total + '/' +
                         replaceCurrency(data

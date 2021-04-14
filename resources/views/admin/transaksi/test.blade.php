@@ -34,68 +34,76 @@
                     {{ $transaksi->member->kode_member == 'U-00-01' ? '-' : $transaksi->member->unit . ' | ' . $transaksi->member->nama }}
                 </td>
             </tr>
-            <tr style='margin-bottom: 20px'>
-                <td style='border-bottom: 1px solid black;'>ID Kasir:</br>{{ $transaksi->kasir->id }}</td>
-                <td colspan='2' style='border-bottom: 1px solid black; text-align: right'>No.
-                    Resi:</br>{{ $transaksi->no_resi }}
-                </td>
-            </tr>
-            @if ($transaksi->is_lunas == '0')
-                <tr>
-                    <td colspan='3' style='border-bottom: 1px dashed black; text-align: center;'>
-                        PIUTANG
+            @if ($transaksi->is_lunas == '1' && $transaksi->jenis_transaksi == 'penjualan')
+                <tr style='margin-bottom: 20px'>
+                    <td style='border-bottom: 1px solid black;'>ID Kasir:</br>{{ $transaksi->kasir->id }}</td>
+                    <td colspan='2' style='border-bottom: 1px solid black; text-align: right'>No.
+                        Resi:</br>{{ $transaksi->no_resi }}
                     </td>
                 </tr>
-            @endif
-            @foreach ($transaksi->detail as $detail)
-                <tr>
-                    <td>{{ $detail->nama_barang }}</td>
-                    <td style='text-align: center'>{{ $detail->jumlah . ' ' . $detail->satuan }}</td>
-                    <td class='harga-item-struk' style='text-align: right'>Rp {{ $detail->harga }}</td>
-                </tr>
-            @endforeach
-            @if ($transaksi->diskon > 0)
-                <tr>
-                    <td style='border-top: 1px solid black;'>Total</td>
-                    <td colspan='2' id='totalStruk' style='border-top: 1px solid black; text-align: right'>
-                        {{ $total }}
-                    </td>
-                </tr>
-                <tr>
-                    <td>Diskon</td>
-                    <td colspan='2' style='text-align: right'>{{ $transaksi->diskon }} %</td>
-                </tr>
-            @endif
-            <tr>
-                @if ($transaksi->is_lunas == '1')
-                    <td style='border-top: 1px solid black;'>Grand Total</td>
-                @else
-                    <td style='border-top: 1px solid black;'>Total Piutang</td>
+                @if ($transaksi->is_lunas == '0')
+                    <tr>
+                        <td colspan='3' style='border-bottom: 1px dashed black; text-align: center;'>
+                            PIUTANG
+                        </td>
+                    </tr>
                 @endif
-                <td colspan='2' id='grandTotalStruk' style='border-top: 1px solid black; text-align: right'>
-                    {{ $transaksi->total }}
-                </td>
-            </tr>
-            <tr>
-                <td>Uang</td>
-                <td colspan='2' id='uangStruk' style='text-align: right'>{{ $uang }}</td>
-            </tr>
-            @if ($transaksi->is_lunas == '1')
+                @foreach ($transaksi->detail as $detail)
+                    <tr>
+                        <td>{{ $detail->nama_barang }}</td>
+                        <td style='text-align: center'>{{ $detail->jumlah . ' ' . $detail->satuan }}</td>
+                        <td class='harga-item-struk' style='text-align: right'>Rp {{ $detail->harga }}</td>
+                    </tr>
+                @endforeach
+                @if ($transaksi->diskon > 0)
+                    <tr>
+                        <td style='border-top: 1px solid black;'>Total</td>
+                        <td colspan='2' id='totalStruk' style='border-top: 1px solid black; text-align: right'>
+                            {{ $total }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Diskon</td>
+                        <td colspan='2' style='text-align: right'>{{ $transaksi->diskon }} %</td>
+                    </tr>
+                @endif
                 <tr>
-                    <td>Kembali</td>
-                    <td colspan='2' id='kembaliStruk' style='text-align: right'>
-                        {{ $kembali }}
+                    @if ($transaksi->is_lunas == '1')
+                        <td style='border-top: 1px solid black;'>Grand Total</td>
+                    @else
+                        <td style='border-top: 1px solid black;'>Total Piutang</td>
+                    @endif
+                    <td colspan='2' id='grandTotalStruk' style='border-top: 1px solid black; text-align: right'>
+                        {{ $transaksi->total }}
                     </td>
                 </tr>
+                <tr>
+                    <td>Uang</td>
+                    <td colspan='2' id='uangStruk' style='text-align: right'>{{ $transaksi->uang }}</td>
+                </tr>
+                @if ($transaksi->is_lunas == '1')
+                    <tr>
+                        <td>Kembali</td>
+                        <td colspan='2' id='kembaliStruk' style='text-align: right'>
+                            {{ (int) $transaksi->uang - (int) $transaksi->total > 0 ? (int) $transaksi->uang - (int) $transaksi->total : 0 }}
+                        </td>
+                    </tr>
+                @else
+                    <tr>
+                        <td>Sisa Piutang</td>
+                        <td colspan='2' id='kembaliStruk' style='text-align: right'>
+                            {{ (int) $transaksi->total - (int) $transaksi->uang }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan='3' style='border-top: 1px solid black; text-align: center;'>Struk
+                            PIUTANG!</br>Jangan sampai hilang!
+                        </td>
+                    </tr>
+                @endif
             @else
                 <tr>
-                    <td>Sisa Piutang</td>
-                    <td colspan='2' id='kembaliStruk' style='text-align: right'>
-                        {{ (int) $transaksi->total - (int) $uang }}</td>
-                </tr>
-                <tr>
-                    <td colspan='3' style='border-top: 1px solid black; text-align: center;'>Struk
-                        PIUTANG!</br>Jangan sampai hilang!
+                    <td colspan="3" style="text-align: center">
+                        <h2 style="border: 1px solid black">{{ $transaksi->no_resi }}</h2>
                     </td>
                 </tr>
             @endif

@@ -25,8 +25,41 @@ class Transaksi extends Model
         'uang',
         'donasi',
         'is_lunas',
-        'batas_waktu',
+        'tanggal_lunas',
+        'is_print'
     ];
+
+    public function getTanggalsAttribute($val)
+    {
+        $day = date('l', strtotime($val));
+        $month = date('m', strtotime($val));
+        $hari = [
+            'Sunday' => 'Minggu',
+            'Monday' => 'Senin',
+            'Tuesday' => 'Selasa',
+            'Wednesday' => 'Rabu',
+            'Thursday' => 'Kamis',
+            'Friday' => 'Jum\'at',
+            'Saturday' => 'Sabtu'
+        ];
+        $tanggal = date('d', strtotime($val));
+        $bulan = [
+            'Januari',
+            'Februari',
+            'Maret',
+            'April',
+            'Mei',
+            'Juni',
+            'Juli',
+            'Agustus',
+            'September',
+            'Oktober',
+            'November',
+            'Desember'
+        ];
+        $tahun = date('Y', strtotime($val));
+        return $hari[$day] . ', ' . $tanggal . ' ' . $bulan[(int)$month] . ' ' . $tahun;
+    }
 
     public static function incrementId()
     {

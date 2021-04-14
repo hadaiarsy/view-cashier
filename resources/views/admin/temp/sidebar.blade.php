@@ -64,14 +64,14 @@
                                         Laporan Penjualan
                                     </a>
                                 </li>
-                                <li>
-                                    <a href="{{ route('retail') }}"
-                                        class="{{ $sideTitle == 'retail' ? 'mm-active' : '' }}">
-                                        <i class="metismenu-icon"></i>
-                                        Penjualan Retail
-                                    </a>
-                                </li>
                             @endif
+                            <li>
+                                <a href="{{ route('retail') }}"
+                                    class="{{ $sideTitle == 'retail' ? 'mm-active' : '' }}">
+                                    <i class="metismenu-icon"></i>
+                                    Penjualan Retail
+                                </a>
+                            </li>
                             <li>
                                 <a href="{{ route('transaksi') }}"
                                     class="{{ $sideTitle == 'transaksi' ? 'mm-active' : '' }}">
@@ -182,6 +182,17 @@
                                     </a>
                                 </li>
                             </ul>
+                        </li>
+                    @endif
+
+                    {{-- print struk --}}
+                    @if ($level != 5)
+                        <li>
+                            <a href="{{ route('printstruk') }}"
+                                class="{{ $sideTitle == 'printstruk' ? 'mm-active' : '' }}">
+                                <i class="metismenu-icon pe-7s-print"></i>
+                                Print Struk / Faktur
+                            </a>
                         </li>
                     @endif
 

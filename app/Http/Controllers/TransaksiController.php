@@ -132,6 +132,7 @@ class TransaksiController extends Controller
             $transaksi->uang = $request->uang;
             $transaksi->donasi = $request->donasi;
             $transaksi->is_lunas = $request->is_lunas;
+            $transaksi->is_print = $request->is_print;
             // End
 
 
@@ -404,6 +405,22 @@ class TransaksiController extends Controller
             'barang' => $barang,
             'member' => $member,
             'sideTitle' => $sideTitle
+        ]);
+    }
+
+    public function printstruk()
+    {
+        $data = Transaksi::with(['kasir', 'member'])
+            ->where('is_print', '=', '0')
+            ->orWhere('jenis_transaksi', '=', 'pengiriman')
+            ->orderBy('jenis_transaksi', 'asc')
+            ->get();
+        // return response()->json([
+        //     'data' => $data
+        // ]);
+        return view('admin.transaksi.printstruk', [
+            'data' => $data,
+            'sideTitle' => 'printstruk'
         ]);
     }
 }

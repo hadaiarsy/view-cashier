@@ -44,6 +44,8 @@ Route::middleware('auth')->group(function () {
 
         Route::post('hapus-transaksi', [TransaksiController::class, 'delete'])->name('hapus-transaksi');
 
+        Route::get('print-struk', [TransaksiController::class, 'printstruk'])->name('printstruk');
+
         Route::get('pembelian', [TransaksiController::class, '__pembelian'])->name('pembelian');
 
         Route::get('get-no-dpb', function () {
@@ -115,7 +117,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('get-supplier-search', [MemberController::class, 'supplier_search']);
 
-        Route::get('test-struk/{any}/{total}/{uang}/{kembali}', function ($kode, $total, $uang, $kembali) {
+        Route::get('test-struk/{any}/{total?}/{uang?}/{kembali?}', function ($kode, $total = 0, $uang = 0, $kembali = 0) {
             $data = Transaksi::with(['detail', 'kasir', 'member'])->where('no_resi', $kode)->get();
             return view('admin.transaksi.test', [
                 'data' => $data,

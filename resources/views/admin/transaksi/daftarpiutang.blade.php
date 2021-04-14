@@ -211,7 +211,13 @@
                             <td>{{ $t->member->nama }}</td>
                             <td>{{ date('d/m/y', strtotime('+30 days', strtotime($t->tanggal))) }}</td>
                             <td>-</td>
-                            <td>-</td>
+                            <td>
+                                @if ($level != 5)
+                                    <button class="btn btn-sm btn-danger btnHapus" data-dataid="{{ $t->no_resi }}"
+                                        data-bs-toggle="modal" data-bs-target="#hapusModal"><i
+                                            class='fas fa-trash-alt'></i></button>
+                                @endif
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -231,6 +237,32 @@
                 <a href="{{ route('m-piutang') }}" target="_blank"><button type="button"
                         class="btn btn-success pl-2">Mutasi
                         Piutang</button></a>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@section('modals')
+    {{-- Modal Hapus Transaksi --}}
+    <div class="modal fade" id="hapusModal" tabindex="-1" aria-labelledby="hapusModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger" id="hapusModalLabel">Hapus Transaksi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('hapus-transaksi') }}" method="post">
+                    @csrf
+                    <div class="modal-body">
+                        <input type="hidden" name="id_hapus" id="idHapus">
+                        <input type="hidden" name="jenis_hapus" id="jenisHapus" value="penjualan">
+                        <h6>Apa anda yakin akan menghapus transaksi <strong><span id="transaksi_edit"></span></strong>?</h6>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-danger">Hapus</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -310,6 +342,35 @@
                         console.log(error.response);
                     })
             });
+
+            const fHapus = () => {
+                let btnHapus = $('.btnHapus');
+                for (let i = 0; i < btnHapus.length; i++) {
+                    $(btnHapus[i]).on('click', function(e) {
+                        let kode = $(this).data('dataid');
+                        $('#transaksi_edit').html(kode);
+                        $('#idHapus').val(kode);
+                    });
+                }
+            }
+            setInterval(function() {
+                fHapus();
+            }, 1000);
+
+            let is_delete = $('#msg_delete').data('datahapus');
+            if (is_delete === 'succesful') {
+                Swal.fire(
+                    'Data berhasil dihapus!',
+                    'success!',
+                    'success'
+                ).then((result) => {})
+            } else if (is_delete === 'unsuccess') {
+                Swal.fire(
+                    'Data gagal dihapus!',
+                    'failed!',
+                    'error'
+                ).then((result) => {})
+            }
         });
 
     </script>

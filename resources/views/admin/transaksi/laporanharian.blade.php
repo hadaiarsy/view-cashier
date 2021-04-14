@@ -179,11 +179,15 @@
                                     {{ date('d/m/y', strtotime($transaksi->tanggal)) }}</td>
                                 <td rowspan="{{ count($transaksi->detail) }}">{{ $transaksi->no_resi }}</td>
                                 <td rowspan="{{ count($transaksi->detail) }}">{{ $transaksi->member->nama }}</td>
-                                <td>{{ $transaksi->detail[0]->nama_barang }}</td>
-                                <td>{{ $transaksi->detail[0]->jumlah . ' ' . $transaksi->detail[0]->satuan }}</td>
-                                </td>
-                                <td>{{ $transaksi->detail[0]->harga / $transaksi->detail[0]->jumlah }}</td>
-                                <td>{{ $transaksi->detail[0]->harga }}</td>
+                                @if (count($transaksi->detail) > 0)
+                                    <td>{{ $transaksi->detail[0]->nama_barang }}</td>
+                                    <td>{{ $transaksi->detail[0]->jumlah . ' ' . $transaksi->detail[0]->satuan }}
+                                    </td>
+                                    <td>{{ $transaksi->detail[0]->harga / $transaksi->detail[0]->jumlah }}</td>
+                                    <td>{{ $transaksi->detail[0]->harga }}</td>
+                                @else
+                                    <td colspan="4" style="text-align: center">-</td>
+                                @endif
                                 @if ($transaksi->is_lunas == '1' && count($transaksi->piutang) == 0)
                                     <td rowspan="{{ count($transaksi->detail) }}">{{ $transaksi->total }}</td>
                                     <td rowspan="{{ count($transaksi->detail) }}">-</td>

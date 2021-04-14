@@ -794,6 +794,7 @@
                         is_lunas: isLunas,
                         donasi: replaceCurrency(donasi),
                         uang: replaceCurrency(uang),
+                        is_print: 0,
                         detail_transaksi: dataBarang
                     })
                     .then((response) => {
@@ -810,7 +811,7 @@
                             text: 'Transaksi Sukses!',
                             showDenyButton: false,
                             showCancelButton: false,
-                            confirmButtonText: `Print Surat Jalan`,
+                            confirmButtonText: `Terima Kasih`,
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 printSuratJalan(data, () => {
@@ -831,19 +832,20 @@
 
             // proses print strik
             function printStruk(data) {
-                let total = 0;
-                $(".totalHrg").each(function() {
-                    total += parseInt(Number(replaceCurrency($(this).html())));
-                });
-                let printStruk = window.open(globalUrl + 'faktur-retail/' + data.noResi);
+                // let total = 0;
+                // $(".totalHrg").each(function() {
+                //     total += parseInt(Number(replaceCurrency($(this).html())));
+                // });
+                let printStruk = window.open(globalUrl + 'test-struk/' + data.noResi);
                 let tmout = setTimeout(function() {
                     printStruk.close();
                 }, 3000);
                 // let suratJalan = window.open(globalUrl + 'surat-jalan/' + data.noResi);
+                return false;
             }
 
             function printSuratJalan(data, callback) {
-                let printStruk = window.open(globalUrl + 'surat-jalan/' + data.noResi);
+                // let printStruk = window.open(globalUrl + 'surat-jalan/' + data.noResi);
                 callback();
             }
             // end
