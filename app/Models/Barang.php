@@ -25,7 +25,7 @@ class Barang extends Model
     public static function incrementId()
     {
         $date = date('ymd');
-        $lastId = Self::withTrashed()->where('no_resi', 'like', '%WY-' . $date . '%')->orderBy('kode_barang', 'desc')->first();
+        $lastId = Self::withTrashed()->where('kode_barang', 'like', '%B-' . $date . '%')->orderBy('kode_barang', 'desc')->first();
         if ($lastId) {
             $lastId = $lastId->kode_barang;
             $lastId = preg_replace('/B-/', '', $lastId);

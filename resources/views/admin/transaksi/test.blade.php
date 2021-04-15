@@ -30,8 +30,12 @@
             </tr>
             <tr>
                 <td colspan='3' style='text-align: center'>Tgl:
-                    {{ date('d-m-Y H:i:s', strtotime($transaksi->tanggal)) }}</br>Unit:
-                    {{ $transaksi->member->kode_member == 'U-00-01' ? '-' : $transaksi->member->unit . ' | ' . $transaksi->member->nama }}
+                    {{ date('d-m-Y H:i:s', strtotime($transaksi->tanggal)) }}
+                    </br>
+                    @if ($transaksi->member_id != 'U-00-01')
+                        Unit:
+                        {{ $transaksi->member->kode_member == 'U-00-01' ? '-' : $transaksi->member->unit . ' | ' . $transaksi->member->nama }}
+                    @endif
                 </td>
             </tr>
             @if ($transaksi->is_lunas == '1' && $transaksi->jenis_transaksi == 'penjualan')
@@ -51,15 +55,18 @@
                 @foreach ($transaksi->detail as $detail)
                     <tr>
                         <td>{{ $detail->nama_barang }}</td>
-                        <td style='text-align: center'>{{ $detail->jumlah . ' ' . $detail->satuan }}</td>
-                        <td class='harga-item-struk' style='text-align: right'>Rp {{ $detail->harga }}</td>
+                        <td style='text-align: center'>
+                            {{ $helper->money_format($detail->jumlah) . ' ' . $detail->satuan }}
+                        </td>
+                        <td class='harga-item-struk' style='text-align: right'>
+                            {{ $helper->money_format($detail->harga, 'Rp ') }}</td>
                     </tr>
                 @endforeach
                 @if ($transaksi->diskon > 0)
                     <tr>
                         <td style='border-top: 1px solid black;'>Total</td>
                         <td colspan='2' id='totalStruk' style='border-top: 1px solid black; text-align: right'>
-                            {{ $total }}
+                            {{ $helper->money_format($total, 'Rp ') }}
                         </td>
                     </tr>
                     <tr>
@@ -74,25 +81,26 @@
                         <td style='border-top: 1px solid black;'>Total Piutang</td>
                     @endif
                     <td colspan='2' id='grandTotalStruk' style='border-top: 1px solid black; text-align: right'>
-                        {{ $transaksi->total }}
+                        {{ $helper->money_format($transaksi->total, 'Rp ') }}
                     </td>
                 </tr>
                 <tr>
                     <td>Uang</td>
-                    <td colspan='2' id='uangStruk' style='text-align: right'>{{ $transaksi->uang }}</td>
+                    <td colspan='2' id='uangStruk' style='text-align: right'>
+                        {{ $helper->money_format($transaksi->uang, 'Rp ') }}</td>
                 </tr>
                 @if ($transaksi->is_lunas == '1')
                     <tr>
                         <td>Kembali</td>
                         <td colspan='2' id='kembaliStruk' style='text-align: right'>
-                            {{ (int) $transaksi->uang - (int) $transaksi->total > 0 ? (int) $transaksi->uang - (int) $transaksi->total : 0 }}
+                            {{ $helper->money_format((int) $transaksi->uang - (int) $transaksi->total > 0 ? (int) $transaksi->uang - (int) $transaksi->total : 0, 'Rp ') }}
                         </td>
                     </tr>
                 @else
                     <tr>
                         <td>Sisa Piutang</td>
                         <td colspan='2' id='kembaliStruk' style='text-align: right'>
-                            {{ (int) $transaksi->total - (int) $transaksi->uang }}</td>
+                            {{ $helper->money_format((int) $transaksi->total - (int) $transaksi->uang, 'Rp ') }}</td>
                     </tr>
                     <tr>
                         <td colspan='3' style='border-top: 1px solid black; text-align: center;'>Struk
@@ -120,39 +128,6 @@
 
     <script>
         $(document).ready(function() {
-            function currencyIdr(angka, prefix) {
-                let number_string = angka.replace(/[^,\d]/g, "").toString(),
-                    split = number_string.split(","),
-                    sisa = split[0].length % 3,
-                    rupiah = split[0].substr(0, sisa),
-                    ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-                if (ribuan) {
-                    separator = sisa ? "." : "";
-                    rupiah += separator + ribuan.join(".");
-                }
-                rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
-                return prefix == undefined ? rupiah : rupiah ? "Rp " + rupiah : "";
-            }
-
-            $('.harga-item-struk').each(function(e) {
-                $(this).html(currencyIdr(String($(this).html()), 'Rp '))
-            })
-
-            $('#totalStruk').html(function() {
-                return currencyIdr(String($(this).html()), 'Rp ')
-            })
-
-            $('#grandTotalStruk').html(function() {
-                return currencyIdr(String($(this).html()), 'Rp ')
-            })
-
-            $('#uangStruk').html(function() {
-                return currencyIdr(String($(this).html()), 'Rp ')
-            })
-
-            $('#kembaliStruk').html(function() {
-                return currencyIdr(String($(this).html()), 'Rp ')
-            })
 
             let d = new Date();
             let month = d.getMonth() + 1;

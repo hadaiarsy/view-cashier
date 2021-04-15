@@ -48,7 +48,7 @@
 
                     {{-- penjualan --}}
                     @if ($level == 1 || $level == 2 || $level == 3 || $level == 5)
-                        <a href="#" class="<?php if ($sideTitle == 'transaksi' || $sideTitle == 'laporan') {
+                        <a href="#" class="<?php if ($sideTitle == 'transaksi' || $sideTitle == 'laporan' || $sideTitle == 'retail') {
                             echo 'mm-active';
                         } ?>">
                             <i class="metismenu-icon pe-7s-cart"></i>
@@ -69,7 +69,7 @@
                                 <a href="{{ route('retail') }}"
                                     class="{{ $sideTitle == 'retail' ? 'mm-active' : '' }}">
                                     <i class="metismenu-icon"></i>
-                                    Penjualan Retail
+                                    Penjualan MMT
                                 </a>
                             </li>
                             <li>
@@ -200,7 +200,7 @@
                     <li class="app-sidebar__heading">STOKIS</li>
                     {{-- Barang --}}
                     <li>
-                        <a href="#" class="<?php if ($sideTitle == 'barang' || $sideTitle == 'retail') {
+                        <a href="#" class="<?php if ($sideTitle == 'barang' || $sideTitle == '') {
                             echo 'mm-active';
                         } ?>">
                             <i class="metismenu-icon pe-7s-box1"></i>

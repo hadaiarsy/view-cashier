@@ -66,7 +66,8 @@
                                 <div tabindex="-1" role="menu" aria-hidden="true"
                                     class="dropdown-menu dropdown-menu-right">
                                     @if ($level != 5)
-                                        <a href="#" type="button" tabindex="0" class="dropdown-item">
+                                        <a href="{{ route('printstruk') }}" type="button" tabindex="0"
+                                            class="dropdown-item">
                                             <span class="mr-3">Print Struk</span>
                                             <span class="badge bg-danger">{{ $notPrint }}</span>
                                         </a>

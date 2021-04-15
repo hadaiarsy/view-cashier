@@ -107,20 +107,20 @@
                 <tr>
                     <th scope="col">{{ $loop->iteration }}</th>
                     <td class="text-center" style="width: 50%">{{ $barang->nama_barang }}</td>
-                    <td class="text-center">{{ $barang->jumlah . ' ' . $barang->satuan }}</td>
-                    <td class="text-center">{{ $barang->harga / $barang->jumlah }}</td>
-                    <td class="text-center">{{ $barang->harga }}</td>
+                    <td class="text-center">{{ $helper->money_format($barang->jumlah) . ' ' . $barang->satuan }}</td>
+                    <td class="text-center">{{ $helper->money_format($barang->harga / $barang->jumlah) }}</td>
+                    <td class="text-center">{{ $helper->money_format($barang->harga) }}</td>
                 </tr>
             @endforeach
             <tr>
                 <td colspan="3" style="border: 0px"></td>
                 <th style="text-align: right; padding: 10px;">Total (Rp. )</th>
-                <td class="text-center">{{ $data->total }}</td>
+                <td class="text-center">{{ $helper->money_format($data->total) }}</td>
             </tr>
             <tr>
                 <td colspan="3" style="border: 0px"></td>
                 <th style="text-align: right; padding: 10px;">Donasi (Rp. )</th>
-                <td class="text-center">{{ $data->donasi }}</td>
+                <td class="text-center">{{ $helper->money_format($data->donasi) }}</td>
             </tr>
         </tbody>
     </table>
@@ -142,39 +142,6 @@
 
     <script>
         $(document).ready(function() {
-            function currencyIdr(angka, prefix) {
-                let number_string = angka.replace(/[^,\d]/g, "").toString(),
-                    split = number_string.split(","),
-                    sisa = split[0].length % 3,
-                    rupiah = split[0].substr(0, sisa),
-                    ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-                if (ribuan) {
-                    separator = sisa ? "." : "";
-                    rupiah += separator + ribuan.join(".");
-                }
-                rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
-                return prefix == undefined ? rupiah : rupiah ? "Rp " + rupiah : "";
-            }
-
-            $('.harga-item-struk').each(function(e) {
-                $(this).html(currencyIdr(String($(this).html()), 'Rp '))
-            })
-
-            $('#totalStruk').html(function() {
-                return currencyIdr(String($(this).html()), 'Rp ')
-            })
-
-            $('#grandTotalStruk').html(function() {
-                return currencyIdr(String($(this).html()), 'Rp ')
-            })
-
-            $('#uangStruk').html(function() {
-                return currencyIdr(String($(this).html()), 'Rp ')
-            })
-
-            $('#kembaliStruk').html(function() {
-                return currencyIdr(String($(this).html()), 'Rp ')
-            })
 
             let d = new Date();
             let month = d.getMonth() + 1;

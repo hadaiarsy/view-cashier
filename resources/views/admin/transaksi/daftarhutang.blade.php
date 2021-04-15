@@ -205,7 +205,7 @@
                         <tr>
                             <th scope="col">{{ $loop->iteration }}</th>
                             <td>{{ $t->no_resi }}</td>
-                            <td>{{ date('Y-m-d', strtotime($t->tanggal)) }}</td>
+                            <td>{{ date('d-m-Y', strtotime($t->tanggal)) }}</td>
                             <td>{{ $t->kasir->name }}</td>
                             <td>{{ $t->member->kode_member }}</td>
                             <td>{{ $t->member->nama }}</td>

@@ -46,7 +46,7 @@ class AppServiceProvider extends ServiceProvider
                 $userid = '';
             }
 
-            $notPrint = Transaksi::where('is_print', '=', 0)->get();
+            $notPrint = Transaksi::where('tanggal', '=', now())->where('is_print', '=', 0)->get();
             $view->with([
                 'level' => $level,
                 'username' => $username,

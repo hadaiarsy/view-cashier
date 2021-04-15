@@ -125,15 +125,15 @@
                     <th scope="col">{{ $loop->iteration }}</th>
                     <td class="text-center">{{ $barang->kode_barang }}</td>
                     <td class="text-center">{{ $barang->nama_barang }}</td>
-                    <td class="text-center">{{ $barang->jumlah . ' ' . $barang->satuan }}</td>
-                    <td class="text-center">{{ $barang->harga / $barang->jumlah }}</td>
-                    <td class="text-center">{{ $barang->harga }}</td>
+                    <td class="text-center">{{ $helper->money_format($barang->jumlah) . ' ' . $barang->satuan }}</td>
+                    <td class="text-center">{{ $helper->money_format($barang->harga / $barang->jumlah, 'Rp ') }}</td>
+                    <td class="text-center">{{ $helper->money_format($barang->harga, 'Rp ') }}</td>
                 </tr>
                 @endforeach
             @endif
             <tr>
                 <th scope="col" colspan="5" style="text-align: right">Total Piutang</th>
-                <td class="text-center">{{ $data->total }}</td>
+                <td class="text-center">{{ $helper->money_format($data->total, 'Rp ') }}</td>
             </tr>
             <tr>
                 <?php $tp = 0; ?>
@@ -144,7 +144,7 @@
                             <?php $tp += $piutang->uang; ?>
                         @endif
                     @endforeach
-                    {{ $tp }}
+                    {{ $helper->money_format($tp, 'Rp ') }}
                 </td>
             </tr>
         </tbody>
@@ -176,7 +176,7 @@
                         @endif
                     @endforeach
                     <?php $sp = $data->total - $sp; ?>
-                    {{ $sp < 0 ? 0 : $sp }}
+                    {{ $helper->money_format($sp < 0 ? 0 : $sp, 'Rp ') }}
                 </td>
             </tr>
             <tr>
@@ -184,7 +184,7 @@
                 <td>:</td>
                 <td>
                     @if (count($data->piutang) != 0)
-                        {{ $bayar = $data->piutang[count($data->piutang) - 1]->uang }}
+                        {{ $helper->money_format($bayar = $data->piutang[count($data->piutang) - 1]->uang, 'Rp ') }}
                     @else
                         <?php $bayar = 0; ?>
                         -
@@ -194,17 +194,17 @@
             <tr>
                 <td>Kembali</td>
                 <td>:</td>
-                <td>{{ $kembali = $bayar - $sp < 0 ? '-' : $bayar - $sp }}</td>
+                <td>{{ $helper->money_format($kembali = $bayar - $sp < 0 ? 0 : $bayar - $sp, 'Rp ') }}</td>
             </tr>
             <tr>
                 <td>Sisa Piutang Faktur</td>
                 <td>:</td>
-                <td>{{ $sisa = $sp - $bayar < 0 ? 0 : $sp - $bayar }}</td>
+                <td>{{ $helper->money_format($sisa = $sp - $bayar < 0 ? 0 : $sp - $bayar, 'Rp ') }}</td>
             </tr>
             <tr>
                 <td>Sisa Piutang Keseluruhan</td>
                 <td>:</td>
-                <td>{{ $total }}</td>
+                <td>{{ $helper->money_format($total, 'Rp ') }}</td>
             </tr>
             @if ($data->is_lunas == '1')
                 <tr>
@@ -216,39 +216,6 @@
 
     <script>
         $(document).ready(function() {
-            function currencyIdr(angka, prefix) {
-                let number_string = angka.replace(/[^,\d]/g, "").toString(),
-                    split = number_string.split(","),
-                    sisa = split[0].length % 3,
-                    rupiah = split[0].substr(0, sisa),
-                    ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-                if (ribuan) {
-                    separator = sisa ? "." : "";
-                    rupiah += separator + ribuan.join(".");
-                }
-                rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
-                return prefix == undefined ? rupiah : rupiah ? "Rp " + rupiah : "";
-            }
-
-            $('.harga-item-struk').each(function(e) {
-                $(this).html(currencyIdr(String($(this).html()), 'Rp '))
-            })
-
-            $('#totalStruk').html(function() {
-                return currencyIdr(String($(this).html()), 'Rp ')
-            })
-
-            $('#grandTotalStruk').html(function() {
-                return currencyIdr(String($(this).html()), 'Rp ')
-            })
-
-            $('#uangStruk').html(function() {
-                return currencyIdr(String($(this).html()), 'Rp ')
-            })
-
-            $('#kembaliStruk').html(function() {
-                return currencyIdr(String($(this).html()), 'Rp ')
-            })
 
             let d = new Date();
             let month = d.getMonth() + 1;

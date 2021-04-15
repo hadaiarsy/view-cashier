@@ -144,11 +144,15 @@
                                     {{ date('d/m/y', strtotime($transaksi->tanggal)) }}</td>
                                 <td rowspan="{{ count($transaksi->detail) }}">{{ $transaksi->no_resi }}</td>
                                 <td rowspan="{{ count($transaksi->detail) }}">{{ $transaksi->member->nama }}</td>
-                                <td>{{ $transaksi->detail[0]->nama_barang }}</td>
-                                <td>{{ $transaksi->detail[0]->jumlah . ' ' . $transaksi->detail[0]->satuan }}</td>
-                                <td>{{ (int) $transaksi->detail[0]->harga / (int) $transaksi->detail[0]->jumlah }}
-                                </td>
-                                <td>{{ $transaksi->detail[0]->harga }}</td>
+                                @if (count($transaksi->detail) > 0)
+                                    <td>{{ $transaksi->detail[0]->nama_barang }}</td>
+                                    <td>{{ $helper->money_format($transaksi->detail[0]->jumlah) . ' ' . $transaksi->detail[0]->satuan }}</td>
+                                    <td>{{ (int) $transaksi->detail[0]->harga / (int) $transaksi->detail[0]->jumlah }}
+                                    </td>
+                                    <td>{{ $transaksi->detail[0]->harga }}</td>
+                                @else
+                                    <td colspan="4" style="text-align: center">-</td>
+                                @endif
                                 <td rowspan="{{ count($transaksi->detail) + count($transaksi->piutang) }}">
                                     {{ $transaksi->total }}</td>
                                 <td rowspan="{{ count($transaksi->detail) + count($transaksi->piutang) }}">
@@ -169,7 +173,7 @@
                                 @for ($i = 1; $i <= count($transaksi->detail) - 1; $i++)
                                     <tr class="head-list">
                                         <td>{{ $transaksi->detail[$i]->nama_barang }}</td>
-                                        <td>{{ $transaksi->detail[$i]->jumlah . ' ' . $transaksi->detail[$i]->satuan }}
+                                        <td>{{ $helper->money_format($transaksi->detail[$i]->jumlah) . ' ' . $transaksi->detail[$i]->satuan }}
                                         </td>
                                         <td>{{ (int) $transaksi->detail[$i]->harga / (int) $transaksi->detail[$i]->jumlah }}
                                         </td>

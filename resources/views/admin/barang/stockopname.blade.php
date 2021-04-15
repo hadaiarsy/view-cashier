@@ -100,8 +100,9 @@
                                 $date = date('m');
                                 $dateString = ['JANUARI', 'FEBRUARI', 'MARET', 'APRIL', 'MEI', 'JUNI', 'JULI',
                                 'AGUSTUS', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DESEMBER'];
-                                for ($i = 0; $i <= count($dateString); $i++) { if ($date==$i) { echo $dateString[$i - 1]
-                                    . ' ' . date('Y'); } } ?> </h4>
+                                ?>
+                                {{ 'PER-' . date('d') . ' ' . $dateString[$date - 1] . ' ' . date('Y') }}
+                            </h4>
                         </th>
                     </tr>
                 </thead>
@@ -122,6 +123,7 @@
                 <tbody>
                     <?php
                     $noJenis = 0;
+                    $jumlahTotalHarga = 0;
                     $alphabet = range('A', 'Z');
                     ?>
                     @foreach ($jenis as $j)
@@ -138,7 +140,7 @@
                                     <td style="text-align: left">{{ strtoupper($barang->nama) }}</td>
                                     <td style="text-align: right">
                                         <?php $stok = $barang->stok; ?>
-                                        {{ str_replace('.', ',', strval($barang->stok)) }}
+                                        {{ $helper->money_format($barang->stok, '', '') }}
                                     </td>
                                     <td style="text-align: left">
                                         @foreach ($satuan as $s)
@@ -150,16 +152,24 @@
                                     <td style="text-align: right">
                                         @foreach ($satuan as $s)
                                             @if ($s->kode_barang == $barang->kode_barang)
-                                                {{ $helper->money_format($hb = $s->harga_beli) }}
+                                                <?php $hb = $s->harga_beli; ?>
+                                                {{ $helper->money_format($s->harga_beli) }}
                                             @endif
                                         @endforeach
                                     </td>
-                                    <td style="text-align: right">{{ $helper->money_format($hb * $stok) }}</td>
+                                    <td style="text-align: right">
+                                        <?php $jumlahTotalHarga += $hb * $stok; ?>
+                                        {{ $helper->money_format($hb * $stok) }}
+                                    </td>
                                 </tr>
                             @endforeach
                             <?php $noJenis += 1; ?>
                         @endif
                     @endforeach
+                    <tr>
+                        <th colspan="5" style="text-align: right">TOTAL</th>
+                        <td style="text-align: right">{{ $helper->money_format($jumlahTotalHarga) }}</td>
+                    </tr>
                 </tbody>
             </table>
         </div>

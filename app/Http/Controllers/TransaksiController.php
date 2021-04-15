@@ -281,7 +281,7 @@ class TransaksiController extends Controller
     public function list(Transaksi $transaksi)
     {
         return view('admin.transaksi.daftar', [
-            'transaksi' => $transaksi->with(['member', 'kasir'])->where('jenis_transaksi', ['penjualan', 'pengiriman'])->orderBy('tanggal', 'desc')->get(),
+            'transaksi' => $transaksi->with(['member', 'kasir'])->where('jenis_transaksi', '=', 'penjualan')->orWhere('jenis_transaksi', '=', 'pengiriman')->orderBy('tanggal', 'desc')->get(),
             'sideTitle' => 'laporan'
         ]);
     }
@@ -344,7 +344,25 @@ class TransaksiController extends Controller
 
     public function delete(Request $request, Transaksi $transaksi)
     {
-        if ($transaksi->where('no_resi', $request->id_hapus)->delete()) {
+        if (preg_match('/WY-/', $request->id_hapus)) {
+            $newID = $request->id_hapus;
+        } else {
+            $resi = Transaksi::withTrashed()->where('no_resi', 'like', '%' . $request->id_hapus . '%')->count();
+            if ($resi == 0) {
+                $newID = 'D1-' . $request->id_hapus;
+                $transaksi->where('no_resi', '=', $request->id_hapus)
+                    ->update([
+                        'no_resi' => $newID
+                    ]);
+            } else {
+                $newID = 'D' . $resi . '-' . $request->id_hapus;
+                $transaksi->where('no_resi', '=', $request->id_hapus)
+                    ->update([
+                        'no_resi' => $newID
+                    ]);
+            }
+        }
+        if ($transaksi->where('no_resi', $newID)->delete()) {
             $request->session()->flash('hapus', 'succesful');
             if ($request->jenis_hapus === 'penjualan') {
                 return redirect('daftar-transaksi');
@@ -379,7 +397,9 @@ class TransaksiController extends Controller
                 ->where(function ($query) {
                     $query->where('jenis_transaksi', '=', 'penjualan')
                         ->orWhere('jenis_transaksi', '=', 'pengiriman');
-                })->get()
+                })
+                ->orderBy('tanggal', 'desc')
+                ->get()
         ]);
     }
 
@@ -392,7 +412,9 @@ class TransaksiController extends Controller
             ])->where([
                 'jenis_transaksi' => 'pembelian',
                 'is_lunas' => '0'
-            ])->get()
+            ])
+                ->orderBy('tanggal', 'desc')
+                ->get()
         ]);
     }
 

@@ -148,7 +148,7 @@
                                 <td rowspan="{{ count($transaksi->detail) }}">{{ $transaksi->member->nama }}</td>
                                 @if (count($transaksi->detail) > 0)
                                     <td>{{ $transaksi->detail[0]->nama_barang }}</td>
-                                    <td>{{ $transaksi->detail[0]->jumlah . ' ' . $transaksi->detail[0]->satuan }}
+                                    <td>{{ $helper->money_format($transaksi->detail[0]->jumlah) . ' ' . $transaksi->detail[0]->satuan }}
                                     </td>
                                     <td>{{ $transaksi->detail[0]->harga / $transaksi->detail[0]->jumlah }}</td>
                                     <td>{{ $transaksi->detail[0]->harga }}</td>
@@ -190,7 +190,7 @@
                                 @for ($i = 1; $i <= count($transaksi->detail) - 1; $i++)
                                     <tr class="head-list">
                                         <td>{{ $transaksi->detail[$i]->nama_barang }}</td>
-                                        <td>{{ $transaksi->detail[$i]->jumlah . ' ' . $transaksi->detail[$i]->satuan }}
+                                        <td>{{ $helper->money_format($transaksi->detail[$i]->jumlah) . ' ' . $transaksi->detail[$i]->satuan }}
                                         </td>
                                         <td>{{ $transaksi->detail[$i]->harga / $transaksi->detail[$i]->jumlah }}</td>
                                         <td>{{ $transaksi->detail[$i]->harga }}</td>
