@@ -15,7 +15,7 @@
     <title>Test Struk</title>
 </head>
 
-<body style="width: 100%">
+<body style="width: 100%; font-family: Arial, Helvetica, sans-serif;">
 
     @foreach ($data as $transaksi)
         <table id='printStruk'
@@ -121,6 +121,11 @@
             <tr>
                 <td colspan='3' style='border-top: 1px solid black; text-align: center;'>
                     <div id='qrcodeStruk'></div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan='3' style='text-align: center; font-size: 0.6rem;'>
+                    Aplikasi Kasir &#169; {{ date('Y') }} by Beegency
                 </td>
             </tr>
         </table>

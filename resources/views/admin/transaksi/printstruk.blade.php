@@ -47,6 +47,7 @@
                                         <th scope="col">Kasir</th>
                                         <th scope="col">Unit</th>
                                         <th scope="col">Anggota</th>
+                                        <th scope="col">Jenis Transaksi</th>
                                         <th scope="col">Tindakan</th>
                                     </tr>
                                 </thead>
@@ -59,6 +60,8 @@
                                             <td>{{ $transaksi->kasir->name }}</td>
                                             <td>{{ $transaksi->member->unit }}</td>
                                             <td>{{ $transaksi->member->nama }}</td>
+                                            <td>{{ $transaksi->jenis_transaksi == 'pengiriman' ? 'MMT' : 'Piutang' }}
+                                            </td>
                                             <td>
                                                 @if ($transaksi->jenis_transaksi == 'penjualan')
                                                     <a href="/faktur-piutang/{{ $transaksi->no_resi }}" target="_blank"

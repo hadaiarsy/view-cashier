@@ -216,7 +216,8 @@
 
         // currency IDR
         function currencyIdr(angka, prefix) {
-            let number_string = angka.replace(/[^,\d]/g, "").toString(),
+            if(angka.includes('.') && angka.includes('Rp') == false) angka = String(Math.ceil(Number(angka)));
+            let number_string = String(angka).replace(/[^,\d]/g, "").toString(),
                 split = number_string.split(","),
                 sisa = split[0].length % 3,
                 rupiah = split[0].substr(0, sisa),
@@ -228,7 +229,7 @@
             rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
             return prefix == undefined ? rupiah : rupiah ? "Rp " + rupiah : "";
         }
-
+        
         function replaceCurrency(angka) {
             return Number(angka.split(".").join("").split("Rp").join(""));
         }

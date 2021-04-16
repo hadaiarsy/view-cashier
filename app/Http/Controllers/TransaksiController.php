@@ -442,7 +442,7 @@ class TransaksiController extends Controller
                 ->orderBy('jenis_transaksi', 'asc')
                 ->get();
         } else {
-            $data = Transaksi::with(['kasir', 'member'])->where('no_resi', '=', $resi)->get();
+            $data = Transaksi::with(['kasir', 'member', 'piutang', 'detail'])->where('no_resi', '=', $resi)->get();
         }
         // return response()->json([
         //     'data' => $data

@@ -226,7 +226,7 @@
                                                 <p>{{ $b->nama }}</p>
                                             </td>
                                             <td>
-                                                <p>{{ $b->stok * $b->satuan[0]->rasio . ' / ' . $b->satuan[0]->nama_satuan }}
+                                                <p>{{ $helper->money_format($b->stok * $b->satuan[0]->rasio) . ' / ' . $b->satuan[0]->nama_satuan }}
                                                 </p>
                                             </td>
                                             <td>

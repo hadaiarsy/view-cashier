@@ -252,7 +252,7 @@
                                         <tr>
                                             <td>{{ $b->barcode }}</td>
                                             <td>{{ $b->nama }}</td>
-                                            <td>{{ $b->stok . ' ' . $b->satuan[0]->nama_satuan }}</td>
+                                            <td>{{ $helper->money_format($b->stok) . ' ' . $b->satuan[0]->nama_satuan }}</td>
                                             <td>{{ $helper->money_format($b->satuan[0]->harga_jual, 'Rp ') }}</td>
                                             <td>
                                                 <button class="btn btn-info btn-sm text-light add-item"
@@ -900,8 +900,7 @@
                     total += parseInt(Number(replaceCurrency($(this).html())));
                 });
                 if (piutangcheck() == '0') {
-                    // printStruk = window.open(globalUrl + 'faktur-piutang/' + data.noResi);
-                    return false;
+                    printStruk = window.open(globalUrl + 'test-struk/' + data.noResi);
                 } else {
                     printStruk = window.open(globalUrl + 'test-struk/' + data.noResi + '/' + total + '/' +
                         replaceCurrency(data

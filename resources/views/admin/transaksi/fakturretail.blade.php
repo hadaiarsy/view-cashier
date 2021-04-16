@@ -14,20 +14,24 @@
 
     <style>
         * {
-            font-size: 0.88rem
+            font-size: 0.88rem;
+            font-family: Arial, Helvetica, sans-serif;
         }
 
         table.border-table {
-            border-collapse: collapse
+            border-collapse: collapse;
+            font-family: Arial, Helvetica, sans-serif;
         }
 
         table.border-table td,
         table.border-table th {
-            border: 1px solid black
+            border: 1px solid black;
+            font-family: Arial, Helvetica, sans-serif;
         }
 
         .text-center {
-            text-align: center
+            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
         }
 
     </style>
@@ -106,21 +110,21 @@
             @foreach ($data->detail as $barang)
                 <tr>
                     <th scope="col">{{ $loop->iteration }}</th>
-                    <td class="text-center" style="width: 50%">{{ $barang->nama_barang }}</td>
+                    <td style="width: 50%; text-align: left">{{ $barang->nama_barang }}</td>
                     <td class="text-center">{{ $helper->money_format($barang->jumlah) . ' ' . $barang->satuan }}</td>
-                    <td class="text-center">{{ $helper->money_format($barang->harga / $barang->jumlah) }}</td>
-                    <td class="text-center">{{ $helper->money_format($barang->harga) }}</td>
+                    <td style="text-align: right">{{ $helper->money_format($barang->harga / $barang->jumlah) }}</td>
+                    <td style="text-align: right">{{ $helper->money_format($barang->harga) }}</td>
                 </tr>
             @endforeach
             <tr>
                 <td colspan="3" style="border: 0px"></td>
                 <th style="text-align: right; padding: 10px;">Total (Rp. )</th>
-                <td class="text-center">{{ $helper->money_format($data->total) }}</td>
+                <td style="text-align: right">{{ $helper->money_format($data->total) }}</td>
             </tr>
             <tr>
                 <td colspan="3" style="border: 0px"></td>
                 <th style="text-align: right; padding: 10px;">Donasi (Rp. )</th>
-                <td class="text-center">{{ $helper->money_format($data->donasi) }}</td>
+                <td style="text-align: right">{{ $helper->money_format($data->donasi) }}</td>
             </tr>
         </tbody>
     </table>
@@ -133,8 +137,7 @@
             </tr>
             <tr>
                 <td colspan="2" style="padding-top: 80px">
-                    <p>Jl. Kaum No.2 (Samping Terminal Cicaheum) | (022) 20503797 | koperasiyamughni11@gmail.com |
-                        yamughnibandung.org</p>
+                    <p>Jl. Kaum No.2 (Samping Terminal Cicaheum) | (022) 20503797 | yamughnibandung.org</p>
                 </td>
             </tr>
         </table>

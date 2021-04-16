@@ -263,7 +263,7 @@
                                         <tr>
                                             <td>{{ $b->barcode }}</td>
                                             <td>{{ $b->nama }}</td>
-                                            <td>{{ $b->stok . ' ' . $b->satuan[0]->nama_satuan }}</td>
+                                            <td>{{ $helper->money_format($b->stok) . ' ' . $b->satuan[0]->nama_satuan }}</td>
                                             <td>{{ $helper->money_format($b->satuan[0]->harga_supl, 'Rp ') }}</td>
                                             <td>
                                                 <button class="btn btn-info btn-sm text-light add-item"

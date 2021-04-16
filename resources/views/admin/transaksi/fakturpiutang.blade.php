@@ -14,20 +14,24 @@
 
     <style>
         * {
-            font-size: 0.88rem
+            font-size: 0.88rem;
+            /* font-family: Arial, Helvetica, sans-serif; */
         }
 
         table.border-table {
-            border-collapse: collapse
+            border-collapse: collapse;
+            /* font-family: Arial, Helvetica, sans-serif; */
         }
 
         table.border-table td,
         table.border-table th {
-            border: 1px solid black
+            border: 1px solid black;
+            /* font-family: Arial, Helvetica, sans-serif; */
         }
 
         .text-center {
-            text-align: center
+            text-align: center;
+            /* font-family: Arial, Helvetica, sans-serif; */
         }
 
     </style>
@@ -107,7 +111,7 @@
         </tr>
         @endif
     </table>
-    <table class="border-table" id="dataBarang" style="margin: auto; width: 85%">
+    <table class="border-table" id="dataBarang" style="margin: auto; width: 83%">
         @if (count($data->piutang) == 0 || date('dmy', strtotime($data->tanggal)) == date('dmy', strtotime($data->piutang[count($data->piutang) - 1]->tanggal)))
             <thead>
                 <th scope="col">No.</th>
@@ -124,21 +128,21 @@
                 <tr>
                     <th scope="col">{{ $loop->iteration }}</th>
                     <td class="text-center">{{ $barang->kode_barang }}</td>
-                    <td class="text-center">{{ $barang->nama_barang }}</td>
+                    <td style="text-align: left">{{ $barang->nama_barang }}</td>
                     <td class="text-center">{{ $helper->money_format($barang->jumlah) . ' ' . $barang->satuan }}</td>
-                    <td class="text-center">{{ $helper->money_format($barang->harga / $barang->jumlah, 'Rp ') }}</td>
-                    <td class="text-center">{{ $helper->money_format($barang->harga, 'Rp ') }}</td>
+                    <td style="text-align: right">{{ $helper->money_format($barang->harga / $barang->jumlah, 'Rp ') }}</td>
+                    <td style="text-align: right">{{ $helper->money_format($barang->harga, 'Rp ') }}</td>
                 </tr>
                 @endforeach
             @endif
             <tr>
                 <th scope="col" colspan="5" style="text-align: right">Total Piutang</th>
-                <td class="text-center">{{ $helper->money_format($data->total, 'Rp ') }}</td>
+                <td style="text-align: right">{{ $helper->money_format($data->total, 'Rp ') }}</td>
             </tr>
             <tr>
                 <?php $tp = 0; ?>
                 <th scope="col" colspan="5" style="text-align: right">Pembayaran Sebelumnya</th>
-                <td class="text-center">
+                <td style="text-align: right">
                     @foreach ($data->piutang as $piutang)
                         @if (!$loop->last)
                             <?php $tp += $piutang->uang; ?>
@@ -158,8 +162,7 @@
             </tr>
             <tr>
                 <td colspan="2" style="padding-top: 80px">
-                    <p>Jl. Kaum No.2 (Samping Terminal Cicaheum) | (022) 20503797 | koperasiyamughni11@gmail.com |
-                        yamughnibandung.org</p>
+                    <p>Jl. Kaum No.2 (Samping Terminal Cicaheum) | (022) 20503797 | www.yamughnibandung.org</p>
                 </td>
             </tr>
         </table>

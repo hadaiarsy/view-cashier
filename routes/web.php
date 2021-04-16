@@ -221,8 +221,11 @@ Route::middleware('auth')->group(function () {
         Route::get('show-member/{any}', [MemberController::class, 'show']);
         Route::post('update-member', [MemberController::class, 'update']);
         Route::get('getname-member/{any?}', function ($any = NULL) {
+            $data = Transaksi::select('no_resi')->with(['detail'])->onlyTrashed()->where('no_resi', '=', 'WY-060421001')->first();
+            $data = $data->detail;
             return response()->json([
-                'data' => Transaksi::select('no_resi')->whereBetween(DB::raw('DATE(tanggal)'), ['2020-04-14', '2021-04-15'])->count()
+                // 'data' => Transaksi::select('no_resi')->whereBetween(DB::raw('DATE(tanggal)'), ['2020-04-14', '2021-04-15'])->count()
+                'data' => $data
             ]);
         });
     });
