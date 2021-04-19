@@ -96,9 +96,9 @@
                                         <button class="btn btn-sm btn-warning btnEdit" data-dataid="{{ $m->kode_member }}"
                                             data-bs-toggle="modal" data-bs-target="#editModal"><i
                                                 class='fas fa-edit'></i></button>
-                                        <button class="btn btn-sm btn-danger btnHapus" data-dataid="{{ $m->kode_member }}"
+                                        {{-- <button class="btn btn-sm btn-danger btnHapus" data-dataid="{{ $m->kode_member }}"
                                             data-datanama="{{ $m->no_anggota . ' - ' . $m->nama }}" data-bs-toggle="modal"
-                                            data-bs-target="#hapusModal"><i class='fas fa-trash-alt'></i></button>
+                                            data-bs-target="#hapusModal"><i class='fas fa-trash-alt'></i></button> --}}
                                     </td>
                                 </tr>
                             @endforeach

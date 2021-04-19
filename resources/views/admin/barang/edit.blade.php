@@ -67,8 +67,8 @@
             </div>
             <button type="button" class="btn btn-warning btn-sm mt-2" id="tmbhBtn"><i class='fas fa-edit'></i>
                 Edit</button>
-            <button class="btn btn-sm btn-danger btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#hapusBarangModal"><i
-                    class='fas fa-trash-alt'></i> Hapus</button>
+            {{-- <button class="btn btn-sm btn-danger btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#hapusBarangModal"><i
+                    class='fas fa-trash-alt'></i> Hapus</button> --}}
         </div>
 
         <div class="col-md-8 border">

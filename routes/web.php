@@ -10,7 +10,9 @@ use App\Http\Controllers\DetailPiutangController;
 use App\Http\Controllers\JenisBarangController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\UserController;
+use App\Models\Barang;
 use App\Models\DetailPiutang;
+use App\Models\DetailTransaksi;
 use App\Models\Transaksi;
 use Carbon\Carbon;
 use Facade\FlareClient\View;
@@ -221,11 +223,38 @@ Route::middleware('auth')->group(function () {
         Route::get('show-member/{any}', [MemberController::class, 'show']);
         Route::post('update-member', [MemberController::class, 'update']);
         Route::get('getname-member/{any?}', function ($any = NULL) {
-            $data = Transaksi::select('no_resi')->with(['detail'])->onlyTrashed()->where('no_resi', '=', 'WY-060421001')->first();
-            $data = $data->detail;
+            $data = Transaksi::with(['detail'])->onlyTrashed()->orderBy('tanggal', 'asc')->get();
+            $datas = [];
+            for ($i = 0; $i < count($data); ++$i) {
+                if (count($data[$i]->detail) > 0) {
+                    for ($j = 0; $j < count($data[$i]->detail); ++$j) {
+                        if ($data[$i]->detail[$j]->is_return === 0) {
+                            $datas[] = [
+                                'id' => $data[$i]->detail[$j]->id,
+                                'kode_barang' => $data[$i]->detail[$j]->kode_barang,
+                                'jumlah' => $data[$i]->detail[$j]->jumlah,
+                                'isReturn' => $data[$i]->detail[$j]->is_return,
+                            ];
+                        }
+                    }
+                }
+            }
+            if ($any === 'return') {
+                foreach ($datas as $d) {
+                    $stokAwal = Barang::withTrashed()->where('kode_barang', '=', $d['kode_barang'])->first()->stok;
+                    $barang = Barang::where('kode_barang', '=', $d['kode_barang'])
+                        ->update([
+                            'stok' => floatval(floatval($stokAwal) + floatval($d['jumlah']))
+                        ]);
+                    $detail = DetailTransaksi::where('id', '=', $d['id'])
+                        ->update([
+                            'is_return' => 1
+                        ]);
+                }
+            }
             return response()->json([
                 // 'data' => Transaksi::select('no_resi')->whereBetween(DB::raw('DATE(tanggal)'), ['2020-04-14', '2021-04-15'])->count()
-                'data' => $data
+                'data' => $datas
             ]);
         });
     });
