@@ -174,6 +174,13 @@
                                     </div>
                                     <div class="row d-flex flex-row-reverse mt-2">
                                         <div class="col-6 input-group">
+                                            <input type="text" class="form-control pay-section" data-dataps="" id="donasi"
+                                                value="">
+                                        </div>
+                                        <label for="donasi" class="col-4 col-form-label">Donasi :</label>
+                                    </div>
+                                    <div class="row d-flex flex-row-reverse mt-2">
+                                        <div class="col-6 input-group">
                                             <input type="text" class="form-control pay-section" data-dataps="ps-3"
                                                 id="uangTotal" value="">
                                         </div>
@@ -252,7 +259,8 @@
                                         <tr>
                                             <td>{{ $b->barcode }}</td>
                                             <td>{{ $b->nama }}</td>
-                                            <td>{{ $helper->money_format($b->stok) . ' ' . $b->satuan[0]->nama_satuan }}</td>
+                                            <td>{{ $helper->money_format($b->stok) . ' ' . $b->satuan[0]->nama_satuan }}
+                                            </td>
                                             <td>{{ $helper->money_format($b->satuan[0]->harga_jual, 'Rp ') }}</td>
                                             <td>
                                                 <button class="btn btn-info btn-sm text-light add-item"
@@ -778,14 +786,22 @@
                 let total = Number(totalHarga().split(".").join("").split("Rp").join(""));
                 diskon = Number($('#diskon').val());
                 let uang = Number($('#uangTotal').val().split(".").join("").split("Rp").join(""));
+                let donasi = Number($('#donasi').val().split(".").join("").split("Rp").join(""));
                 total = total - (total * (diskon / 100));
                 if (total > 0) {
                     $('#totalText').html(currencyIdr(String(Math.ceil(Math.floor(total))), 'Rp '));
                 }
                 if (uang > 0 && piutangcheck() == '1') {
-                    let kmbl = uang - total;
+                    let kmbl = uang - (total + donasi);
                     $("#kmblTotal").val(currencyIdr(String(kmbl), 'Rp '));
                 }
+            });
+            // end
+
+            // donasi
+            $('#donasi').on('change paste keyup', function(e) {
+                $(this).val(currencyIdr(String($(this).val()), 'Rp '));
+                $("#uangTotal").change();
             });
             // end
 
@@ -794,8 +810,9 @@
                 $(this).val(currencyIdr($(this).val(), 'Rp '));
                 let uang = Number($(this).val().split(".").join("").split("Rp").join(""));
                 let total = Number($("#totalText").html().split(".").join("").split("Rp").join(""));
+                let donasi = Number($("#donasi").val().split(".").join("").split("Rp").join(""));
                 if (piutangcheck() == '1') {
-                    let kmbl = uang - total;
+                    let kmbl = uang - (total + donasi);
                     if (kmbl < 0) {
                         $("#kmblTotal").val('');
                         $('#slsPrintTransc').prop('disabled', true);
@@ -824,6 +841,7 @@
                 let noResi = $("#noResi").val();
                 let ttlSm = $("#totalText").html();
                 let diskon = Number($("#diskon").val());
+                let donasi = $("#donasi").val() == '' ? 'Rp 0' : $("#donasi").val();
                 let uang = $("#uangTotal").val() == '' ? 'Rp 0' : $("#uangTotal").val();
                 let kmbl = $("#kmblTotal").val() == '' ? 'Rp 0' : $("#kmblTotal").val();
                 let row = $('.itemRow');
@@ -842,6 +860,7 @@
                     ttlSm: ttlSm,
                     isLunas: isLunas,
                     diskon: diskon,
+                    donasi: donasi,
                     uang: uang,
                     kmbl: kmbl,
                     dataBarang: dataBarang
@@ -863,6 +882,7 @@
                         total: replaceCurrency(ttlSm),
                         diskon: diskon,
                         is_lunas: isLunas,
+                        donasi: replaceCurrency(donasi),
                         uang: replaceCurrency(uang),
                         is_print: piutangcheck() == '0' ? 0 : 1,
                         detail_transaksi: dataBarang

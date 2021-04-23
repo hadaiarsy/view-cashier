@@ -84,6 +84,13 @@
                         {{ $helper->money_format($transaksi->total, 'Rp ') }}
                     </td>
                 </tr>
+                @if ((int) $transaksi->donasi > 0)
+                    <tr>
+                        <td>Donasi</td>
+                        <td colspan='2' id='donasi' style='text-align: right'>
+                            {{ $helper->money_format($transaksi->donasi, 'Rp ') }}</td>
+                    </tr>
+                @endif
                 <tr>
                     <td>Uang</td>
                     <td colspan='2' id='uangStruk' style='text-align: right'>
@@ -93,7 +100,7 @@
                     <tr>
                         <td>Kembali</td>
                         <td colspan='2' id='kembaliStruk' style='text-align: right'>
-                            {{ $helper->money_format((int) $transaksi->uang - (int) $transaksi->total > 0 ? (int) $transaksi->uang - (int) $transaksi->total : 0, 'Rp ') }}
+                            {{ $helper->money_format((int) $transaksi->uang - ((int) $transaksi->total + (int) $transaksi->donasi) > 0 ? (int) $transaksi->uang - ((int) $transaksi->total + (int) $transaksi->donasi) : 0, 'Rp ') }}
                         </td>
                     </tr>
                 @else

@@ -84,6 +84,11 @@
                 <td>{{ $data->no_resi }}</td>
             </tr>
             <tr>
+                <td>Kode MMT</td>
+                <td>:</td>
+                <td>{{ $data->member->kode_mmt }}</td>
+            </tr>
+            <tr>
                 <td>ID Admin</td>
                 <td>:</td>
                 <td>{{ $data->kasir->name . ' | ' . $data->kasir->id }}</td>

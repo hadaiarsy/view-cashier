@@ -45,6 +45,10 @@ Route::middleware('auth')->group(function () {
     Route::group([''], function () {
         Route::get('transaksi', [TransaksiController::class, 'index'])->name('transaksi');
 
+        Route::get('edit-transaksi/{any?}', [TransaksiController::class, 'edit'])->name('edit-transaksi');
+
+        Route::post('update-transaksi', [TransaksiController::class, 'update'])->name('update-transaksi');
+
         Route::post('hapus-transaksi', [TransaksiController::class, 'delete'])->name('hapus-transaksi');
 
         Route::get('print-struk/{resi?}', [TransaksiController::class, 'printstruk'])->name('printstruk');
@@ -223,7 +227,9 @@ Route::middleware('auth')->group(function () {
         Route::get('show-member/{any}', [MemberController::class, 'show']);
         Route::post('update-member', [MemberController::class, 'update']);
         Route::get('getname-member/{any?}', function ($any = NULL) {
-            $data = Transaksi::with(['detail'])->onlyTrashed()->orderBy('tanggal', 'asc')->get();
+            // return date('d') == date('d', strtotime(new Carbon('last day of last month'))) ? 'true' : 'false';
+            return strtotime(date('Fri Apr 23 2021 11:51:00 GMT+0700 (Western Indonesia Time)'));
+            $data = Transaksi::with(['detail'])->onlyTrashed()->orderBy('tanggal', 'desc')->get();
             $datas = [];
             for ($i = 0; $i < count($data); ++$i) {
                 if (count($data[$i]->detail) > 0) {
@@ -231,6 +237,8 @@ Route::middleware('auth')->group(function () {
                         if ($data[$i]->detail[$j]->is_return === 0) {
                             $datas[] = [
                                 'id' => $data[$i]->detail[$j]->id,
+                                'no_resi' => $data[$i]->detail[$j]->transaksi_id,
+                                'jenis_transaksi' => $data[$i]->jenis_transaksi,
                                 'kode_barang' => $data[$i]->detail[$j]->kode_barang,
                                 'jumlah' => $data[$i]->detail[$j]->jumlah,
                                 'isReturn' => $data[$i]->detail[$j]->is_return,
@@ -239,13 +247,20 @@ Route::middleware('auth')->group(function () {
                     }
                 }
             }
-            if ($any === 'return') {
+            if ($any == 'return') {
                 foreach ($datas as $d) {
                     $stokAwal = Barang::withTrashed()->where('kode_barang', '=', $d['kode_barang'])->first()->stok;
-                    $barang = Barang::where('kode_barang', '=', $d['kode_barang'])
-                        ->update([
-                            'stok' => floatval(floatval($stokAwal) + floatval($d['jumlah']))
-                        ]);
+                    if ($datas == 'penjualan' || $datas == 'pengiriman') {
+                        $barang = Barang::where('kode_barang', '=', $d['kode_barang'])
+                            ->update([
+                                'stok' => floatval(floatval($stokAwal) + floatval($d['jumlah']))
+                            ]);
+                    } else if ($datas == 'pembelian') {
+                        $barang = Barang::where('kode_barang', '=', $d['kode_barang'])
+                            ->update([
+                                'stok' => floatval(floatval($stokAwal) - floatval($d['jumlah']))
+                            ]);
+                    }
                     $detail = DetailTransaksi::where('id', '=', $d['id'])
                         ->update([
                             'is_return' => 1

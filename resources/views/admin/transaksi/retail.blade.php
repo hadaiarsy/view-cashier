@@ -164,6 +164,16 @@
                                         <label for="" class="col-4 col-form-label">Kode Member :</label>
                                     </div>
                                     {{-- </div> --}}
+                                    <div class="row flex-row-reverse mt-2">
+                                        <div class="col-sm-6">
+                                            <select class="form-select" aria-label="Default select example" id="jenis_mmt"
+                                                name="jenis_mmt">
+                                                <option value="mmt-reguler" selected>MMT Reguler</option>
+                                                <option value="mmt-area">MMT Area</option>
+                                            </select>
+                                        </div>
+                                        <label for="jenis_mmt" class="col-sm-4 col-form-label">Tipe MMT :</label>
+                                    </div>
                                     <div class="row d-flex flex-row-reverse mt-2">
                                         <div class="col-6 input-group">
                                             <input type="text" class="form-control pay-section" data-dataps="ps-2"
@@ -263,7 +273,8 @@
                                         <tr>
                                             <td>{{ $b->barcode }}</td>
                                             <td>{{ $b->nama }}</td>
-                                            <td>{{ $helper->money_format($b->stok) . ' ' . $b->satuan[0]->nama_satuan }}</td>
+                                            <td>{{ $helper->money_format($b->stok) . ' ' . $b->satuan[0]->nama_satuan }}
+                                            </td>
                                             <td>{{ $helper->money_format($b->satuan[0]->harga_supl, 'Rp ') }}</td>
                                             <td>
                                                 <button class="btn btn-info btn-sm text-light add-item"
@@ -743,6 +754,7 @@
                 let idKasir = $('#idKasir').val();
                 let namaMember = $('#namaCust').val();
                 let kodeMember = $('#kodeMember').val();
+                let jenisMmt = $('#jenis_mmt').val();
                 let unitMember = $('#unitCust').val();
                 let teleponMember = $('#teleponCust').val();
                 let alamatMember = $('#alamatCust').val();
@@ -782,6 +794,7 @@
                         no_resi: noResi,
                         tanggal: tanggal,
                         jenis_transaksi: $('#jenis_transaksi').val(),
+                        jenis_mmt: jenisMmt,
                         kasir_id: idKasir,
                         nama_member: namaMember,
                         kode_member: kodeMember,

@@ -56,15 +56,15 @@
                             <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                         </a>
                         <ul>
-                            @if ($level != 5)
-                                <li>
-                                    <a href="{{ route('laporan') }}"
-                                        class="{{ $sideTitle == 'laporan' ? 'mm-active' : '' }}">
-                                        <i class="metismenu-icon"></i>
-                                        Laporan Penjualan
-                                    </a>
-                                </li>
-                            @endif
+                            {{-- @if ($level != 5) --}}
+                            <li>
+                                <a href="{{ route('laporan') }}"
+                                    class="{{ $sideTitle == 'laporan' ? 'mm-active' : '' }}">
+                                    <i class="metismenu-icon"></i>
+                                    Laporan Penjualan
+                                </a>
+                            </li>
+                            {{-- @endif --}}
                             <li>
                                 <a href="{{ route('retail') }}"
                                     class="{{ $sideTitle == 'retail' ? 'mm-active' : '' }}">

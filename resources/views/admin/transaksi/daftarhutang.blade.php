@@ -214,6 +214,10 @@
                             <td>{{ date('d/m/y', strtotime('+30 days', strtotime($t->tanggal))) }}</td>
                             <td>-</td>
                             <td>
+                                {{-- <a href="show-transaksi/{{ $t->no_resi }}" class="btn btn-primary btn-sm" id="btnShow"><i
+                                        class="far fa-eye"></i></i></a> --}}
+                                <a href="edit-transaksi/{{ $t->no_resi }}" class="btn btn-warning btn-sm" id="btnShow"><i
+                                        class="fas fa-edit"></i></i></a>
                                 @if ($level != 5)
                                     <button class="btn btn-sm btn-danger btnHapus" data-dataid="{{ $t->no_resi }}"
                                         data-bs-toggle="modal" data-bs-target="#hapusModal"><i

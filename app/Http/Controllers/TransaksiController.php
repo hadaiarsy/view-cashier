@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helper\Helper;
 use App\Models\Transaksi;
 use App\Models\DetailTransaksi;
 use App\Models\DetailPiutang;
@@ -125,6 +126,7 @@ class TransaksiController extends Controller
             $transaksi->no_resi = $noResi;
             $transaksi->tanggal = $request->tanggal == '' ? $tanggal : $request->tanggal;
             $transaksi->jenis_transaksi = $request->jenis_transaksi;
+            $transaksi->jenis_mmt = $request->jenis_mmt;
             $transaksi->kasir_id = $idKasir;
             $transaksi->member_id = $memberId;
             $transaksi->total = $request->total;
@@ -314,9 +316,17 @@ class TransaksiController extends Controller
      * @param  \App\Models\Transaksi  $transaksi
      * @return \Illuminate\Http\Response
      */
-    public function edit(Transaksi $transaksi)
+    public function edit(Transaksi $transaksi, $resi = NULL)
     {
-        //
+        if ($resi != NULL) {
+            $data = $transaksi->with(['kasir', 'member', 'detail', 'piutang'])
+                ->where('no_resi', '=', $resi)
+                ->first();
+            return view('admin.transaksi.edittransaksi', [
+                'sideTitle' => 'daftar-transaksi',
+                'data' => $data
+            ]);
+        }
     }
 
     /**
@@ -328,7 +338,15 @@ class TransaksiController extends Controller
      */
     public function update(Request $request, Transaksi $transaksi)
     {
-        //
+        $transaksi->where('no_resi', '=', $request->no_resi)
+            ->update([
+                'tanggal' => $request->tanggal,
+                'no_dpb' => $request->no_dpb,
+                'total' => Helper::replace_money($request->total),
+                'donasi' => Helper::replace_money($request->donasi)
+            ]);
+        $request->session()->flash('edit', 'succesful');
+        return redirect('edit-transaksi/' . $request->no_resi);
     }
 
     /**
@@ -344,6 +362,7 @@ class TransaksiController extends Controller
 
     public function delete(Request $request, Transaksi $transaksi)
     {
+        // cek no_resi dan update no_resi
         if (preg_match('/WY-/', $request->id_hapus)) {
             $newID = $request->id_hapus;
         } else {
@@ -362,6 +381,45 @@ class TransaksiController extends Controller
                     ]);
             }
         }
+
+        // kembalikan stock
+        $data = Transaksi::with(['detail'])->withTrashed()->where('no_resi', '=', $newID)->first();
+        $jenisTransaksi = $data->jenis_transaksi;
+        $datas = [];
+        if (count($data->detail) > 0) {
+            for ($j = 0; $j < count($data->detail); ++$j) {
+                if ($data->detail[$j]->is_return === 0) {
+                    $datas[] = [
+                        'jenis_transaksi' => $data->jenis_transaksi,
+                        'id' => $data->detail[$j]->id,
+                        'no_resi' => $data->detail[$j]->transaksi_id,
+                        'kode_barang' => $data->detail[$j]->kode_barang,
+                        'jumlah' => $data->detail[$j]->jumlah,
+                        'isReturn' => $data->detail[$j]->is_return,
+                    ];
+                }
+            }
+        }
+        foreach ($datas as $d) {
+            $stokAwal = Barang::withTrashed()->where('kode_barang', '=', $d['kode_barang'])->first()->stok;
+            if ($jenisTransaksi == 'penjualan' || $jenisTransaksi == 'pengiriman') {
+                $barang = Barang::where('kode_barang', '=', $d['kode_barang'])
+                    ->update([
+                        'stok' => floatval(floatval($stokAwal) + floatval($d['jumlah']))
+                    ]);
+            } else if ($jenisTransaksi == 'pembelian') {
+                $barang = Barang::where('kode_barang', '=', $d['kode_barang'])
+                    ->update([
+                        'stok' => floatval(floatval($stokAwal) - floatval($d['jumlah']))
+                    ]);
+            }
+            $detail = DetailTransaksi::where('id', '=', $d['id'])
+                ->update([
+                    'is_return' => 1
+                ]);
+        }
+
+        // cek keberhasilan menghapus transaksi
         if ($transaksi->where('no_resi', $newID)->delete()) {
             $request->session()->flash('hapus', 'succesful');
             if ($request->jenis_hapus === 'penjualan') {

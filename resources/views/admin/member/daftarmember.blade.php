@@ -39,6 +39,12 @@
                     </div>
                 </div>
                 <div class="row mb-3">
+                    <label for="kode_mmt" class="col-sm-4 col-form-label">Kode MMT</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="kode_mmt" name="kode_mmt" placeholder="" required>
+                    </div>
+                </div>
+                <div class="row mb-3">
                     <label for="nama" class="col-sm-4 col-form-label">Nama :</label>
                     <div class="col-sm-8">
                         <input type="text" class="form-control" id="nama" name="nama" placeholder="" required>
@@ -78,6 +84,7 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">No Anggota</th>
+                                <th scope="col">Kode MMT</th>
                                 <th scope="col">Nama</th>
                                 <th scope="col">Unit</th>
                                 <th scope="col">Alamat</th>
@@ -89,6 +96,7 @@
                                 <tr>
                                     <th scope="col">{{ $loop->iteration }}</th>
                                     <td>{{ $m->no_anggota }}</td>
+                                    <td>{{ $m->kode_mmt }}</td>
                                     <td>{{ $m->nama }}</td>
                                     <td>{{ $m->unit == null ? 'tidak ada' : $m->unit }}</td>
                                     <td>{{ $m->alamat }}</td>
@@ -136,6 +144,12 @@
                             <label for="no_anggota_edit" class="col-sm-4 col-form-label">No Anggota</label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" name="no_anggota_edit" id="no_anggota_edit">
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <label for="kode_mmt_edit" class="col-sm-4 col-form-label">Kode MMT</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" name="kode_mmt_edit" id="kode_mmt_edit">
                             </div>
                         </div>
                         <div class="row mt-3">
@@ -211,6 +225,7 @@
                                 console.log(member);
                                 $('#kode_member_edit').val(member.kode_member);
                                 $('#no_anggota_edit').val(member.no_anggota);
+                                $('#kode_mmt_edit').val(member.kode_mmt);
                                 $('#jenis_member_edit').val(member.jenis_member);
                                 $('#nama_edit').val(member.nama);
                                 $('#unit_edit').val(member.unit);

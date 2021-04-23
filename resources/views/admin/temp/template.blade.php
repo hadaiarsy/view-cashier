@@ -37,6 +37,9 @@
     <meta name="msapplication-TileImage" content="{{ asset('assets/favicon/yamughni/ms-icon-144x144.png') }}">
     <meta name="theme-color" content="#ffffff">
 
+    <!-- Simple Date Picker -->
+    <link href="{{ asset('assets/simplepicker/simplepicker.css') }}" rel="stylesheet">
+
     <!-- Fontawesome CSS -->
     <link rel="stylesheet" href="{{ asset('assets/fontawesome/css/all.css') }}">
 
@@ -150,6 +153,9 @@
     <!-- SweetAlert 2 -->
     <script src="{{ asset('assets/js/sweetalert2.all.min.js') }}" crossorigin="anonymous"></script>
 
+    <!-- Simple Date Picker -->
+    <script src="{{ asset('assets/simplepicker/simplepicker.js') }}" crossorigin="anonymous"></script>
+
     <script>
         // view clock
         const globalUrl = $('meta[name=url-global]').attr('content');
@@ -216,7 +222,7 @@
 
         // currency IDR
         function currencyIdr(angka, prefix) {
-            if(angka.includes('.') && angka.includes('Rp') == false) angka = String(Math.ceil(Number(angka)));
+            if (angka.includes('.') && angka.includes('Rp') == false) angka = String(Math.ceil(Number(angka)));
             let number_string = String(angka).replace(/[^,\d]/g, "").toString(),
                 split = number_string.split(","),
                 sisa = split[0].length % 3,
@@ -229,7 +235,7 @@
             rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
             return prefix == undefined ? rupiah : rupiah ? "Rp " + rupiah : "";
         }
-        
+
         function replaceCurrency(angka) {
             return Number(angka.split(".").join("").split("Rp").join(""));
         }

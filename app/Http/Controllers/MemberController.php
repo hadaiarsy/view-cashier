@@ -51,6 +51,7 @@ class MemberController extends Controller
         $member = new Member;
         $member->kode_member = Member::incrementId((int)$request->unit);
         $member->no_anggota = $request->no_anggota;
+        $member->kode_mmt = $request->kode_mmt;
         $member->jenis_member = $request->jenis_member;
         $member->nama = $request->nama;
         $member->unit = $request->unit == '' ? 0 : $request->unit;
@@ -109,6 +110,7 @@ class MemberController extends Controller
             ->update([
                 'jenis_member' => $request->jenis_member_edit,
                 'no_anggota' => $request->no_anggota_edit,
+                'kode_mmt' => $request->kode_mmt_edit,
                 'nama' => $request->nama_edit,
                 'unit' => $request->unit_edit,
                 'telepon' => $request->telepon_edit,
