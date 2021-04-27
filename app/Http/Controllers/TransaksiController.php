@@ -11,6 +11,7 @@ use App\Models\Barang;
 use App\Models\SatuanBarang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\Console\Input\Input;
 
 class TransaksiController extends Controller
 {
@@ -280,10 +281,21 @@ class TransaksiController extends Controller
      * @param  \App\Models\Transaksi  $transaksi
      * @return \Illuminate\Http\Response
      */
-    public function list(Transaksi $transaksi)
+    public function list(Request $request, Transaksi $transaksi)
     {
+        $tanggal = $request->input('tanggal', strtotime(now()));
+        $jenis = $request->input('jenis_penjualan', 'umum');
+        if ($jenis == 'umum') {
+            $data = $transaksi->with(['member', 'kasir'])->where([
+                'member_id' => 'U-00-01',
+                'jenis_transaksi' => 'penjualan'
+            ])
+                ->whereDate('tanggal', date('Y-m-d', $tanggal))
+                ->orderBy('tanggal', 'desc')->get();
+        }
         return view('admin.transaksi.daftar', [
-            'transaksi' => $transaksi->with(['member', 'kasir'])->where('jenis_transaksi', '=', 'penjualan')->orWhere('jenis_transaksi', '=', 'pengiriman')->orderBy('tanggal', 'desc')->get(),
+            // 'transaksi' => $transaksi->with(['member', 'kasir'])->where('jenis_transaksi', '=', 'penjualan')->orWhere('jenis_transaksi', '=', 'pengiriman')->orderBy('tanggal', 'desc')->get(),
+            'transaksi' => $data,
             'sideTitle' => 'laporan'
         ]);
     }
@@ -342,9 +354,14 @@ class TransaksiController extends Controller
             ->update([
                 'tanggal' => $request->tanggal,
                 'no_dpb' => $request->no_dpb,
-                'total' => Helper::replace_money($request->total),
                 'donasi' => Helper::replace_money($request->donasi)
             ]);
+        if ($request->has('total')) {
+            $transaksi->where('no_resi', '=', $request->no_resi)
+                ->update([
+                    'total' =>  Helper::replace_money($request->total),
+                ]);
+        }
         $request->session()->flash('edit', 'succesful');
         return redirect('edit-transaksi/' . $request->no_resi);
     }

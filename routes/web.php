@@ -228,7 +228,7 @@ Route::middleware('auth')->group(function () {
         Route::post('update-member', [MemberController::class, 'update']);
         Route::get('getname-member/{any?}', function ($any = NULL) {
             // return date('d') == date('d', strtotime(new Carbon('last day of last month'))) ? 'true' : 'false';
-            return strtotime(date('Fri Apr 23 2021 11:51:00 GMT+0700 (Western Indonesia Time)'));
+            // return strtotime(date('Fri Apr 23 2021 11:51:00 GMT+0700 (Western Indonesia Time)'));
             $data = Transaksi::with(['detail'])->onlyTrashed()->orderBy('tanggal', 'desc')->get();
             $datas = [];
             for ($i = 0; $i < count($data); ++$i) {
@@ -272,6 +272,12 @@ Route::middleware('auth')->group(function () {
                 'data' => $datas
             ]);
         });
+    });
+
+    Route::get('just-check-something', function () {
+        return Transaksi::select(['no_resi', 'is_lunas', 'tanggal_lunas'])->whereDate('tanggal', '=', '2021-04-21')->where(function ($query) {
+            $query->where('is_lunas', '=', '0')->orWhereNotNull('tanggal_lunas');
+        })->with(['detail'])->get();
     });
 
     // Route User

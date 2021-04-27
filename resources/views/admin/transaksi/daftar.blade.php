@@ -188,11 +188,11 @@
                 <br>
 
                 <select class="form-select col-5 mt-3" aria-label="Default select example" name="jenis_penjualan">
-                    <option selected>- Jenis Penjualan -</option>
-                    <option value="1">Umum</option>
-                    <option value="2">Unit</option>
-                    <option value="3">MMT Reguler</option>
-                    <option value="3">MMT Area</option>
+                    <option value="" selected>- Jenis Penjualan -</option>
+                    <option value="umum">Umum</option>
+                    <option value="unit">Unit</option>
+                    <option value="mmt-reguler">MMT Reguler</option>
+                    <option value="mmt-area">MMT Area</option>
                 </select>
 
                 <button type="submit" class="btn btn-success ml-3 mt-3">Submit</button>
