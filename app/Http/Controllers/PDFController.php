@@ -62,13 +62,49 @@ class PDFController extends Controller
         return $pdf->stream('laporan-pembelian' . date('d-m-Y_h-i-s') . '.pdf');
     }
 
-    public function lpj_harian()
+    public function lpj_harian(Request $request)
     {
-        $data = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])->where('jenis_transaksi', 'penjualan')->orWhere('jenis_transaksi', 'pengiriman')->get();
+        $kelompok = $request->input('kelompok', 'unit');
+        $tanggal = $request->input('tanggal', strtotime(now()));
+        $jenis = $request->input('jenis', 'tunai');
+        // return response()->json([
+        //     'tanggal' => date('l, d M Y', $tanggal),
+        //     'kelompok' => $kelompok,
+        //     'jenis' => $jenis
+        // ]);
+
+        if ($jenis == 'tunai') {
+            $data = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])
+                ->whereDate('tanggal', '=', date('Y-m-d', $tanggal))
+                ->where(function ($query) {
+                    $query->where('jenis_transaksi', 'penjualan')
+                        ->orWhere('jenis_transaksi', 'pengiriman');
+                })->get();
+        } elseif ($jenis == 'piutang') {
+            $dataSatu = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])
+                ->whereDate('tanggal', '=', date('Y-m-d', $tanggal))
+                ->where('is_lunas', '=', '0')
+                ->where(function ($query) {
+                    $query->where('jenis_transaksi', 'penjualan')
+                        ->orWhere('jenis_transaksi', 'pengiriman');
+                })->get();
+            $dataDua = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])
+                ->whereDate('tanggal_lunas', '=', date('Y-m-d', $tanggal))
+                ->where(function ($query) {
+                    $query->where('jenis_transaksi', 'penjualan')
+                        ->orWhere('jenis_transaksi', 'pengiriman');
+                })->get();
+            $data = array_merge($dataSatu, $dataDua);
+        }
+
+        // return response()->json([
+        //     'data' => $data
+        // ]);
 
         $pdf = PDF::loadView('admin.transaksi.laporanharian', [
             'data' => $data,
             'number' => CetakLaporan::generateNumber(['lpj_harian', date('Y-m-d')]),
+            'kelompok' => $kelompok
         ])->setPaper('a4', 'landscape');
 
         $cetak = new CetakLaporan;

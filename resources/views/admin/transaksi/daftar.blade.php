@@ -187,15 +187,15 @@
 
                 <br>
 
-                <select class="form-select col-5 mt-3" aria-label="Default select example" name="jenis_penjualan">
+                <select class="form-select col-5 mt-3" aria-label="Default select example" name="jenis_penjualan"
+                    id="jenis_penjualan">
                     <option value="" selected>- Jenis Penjualan -</option>
-                    <option value="umum">Umum</option>
                     <option value="unit">Unit</option>
                     <option value="mmt-reguler">MMT Reguler</option>
                     <option value="mmt-area">MMT Area</option>
                 </select>
 
-                <button type="submit" class="btn btn-success ml-3 mt-3">Submit</button>
+                <button type="button" class="btn btn-success ml-3 mt-3" id="btnBuatLaporan">Buat Laporan Harian</button>
 
             </div>
         </div>
@@ -314,6 +314,16 @@
                 input.value = readableDate;
                 var tanggal = document.querySelector('#tanggal');
                 tanggal.value = date.getTime();
+            });
+
+            let buatLaporan = document.querySelector('#btnBuatLaporan');
+            buatLaporan.addEventListener('click', (e) => {
+                let tanggal = document.querySelector('#tanggal');
+                let jenis = document.querySelector('#jenis_penjualan');
+                console.log(`tanggal: ${tanggal.value.substr(0, 10)}, jenis: ${jenis.value}`);
+                let printStruk = window.open(
+                    `${globalUrl}laporan-harian-penjualan/?tanggal=${tanggal.value.substr(0, 10)}&kelompok=${jenis.value}&jenis=tunai`
+                );
             });
 
             let d = new Date();

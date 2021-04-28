@@ -121,18 +121,19 @@
                 <thead>
                     <tr class="head-list">
                         <th colspan="2">
-                            <h4>BUKU HARIAN PENJUALAN</h4>
+                            <h4>NOTA INKASO PENJUALAN</h4>
                             <h4 style="margin-top: -16px">KOPERASI YAMUGHNI</h4>
                         </th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Per Tanggal : {{ date('d-m-Y') }}</td>
+                        <td>Tanggal Penerimaan : {{ date('d-m-Y') }}</td>
                         <td>No. Cetak : {{ $number }}</td>
                     </tr>
                     <tr>
-                        <td>ID User : {{ $userid }}</td>
+                        <td>Kelompok Pembeli : {{ strtoupper($kelompok) }}</td>
+                        <td>ID User : {{ $username }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -142,14 +143,12 @@
                         <th scope="col" rowspan="2" style="width: 3%">NO.</th>
                         <th scope="col" colspan="2" style="width: 14%">FAKTUR</th>
                         <th scope="col" rowspan="2">NAMA PEMBELI</th>
-                        <th scope="col" rowspan="2">NAMA BARANG</th>
-                        <th scope="col" rowspan="2" style="width: 6%">BANYAKNYA</th>
-                        <th scope="col" rowspan="2">HARGA SATUAN (Rp.)</th>
-                        <th scope="col" rowspan="2">JUMLAH HARGA (Rp.)</th>
+                        <th scope="col" rowspan="2">UNIT</th>
+                        <th scope="col" rowspan="2">NO ANGGOTA</th>
                         <th scope="col" rowspan="2">PENJUALAN TUNAI (Rp.)</th>
-                        <th scope="col" rowspan="2">PENJUALAN KREDIT (Rp.)</th>
-                        <th scope="col" rowspan="2">PEMBAYARAN KREDIT (Rp.)</th>
+                        <th scope="col" rowspan="2">UMUM (Rp.)</th>
                         <th scope="col" rowspan="2">DONASI (Rp. )</th>
+                        <th scope="col" rowspan="2">PENJUALAN KREDIT (Rp.)</th>
                         <th scope="col" rowspan="2">JATUH TEMPO</th>
                         <th scope="col" rowspan="2">KET.</th>
                     </tr>
@@ -179,23 +178,21 @@
                                     {{ date('d/m/y', strtotime($transaksi->tanggal)) }}</td>
                                 <td rowspan="{{ count($transaksi->detail) }}">{{ $transaksi->no_resi }}</td>
                                 <td rowspan="{{ count($transaksi->detail) }}">{{ $transaksi->member->nama }}</td>
-                                @if (count($transaksi->detail) > 0)
-                                    <td>{{ $transaksi->detail[0]->nama_barang }}</td>
-                                    <td>{{ $helper->money_format($transaksi->detail[0]->jumlah) . ' ' . $transaksi->detail[0]->satuan }}
-                                    </td>
-                                    <td>{{ $transaksi->detail[0]->harga / $transaksi->detail[0]->jumlah }}</td>
-                                    <td>{{ $transaksi->detail[0]->harga }}</td>
-                                @else
-                                    <td colspan="4" style="text-align: center">-</td>
-                                @endif
+                                <td rowspan="{{ count($transaksi->detail) }}">{{ $transaksi->member->unit }}</td>
+                                <td rowspan="{{ count($transaksi->detail) }}">
+                                    {{ $transaksi->member->no_mmt == '' ? '-' : $transaksi->member->no_mmt }}
+                                </td>
                                 @if ($transaksi->is_lunas == '1' && count($transaksi->piutang) == 0)
                                     <td rowspan="{{ count($transaksi->detail) }}">{{ $transaksi->total }}</td>
                                     <td rowspan="{{ count($transaksi->detail) }}">-</td>
+                                    <td rowspan="{{ count($transaksi->detail) }}">
+                                        {{ $transaksi->donasi > 0 ? $transaksi->donasi : '-' }}
+                                        <?php $tdonasi += $transaksi->donasi; ?>
+                                    </td>
                                     <td rowspan="{{ count($transaksi->detail) }}">-</td>
                                     <?php $tp += $transaksi->total; ?>
                                 @else
                                     <td rowspan="{{ count($transaksi->detail) }}">-</td>
-                                    <td rowspan="{{ count($transaksi->detail) }}">{{ $transaksi->total }}</td>
                                     @foreach ($transaksi->piutang as $piutang)
                                         <?php $tscicilan += $piutang->uang; ?>
                                         @if (date('dmy', strtotime($piutang->tanggal)) == date('dmy'))
@@ -211,11 +208,13 @@
                                         $tk += $transaksi->total;
                                         $tc += $tcicilan;
                                         ?>
+                                        <td rowspan="{{ count($transaksi->detail) }}">
+                                            {{ $transaksi->donasi > 0 ? $transaksi->donasi : '-' }}
+                                            <?php $tdonasi += $transaksi->donasi; ?>
+                                        </td>
+                                        <td rowspan="{{ count($transaksi->detail) }}">
+                                            {{ $helper->money_format($transaksi->total) }}</td>
                                 @endif
-                                <td rowspan="{{ count($transaksi->detail) }}">
-                                    {{ $transaksi->donasi > 0 ? $transaksi->donasi : '-' }}
-                                    <?php $tdonasi += $transaksi->donasi; ?>
-                                </td>
                                 <td rowspan="{{ count($transaksi->detail) }}">
                                     {{ $transaksi->is_lunas != 1 ? date('d/m/y', strtotime('+30 days', strtotime($transaksi->tanggal))) : '-' }}
                                 </td>
@@ -223,73 +222,18 @@
                                     {{ $transaksi->is_lunas == 1 ? 'L' : '' }}
                                 </td>
                             </tr>
-                            @if (count($transaksi->detail) > 1)
-                                @for ($i = 1; $i <= count($transaksi->detail) - 1; $i++)
-                                    <tr class="head-list">
-                                        <td>{{ $transaksi->detail[$i]->nama_barang }}</td>
-                                        <td>{{ $helper->money_format($transaksi->detail[$i]->jumlah) . ' ' . $transaksi->detail[$i]->satuan }}
-                                        </td>
-                                        <td>{{ $transaksi->detail[$i]->harga / $transaksi->detail[$i]->jumlah }}</td>
-                                        <td>{{ $transaksi->detail[$i]->harga }}</td>
-                                    </tr>
-                                @endfor
-                            @endif
                         @endif
-                        @if (date('dmy', strtotime($transaksi->tanggal)) != date('dmy') && count($transaksi->piutang) > 0)
-                            @if (date('dmy', strtotime($transaksi->piutang[count($transaksi->piutang) - 1]->tanggal)) ==
-                            date('dmy'))
-                            <?php
-                            $tcicilan = 0;
-                            $tscicilan = 0;
-                            ?>
+                        @if ($loop->last)
                             <tr>
-                                <th scope="col" style="text-align: center">{{ $num += 1 }}</th>
-                                <td style="text-align: center">
-                                    {{ date('d/m/y', strtotime($transaksi->piutang[count($transaksi->piutang) - 1]->tanggal)) }}
-                                </td>
-                                <td style="text-align: center">{{ $transaksi->no_resi }}</td>
-                                <td style="text-align: center">{{ $transaksi->member->nama }}</td>
-                                <td colspan="4" style="font-style: italic; text-align: center"><strong>-</strong></td>
-                                <td style="text-align: center">-</td>
-                                <td style="text-align: center">-</td>
-                                @foreach ($transaksi->piutang as $piutang)
-                                    <?php $tscicilan += $piutang->uang; ?>
-                                    @if (date('dmy', strtotime($piutang->tanggal)) == date('dmy'))
-                                        <?php $tcicilan += $piutang->uang; ?>
-                                    @endif
-                                @endforeach
-                                <?php
-                                $tcicilan = $tcicilan - ($tscicilan - $transaksi->total < 0 ? 0 : $tscicilan -
-                                    $transaksi->total);
-                                    $tc += $tcicilan;
-                                    ?>
-                                    <td style="text-align: center">
-                                        {{ $tcicilan == 0 ? '-' : $tcicilan }}
-                                    </td>
-                                    <td rowspan="{{ count($transaksi->detail) }}">
-                                        {{ $transaksi->donasi > 0 ? $transaksi->donasi : '-' }}
-                                        <?php $tdonasi += $transaksi->donasi; ?>
-                                    </td>
-                                    <td style="text-align: center">
-                                        {{ $transaksi->is_lunas != 1 ? date('d/m/y', strtotime('+30 days', strtotime($transaksi->tanggal))) : '-' }}
-                                    </td>
-                                    <td style="text-align: center" rowspan="{{ count($transaksi->detail) }}">
-                                        {{ $transaksi->is_lunas == 1 ? 'L' : '' }}
-                                    </td>
+                                <th colspan="6" style="text-align: right">TOTAL PENJUALAN (Rp. )</th>
+                                <td style="text-align: center">{{ $tp == 0 ? '-' : $tp }}</td>
+                                <td style="text-align: center">{{ $tc == 0 ? '-' : $tc }}</td>
+                                <td style="text-align: center">{{ $tdonasi == 0 ? '-' : $tdonasi }}</td>
+                                <td style="text-align: center">{{ $tk == 0 ? '-' : $helper->money_format($tk) }}</td>
+                                <td></td>
+                                <td></td>
                             </tr>
                         @endif
-                    @endif
-                    @if ($loop->last)
-                        <tr>
-                            <th colspan="8" style="text-align: right">TOTAL PENJUALAN (Rp. )</th>
-                            <td style="text-align: center">{{ $tp == 0 ? '-' : $tp }}</td>
-                            <td style="text-align: center">{{ $tk == 0 ? '-' : $tk }}</td>
-                            <td style="text-align: center">{{ $tc == 0 ? '-' : $tc }}</td>
-                            <td style="text-align: center">{{ $tdonasi == 0 ? '-' : $tdonasi }}</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    @endif
                     @endforeach
                 </tbody>
             </table>

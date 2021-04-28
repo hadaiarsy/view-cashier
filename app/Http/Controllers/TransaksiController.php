@@ -286,10 +286,11 @@ class TransaksiController extends Controller
         $tanggal = $request->input('tanggal', strtotime(now()));
         $jenis = $request->input('jenis_penjualan', 'umum');
         if ($jenis == 'umum') {
-            $data = $transaksi->with(['member', 'kasir'])->where([
-                'member_id' => 'U-00-01',
-                'jenis_transaksi' => 'penjualan'
-            ])
+            $data = $transaksi->with(['member', 'kasir'])
+                ->where([
+                    'member_id' => 'U-00-01',
+                    'jenis_transaksi' => 'penjualan'
+                ])
                 ->whereDate('tanggal', date('Y-m-d', $tanggal))
                 ->orderBy('tanggal', 'desc')->get();
         }
