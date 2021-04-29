@@ -65,8 +65,11 @@ class PDFController extends Controller
     public function lpj_harian(Request $request)
     {
         $kelompok = $request->input('kelompok', 'unit');
+        $kelompok = $kelompok == '' ? 'unit' : $kelompok;
         $tanggal = $request->input('tanggal', strtotime(now()));
+        $tanggal =  $tanggal == '' ? strtotime(now()) : $tanggal;
         $jenis = $request->input('jenis', 'tunai');
+        $jenis = $jenis == '' ? 'tunai' : $jenis;
         // return response()->json([
         //     'tanggal' => date('l, d M Y', $tanggal),
         //     'kelompok' => $kelompok,
@@ -74,15 +77,27 @@ class PDFController extends Controller
         // ]);
 
         if ($jenis == 'tunai') {
-            $data = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])
-                ->whereDate('tanggal', '=', date('Y-m-d', $tanggal))
-                ->where(function ($query) {
-                    $query->where('jenis_transaksi', 'penjualan')
-                        ->orWhere('jenis_transaksi', 'pengiriman');
-                })->get();
+            if ($kelompok == 'unit') {
+                $data = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])
+                    ->whereDate('tanggal', '=', date('Y-m-d', $tanggal))
+                    ->whereNull('jenis_mmt')
+                    ->where(function ($query) {
+                        $query->where('jenis_transaksi', 'penjualan')
+                            ->orWhere('jenis_transaksi', 'pengiriman');
+                    })->get();
+            } else {
+                $data = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])
+                    ->whereDate('tanggal', '=', date('Y-m-d', $tanggal))
+                    ->where('jenis_mmt', '=', $kelompok == 'unit' ? '' : $kelompok)
+                    ->where(function ($query) {
+                        $query->where('jenis_transaksi', 'penjualan')
+                            ->orWhere('jenis_transaksi', 'pengiriman');
+                    })->get();
+            }
         } elseif ($jenis == 'piutang') {
             $dataSatu = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])
                 ->whereDate('tanggal', '=', date('Y-m-d', $tanggal))
+                ->where('jenis_mmt', '=', $kelompok == 'unit' ? '' : $kelompok)
                 ->where('is_lunas', '=', '0')
                 ->where(function ($query) {
                     $query->where('jenis_transaksi', 'penjualan')
@@ -90,6 +105,7 @@ class PDFController extends Controller
                 })->get();
             $dataDua = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])
                 ->whereDate('tanggal_lunas', '=', date('Y-m-d', $tanggal))
+                ->where('jenis_mmt', '=', $kelompok == 'unit' ? '' : $kelompok)
                 ->where(function ($query) {
                     $query->where('jenis_transaksi', 'penjualan')
                         ->orWhere('jenis_transaksi', 'pengiriman');
@@ -103,15 +119,17 @@ class PDFController extends Controller
 
         $pdf = PDF::loadView('admin.transaksi.laporanharian', [
             'data' => $data,
-            'number' => CetakLaporan::generateNumber(['lpj_harian', date('Y-m-d')]),
-            'kelompok' => $kelompok
+            'number' => CetakLaporan::generateNumber(['lpj_harian', date('Y-m-d', $tanggal)]),
+            'kelompok' => $kelompok,
+            'tanggal' => $tanggal,
+            'jenis' => $jenis
         ])->setPaper('a4', 'landscape');
 
         $cetak = new CetakLaporan;
         $cetak->id_kasir = Auth::user()->id;
         $cetak->tanggal = now();
         $cetak->jenis_laporan = 'lpj_harian';
-        $cetak->no_cetak = CetakLaporan::generateNumber(['lpj_harian', date('d-m-Y')]);
+        $cetak->no_cetak = CetakLaporan::generateNumber(['lpj_harian', date('Y-m-d', $tanggal)]);
         $cetak->save();
 
         return $pdf->stream('lpj_harian_' . date('d-m-Y_h-i-s') . '.pdf');
