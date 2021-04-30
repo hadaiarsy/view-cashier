@@ -285,15 +285,14 @@ class TransaksiController extends Controller
     {
         $tanggal = $request->input('tanggal', strtotime(now()));
         $jenis = $request->input('jenis_penjualan', 'umum');
-        if ($jenis == 'umum') {
-            $data = $transaksi->with(['member', 'kasir'])
-                ->where([
-                    'member_id' => 'U-00-01',
-                    'jenis_transaksi' => 'penjualan'
-                ])
-                ->whereDate('tanggal', date('Y-m-d', $tanggal))
-                ->orderBy('tanggal', 'desc')->get();
-        }
+        $data = $transaksi->with(['member', 'kasir'])
+            ->where(function ($query) {
+                $query->where('jenis_transaksi', '=', 'penjualan')
+                    ->orWhere('jenis_transaksi', '=', 'pengiriman');
+            })
+            ->whereMonth('tanggal', date('m'))
+            ->whereYear('tanggal', date('Y'))
+            ->orderBy('tanggal', 'desc')->get();
         return view('admin.transaksi.daftar', [
             // 'transaksi' => $transaksi->with(['member', 'kasir'])->where('jenis_transaksi', '=', 'penjualan')->orWhere('jenis_transaksi', '=', 'pengiriman')->orderBy('tanggal', 'desc')->get(),
             'transaksi' => $data,
@@ -317,10 +316,11 @@ class TransaksiController extends Controller
      */
     public function show(Transaksi $transaksi, $kode)
     {
-        $transaksi = $transaksi->with(['detail', 'kasir', 'member'])->find(['no_resi', $kode])->first();
-        return response()->json([
-            'transaksi' => $transaksi
-        ], 200);
+        $transaksi = $transaksi->with(['detail', 'piutang', 'kasir', 'member'])->find(['no_resi', $kode])->first();
+        return view('admin.transaksi.showtransaksi', [
+            'sideTitle' => 'show-transaksi',
+            'data' => $transaksi
+        ]);
     }
 
     /**

@@ -1,6 +1,6 @@
 @extends('admin.temp.template')
 
-@section('site-title', 'Saldo Awal Piutang')
+@section('site-title', 'Edit Transaksi')
 
 @section('main-contents')
     <div id="message" data-msg="{{ session('edit') }}"></div>

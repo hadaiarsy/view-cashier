@@ -229,8 +229,8 @@
                             <td class="total-row">{{ $t->total }}</td>
                             <td>{{ $t->is_lunas ? 'Lunas' : 'Piutang' }}</td>
                             <td>
-                                {{-- <a href="show-transaksi/{{ $t->no_resi }}" class="btn btn-primary btn-sm" id="btnShow"><i
-                                        class="far fa-eye"></i></i></a> --}}
+                                <a href="show-transaksi/{{ $t->no_resi }}" class="btn btn-primary btn-sm" id="btnShow"><i
+                                        class="far fa-eye"></i></i></a>
                                 <a href="edit-transaksi/{{ $t->no_resi }}" class="btn btn-warning btn-sm" id="btnShow"><i
                                         class="fas fa-edit"></i></i></a>
                                 @if ($level != 5)
