@@ -275,10 +275,8 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::get('just-check-something', function () {
-        return date('Y-m-d', '8888826400');
-        return Transaksi::select(['no_resi', 'is_lunas', 'tanggal_lunas'])->whereDate('tanggal', '=', '2021-04-21')->where(function ($query) {
-            $query->where('is_lunas', '=', '0')->orWhereNotNull('tanggal_lunas');
-        })->with(['detail'])->get();
+        $data = Transaksi::select('tanggal')->get();
+        return $data;
     });
 
     // Route User

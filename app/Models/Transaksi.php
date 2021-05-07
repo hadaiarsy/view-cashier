@@ -83,7 +83,7 @@ class Transaksi extends Model
     public static function generateDpb()
     {
         $date = date('dmy');
-        $lastId = Self::withTrashed()->orderBy('no_dpb', 'desc')->first();
+        $lastId = Self::withTrashed()->where('no_dpb', 'like', '%' . $date . '%')->orderBy('no_dpb', 'desc')->first();
         if ($lastId) {
             $lastId = $lastId->no_dpb;
             if (preg_match('/^' . $date . '/', $lastId)) {

@@ -242,7 +242,7 @@
 
         $('#footerYearCopy').html(function() {
             let date = new Date();
-            return '&#169; ' + String(date.getFullYear()) + ' Aplikasi Kasir by Beegency versi 1.12';
+            return '&#169; ' + String(date.getFullYear()) + ' Aplikasi Kasir by Beegency versi 1.22';
         })
 
     </script>

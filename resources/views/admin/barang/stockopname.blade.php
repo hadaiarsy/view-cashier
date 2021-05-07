@@ -10,7 +10,7 @@
     <style>
         * {
             font-family: arial, sans-serif;
-            font-size: 1rem;
+            font-size: 0.8rem;
         }
 
         body {
@@ -113,7 +113,11 @@
                 <thead>
                     <tr style="height: 30px;">
                         <th scope="col" style="width: 5%">NO.</th>
-                        <th scope="col" style="width: 50%">Nama Barang</th>
+                        <th scope="col" style="width: 30%">Nama Barang</th>
+                        <th scope="col" style="width: ">Stock Awal</th>
+                        <th scope="col" style="width: ">Barang Masuk</th>
+                        <th scope="col" style="width: ">Barang Keluar</th>
+                        <th scope="col" style="width: ">Retur</th>
                         <th scope="col" style="width: ">Stock Akhir</th>
                         <th scope="col" style="width: ">Satuan</th>
                         <th scope="col" style="width: ">Harga Beli</th>
@@ -130,14 +134,44 @@
                         @if (count($j->barang) > 0)
                             <tr>
                                 <th scope="col">{{ $alphabet[$noJenis] }}.</th>
-                                <td colspan="5" style="text-align: left">
+                                <td colspan="9" style="text-align: left">
                                     <strong>{{ strtoupper($j->nama_jenis) }}</strong>
                                 </td>
                             </tr>
                             @foreach ($j->barang as $barang)
+                                <?php
+                                $totalSold = 0;
+                                $totalIn = 0;
+                                ?>
+                                @foreach ($sold as $transaksi)
+                                    @if ($transaksi->jenis_transaksi == 'penjualan' || $transaksi->jenis_transaksi == 'pengiriman')
+                                        @foreach ($transaksi->detail as $detail)
+                                            @if ($detail->kode_barang == $barang->kode_barang && $detail->is_return == 0)
+                                                <?php $totalSold += $detail->jumlah; ?>
+                                            @endif
+                                        @endforeach
+                                    @else
+                                        @foreach ($transaksi->detail as $detail)
+                                            @if ($detail->kode_barang == $barang->kode_barang && $detail->is_return == 0)
+                                                <?php $totalIn += $detail->jumlah; ?>
+                                            @endif
+                                        @endforeach
+                                    @endif
+                                @endforeach
                                 <tr>
                                     <td style="text-align: right">{{ $loop->iteration }}.</td>
                                     <td style="text-align: left">{{ strtoupper($barang->nama) }}</td>
+                                    <td style="text-align: right">
+                                        <?php $saldoAwal = $barang->stok + $totalSold - $totalIn; ?>
+                                        {{ $helper->money_format($saldoAwal, '', '') }}
+                                    </td>
+                                    <td style="text-align: right">
+                                        {{ $totalIn == 0 ? '-' : $helper->money_format($totalIn, '', '') }}
+                                    </td>
+                                    <td style="text-align: right">
+                                        {{ $totalSold == 0 ? '-' : $helper->money_format($totalSold, '', '') }}
+                                    </td>
+                                    <td style="text-align: left"></td>
                                     <td style="text-align: right">
                                         <?php $stok = $barang->stok; ?>
                                         {{ $helper->money_format($barang->stok, '', '') }}
@@ -167,7 +201,7 @@
                         @endif
                     @endforeach
                     <tr>
-                        <th colspan="5" style="text-align: right">TOTAL</th>
+                        <th colspan="9" style="text-align: right">TOTAL</th>
                         <td style="text-align: right">{{ $helper->money_format($jumlahTotalHarga) }}</td>
                     </tr>
                 </tbody>

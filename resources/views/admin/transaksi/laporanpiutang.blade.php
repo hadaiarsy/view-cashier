@@ -10,7 +10,7 @@
     <style>
         * {
             font-family: arial, sans-serif;
-            font-size: 1rem;
+            font-size: 0.85rem;
         }
 
         body {
@@ -94,18 +94,19 @@
                 <thead>
                     <tr class="head-list">
                         <th colspan="2">
-                            <h4>BUKU PIUTANG</h4>
+                            <h4>NOTA INKASO PIUTANG</h4>
                             <h4 style="margin-top: -16px">KOPERASI YAMUGHNI</h4>
                         </th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Tanggal : {{ date('d-m-Y') }}</td>
-                        <td>No. Cetak : {{ $number }}</td>
+                        <td>Tanggal Penerimaan : {{ date('d-m-Y') }}</td>
+                        <td>ID User : {{ $userid }}</td>
                     </tr>
                     <tr>
-                        <td>ID User : {{ $userid }}</td>
+                        <td>Kelompok Pembeli : {{ strtoupper($kelompok) }}</td>
+                        <td>No. Cetak : {{ $number }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -113,14 +114,13 @@
                 <thead>
                     <tr style="height: 30px;">
                         <th scope="col" rowspan="2" style="width: 3%">NO.</th>
-                        <th scope="col" colspan="2" style="width: 14%">FAKTUR</th>
-                        <th scope="col" rowspan="2">NAMA PEMBELI</th>
-                        <th scope="col" rowspan="2">NAMA BARANG</th>
-                        <th scope="col" rowspan="2" style="width: 8%">BANYAKNYA</th>
-                        <th scope="col" rowspan="2">HARGA SATUAN (Rp.)</th>
-                        <th scope="col" rowspan="2">JUMLAH HARGA (Rp.)</th>
-                        <th scope="col" rowspan="2">TOTAL FAKTUR (Rp.)</th>
-                        <th scope="col" rowspan="2">SISA (Rp.)</th>
+                        <th scope="col" colspan="2" style="width: 12%">FAKTUR</th>
+                        <th scope="col" rowspan="2" style="width: 16%">NAMA PEMBELI</th>
+                        <th scope="col" rowspan="2">UNIT</th>
+                        <th scope="col" rowspan="2">NO. ANGGOTA</th>
+                        <th scope="col" rowspan="2">TOTAL FAKTUR PIUTANG (Rp.)</th>
+                        <th scope="col" rowspan="2">JUMLAH PEMBAYARAN (Rp.)</th>
+                        <th scope="col" rowspan="2">SISA PIUTANG (Rp.)</th>
                         <th scope="col" rowspan="2">TANGGAL LUNAS</th>
                         <th scope="col" rowspan="2">KET.</th>
                     </tr>
@@ -130,72 +130,61 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @if (count($data) <= 0)
+                        <tr>
+                            <td colspan="11" style="text-align: center; font-style: bold; text-transform: uppercase">
+                                Tidak ada data</td>
+                        </tr>
+                    @endif
                     <?php
-                    $tp = 0;
+                    $tp = 0; // jumlah keseluruhan piutang
+                    $tpp = 0; // jumlah keseluruhan pembayaran
                     $tsp = 0;
                     ?>
                     @foreach ($data as $transaksi)
                         @if (count($transaksi->piutang) > 0 || $transaksi->is_lunas == '0')
+                            <?php $sp = 0; ?>
+                            @foreach ($transaksi->piutang as $piutang)
+                                <?php $sp += $piutang->uang; ?>
+                            @endforeach
                             <tr class="head-list">
-                                <th scope="col"
-                                    rowspan="{{ count($transaksi->detail) + count($transaksi->piutang) }}">
+                                <th scope="col">
                                     {{ $loop->iteration }}</th>
-                                <td rowspan="{{ count($transaksi->detail) }}">
-                                    {{ date('d/m/y', strtotime($transaksi->tanggal)) }}</td>
-                                <td rowspan="{{ count($transaksi->detail) }}">{{ $transaksi->no_resi }}</td>
-                                <td rowspan="{{ count($transaksi->detail) }}">{{ $transaksi->member->nama }}</td>
-                                @if (count($transaksi->detail) > 0)
-                                    <td>{{ $transaksi->detail[0]->nama_barang }}</td>
-                                    <td>{{ $helper->money_format($transaksi->detail[0]->jumlah) . ' ' . $transaksi->detail[0]->satuan }}</td>
-                                    <td>{{ (int) $transaksi->detail[0]->harga / (int) $transaksi->detail[0]->jumlah }}
-                                    </td>
-                                    <td>{{ $transaksi->detail[0]->harga }}</td>
-                                @else
-                                    <td colspan="4" style="text-align: center">-</td>
-                                @endif
-                                <td rowspan="{{ count($transaksi->detail) + count($transaksi->piutang) }}">
-                                    {{ $transaksi->total }}</td>
-                                <td rowspan="{{ count($transaksi->detail) + count($transaksi->piutang) }}">
-                                    <?php $sp = 0; ?>
-                                    @foreach ($transaksi->piutang as $piutang)
-                                        <?php $sp += $piutang->uang; ?>
-                                    @endforeach
-                                    {{ $transaksi->total - $sp <= 0 ? '-' : $transaksi->total - $sp }}
+                                <td>
+                                    {{ date('d/m/y', strtotime($transaksi->tanggal)) }}
                                 </td>
-                                <td rowspan="{{ count($transaksi->detail) + count($transaksi->piutang) }}">
+                                <td>{{ $transaksi->no_resi }}</td>
+                                <td>{{ $transaksi->member->nama }}</td>
+                                <td>{{ $transaksi->member->unit }}</td>
+                                <td>{{ $transaksi->member->kode_mmt }}</td>
+                                <td>
+                                    {{ $helper->money_format($transaksi->total) }}
+                                </td>
+                                <td>
+                                    {{ $helper->money_format($sp) }}
+                                </td>
+                                <td>
+                                    {{ $transaksi->total - $sp <= 0 ? '-' : $helper->money_format($transaksi->total - $sp) }}
+                                </td>
+                                <td>
                                     {{ $transaksi->is_lunas == 1 ? date('d/m/y', strtotime($transaksi->piutang[count($transaksi->piutang) - 1]->tanggal)) : '-' }}
                                 </td>
-                                <td rowspan="{{ count($transaksi->detail) + count($transaksi->piutang) }}">
+                                <td>
                                     {{ $transaksi->is_lunas == 1 ? 'LUNAS' : 'TENGGAT WAKTU: ' . date('d/m/y', strtotime('+30 days', strtotime($transaksi->tanggal))) }}
                                 </td>
                             </tr>
-                            @if (count($transaksi->detail) > 1)
-                                @for ($i = 1; $i <= count($transaksi->detail) - 1; $i++)
-                                    <tr class="head-list">
-                                        <td>{{ $transaksi->detail[$i]->nama_barang }}</td>
-                                        <td>{{ $helper->money_format($transaksi->detail[$i]->jumlah) . ' ' . $transaksi->detail[$i]->satuan }}
-                                        </td>
-                                        <td>{{ (int) $transaksi->detail[$i]->harga / (int) $transaksi->detail[$i]->jumlah }}
-                                        </td>
-                                        <td>{{ $transaksi->detail[$i]->harga }}</td>
-                                    </tr>
-                                @endfor
-                            @endif
-                            @foreach ($transaksi->piutang as $piutang)
-                                <tr>
-                                    <th scope="col" colspan="4" style="text-align: left">Cicilan
-                                        ke-{{ $loop->iteration }}</th>
-                                    <th scope="col" colspan="3" style="text-align: right">{{ $piutang->uang }}</th>
-                                </tr>
-                            @endforeach
-                            <?php $tp += $transaksi->total; ?>
-                            <?php $tsp += $transaksi->total - $sp; ?>
+                            <?php
+                            $tp += $transaksi->total;
+                            $tpp += $sp;
+                            $tsp += $transaksi->total - $sp;
+                            ?>
                         @endif
                         @if ($loop->last)
                             <tr>
-                                <th colspan="8" style="text-align: right">TOTAL PIUTANG (Rp. )</th>
-                                <td style="text-align: center">{{ $tp }}</td>
-                                <td style="text-align: center">{{ $tsp }}</td>
+                                <th colspan="6" style="text-align: right">TOTAL PIUTANG (Rp. )</th>
+                                <td style="text-align: center">{{ $helper->money_format($tp) }}</td>
+                                <td style="text-align: center">{{ $helper->money_format($tpp) }}</td>
+                                <td style="text-align: center">{{ $helper->money_format($tsp) }}</td>
                                 <td></td>
                                 <td></td>
                             </tr>

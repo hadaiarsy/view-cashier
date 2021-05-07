@@ -190,7 +190,7 @@
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">No Resi</th>
+                        {{-- <th scope="col">No Resi</th> --}}
                         <th scope="col">No DPB</th>
                         <th scope="col">Tanggal</th>
                         <th scope="col">ID Kasir</th>
@@ -205,7 +205,7 @@
                     @foreach ($data as $t)
                         <tr>
                             <th scope="col">{{ $loop->iteration }}</th>
-                            <td>{{ $t->no_resi }}</td>
+                            {{-- <td>{{ $t->no_resi }}</td> --}}
                             <td>{{ $t->no_dpb }}</td>
                             <td>{{ date('d-m-Y', strtotime($t->tanggal)) }}</td>
                             <td>{{ $t->kasir->name }}</td>

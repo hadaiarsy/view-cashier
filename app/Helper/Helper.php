@@ -8,10 +8,10 @@ class Helper
     {
         if (strpos(strval($number), '.')) {
             $number = explode('.', $number);
-            $decimal = (int)$number[1] == 0 ? '' : ',' . str_pad($number[1], 3, "0", STR_PAD_LEFT);
+            $decimal = (int)$number[1] == 0 ? '' : ',' . str_pad($number[1], 1, "0", STR_PAD_LEFT);
             do {
                 $decimal = rtrim($decimal, "0");
-            } while (substr($decimal, -1) === "0");
+            } while (substr($decimal, -1) == "0");
             return $currency . number_format($number[0], 0, ',', $separate) . $decimal;
         } else {
             return $currency . number_format($number, 0, ',', $separate);

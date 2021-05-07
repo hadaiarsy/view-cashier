@@ -10,7 +10,7 @@
     <style>
         * {
             font-family: arial, sans-serif;
-            font-size: 1rem;
+            font-size: 0.88rem;
         }
 
         body {
@@ -126,7 +126,7 @@
                     </tr>
                     <tr style="height: 30px;">
                         <th scope="col">TGL PB</th>
-                        <th scope="col">INV/DPB</th>
+                        <th scope="col">No. DPB</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -142,11 +142,12 @@
                                     {{ $loop->iteration }}</th>
                                 <td rowspan="{{ count($transaksi->detail) }}">
                                     {{ date('d/m/y', strtotime($transaksi->tanggal)) }}</td>
-                                <td rowspan="{{ count($transaksi->detail) }}">{{ $transaksi->no_resi }}</td>
+                                <td rowspan="{{ count($transaksi->detail) }}">{{ $transaksi->no_dpb }}</td>
                                 <td rowspan="{{ count($transaksi->detail) }}">{{ $transaksi->member->nama }}</td>
                                 @if (count($transaksi->detail) > 0)
                                     <td>{{ $transaksi->detail[0]->nama_barang }}</td>
-                                    <td>{{ $helper->money_format($transaksi->detail[0]->jumlah) . ' ' . $transaksi->detail[0]->satuan }}</td>
+                                    <td>{{ $helper->money_format($transaksi->detail[0]->jumlah) . ' ' . $transaksi->detail[0]->satuan }}
+                                    </td>
                                     <td>{{ (int) $transaksi->detail[0]->harga / (int) $transaksi->detail[0]->jumlah }}
                                     </td>
                                     <td>{{ $transaksi->detail[0]->harga }}</td>

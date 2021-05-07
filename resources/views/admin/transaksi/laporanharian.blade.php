@@ -173,7 +173,7 @@
                     $tdonasi = 0;
                     ?>
                     @foreach ($data as $transaksi)
-                        @if (date('dmy', strtotime($transaksi->tanggal)) == date('dmy'))
+                        @if (date('dmy', strtotime($transaksi->tanggal)) == date('dmy', $tanggal))
                             <?php
                             $tcicilan = 0;
                             $tscicilan = 0;

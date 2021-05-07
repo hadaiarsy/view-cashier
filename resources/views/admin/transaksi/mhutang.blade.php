@@ -148,11 +148,10 @@
                                             $bayar = 0;
                                             $tbayar = 0;
                                             ?>
-                                            @if (date('my', strtotime($t->tanggal)) != date('my'))
-                                                @foreach ($t->piutang as $piutang)
-                                                    @if (date('my', strtotime($piutang->tanggal)) != date('my'))
-                                                        <?php $sbayar += $piutang->uang; ?>
-                                                    @endif
+                                            @if (date('my', strtotime($t->tanggal)) != date('my') || count($t->detail) <= 0)
+                                                @foreach ($t->piutang as $piutang) 
+                                                @if (date('my', strtotime($piutang->tanggal)) != date('my'))
+                                                    <?php $sbayar += $piutang->uang; ?> @endif
                                                 @endforeach
                                                 <?php $saldoawal += $t->total - $sbayar; ?>
                                             @endif

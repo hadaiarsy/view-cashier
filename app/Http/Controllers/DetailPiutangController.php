@@ -63,6 +63,10 @@ class DetailPiutangController extends Controller
                     'is_lunas' => '1',
                     'tanggal_lunas' => now()
                 ]);
+            } else {
+                Transaksi::where(['no_resi' => $noResi])->update([
+                    'tanggal_lunas' => now()
+                ]);
             }
 
             return response()->json([

@@ -144,7 +144,7 @@
                                 </th>
                                 <td rowspan="{{ count($transaksi->detail) }}">
                                     {{ date('d/m/y', strtotime($transaksi->tanggal)) }}</td>
-                                <td rowspan="{{ count($transaksi->detail) }}">{{ $transaksi->no_resi }}</td>
+                                <td rowspan="{{ count($transaksi->detail) }}">{{ $transaksi->no_dpb }}</td>
                                 <td rowspan="{{ count($transaksi->detail) }}">{{ $transaksi->member->nama }}</td>
                                 @if (count($transaksi->detail) > 0)
                                     <td>{{ $transaksi->detail[0]->nama_barang }}</td>
@@ -240,7 +240,7 @@
                     @endif
                     @if ($loop->last)
                         <tr>
-                            <th colspan="8" style="text-align: right">TOTAL PEMBELIAN (Rp. )</th>
+                            <th colspan="9" style="text-align: right">TOTAL PEMBELIAN (Rp. )</th>
                             <td style="text-align: center">{{ $tp == 0 ? '-' : $tp }}</td>
                             <td style="text-align: center">{{ $tk == 0 ? '-' : $tk }}</td>
                             <td style="text-align: center">{{ $tc == 0 ? '-' : $tc }}</td>

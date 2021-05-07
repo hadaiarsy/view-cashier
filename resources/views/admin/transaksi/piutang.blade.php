@@ -313,7 +313,7 @@
                         "' data-bs-dismiss='modal' aria-label='Close'><i class='fas fa-plus'></i></button></td></tr>"
                     );
 
-                    tPiutang += piutang.total;
+                    tPiutang += Number(piutang.total);
                     tBayar += sisa;
                     tSisa += piutang.total - sisa;
                 });
