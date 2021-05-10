@@ -163,6 +163,8 @@ Route::middleware('auth')->group(function () {
         Route::get('transaksi-retail', [TransaksiController::class, '__retail'])->name('retail');
 
         Route::get('surat-jalan/{any?}', [PDFController::class, 's_jalan'])->name('s-jalan');
+
+        Route::get('buku-penjualan', [PDFController::class, 'bk_penjualan'])->name('buku-penjualan');
     });
 
     Route::get('jenis-barang', [JenisBarangController::class, 'index'])->name('jenis');
@@ -275,7 +277,9 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::get('just-check-something', function () {
-        $data = Transaksi::select('tanggal')->get();
+        $data = Transaksi::where(['no_resi' => 'WY-280421001'])->update([
+            'donasi' => 10000
+        ]);
         return $data;
     });
 
