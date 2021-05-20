@@ -39,7 +39,9 @@
                     <?php $num += 1; ?>
                     <tr>
                         <th scope="col">{{ $num }}</th>
-                        <td colspan="4">{{ date('d/m/Y', strtotime($i . date('-m-Y'))) }}</td>
+                        <td colspan="4" style="border-bottom: 1px solid black; border-top: 1px solid black">
+                            {{ date('d/m/Y', strtotime($i . date('-m-Y'))) }}
+                        </td>
                     </tr>
                     @foreach ($dataTransaksi as $transaksi)
                         @if (date('dmy', strtotime($transaksi->tanggal)) == $i . date('my') || date('dmy', strtotime($transaksi->tanggal_lunas)) == $i . date('my'))

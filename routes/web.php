@@ -277,11 +277,10 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::get('just-check-something', function () {
-        $data = Transaksi::where(['no_resi' => 'WY-280421001'])->update([
-            'donasi' => 10000
-        ]);
-        return $data;
+        return 'ok';
     });
+
+    Route::get('contoh', [PDFController::class, 'contoh']);
 
     // Route User
     Route::middleware('auth')->group(function () {
