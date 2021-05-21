@@ -51,7 +51,7 @@ class DetailPiutangController extends Controller
 
         $piutang = new DetailPiutang;
         $piutang->transaksi_id = $noResi;
-        $piutang->tanggal = $tanggal;
+        $piutang->tanggal = $request->tanggal == '' ? $tanggal : $request->tanggal;
         $piutang->kasir_id = $idKasir;
         $piutang->uang = $request->uang;
         $piutang->save();

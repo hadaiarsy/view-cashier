@@ -126,7 +126,7 @@
                     </tr>
                     <tr style="height: 30px;">
                         <th scope="col">TGL PB</th>
-                        <th scope="col">INV/DPB</th>
+                        <th scope="col">FAKTUR</th>
                     </tr>
                 </thead>
                 <tbody>

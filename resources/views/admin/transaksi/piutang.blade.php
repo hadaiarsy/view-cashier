@@ -142,6 +142,12 @@
                                     </div>
                                     <div class="row d-flex flex-row-reverse mt-2">
                                         <div class="col-6 input-group">
+                                            <input type="date" class="form-control pay-section" id="tanggal" value="">
+                                        </div>
+                                        <label for="inputPassword3" class="col-4 col-form-label">Tanggal :</label>
+                                    </div>
+                                    <div class="row d-flex flex-row-reverse mt-2">
+                                        <div class="col-6 input-group">
                                             <input type="text" class="form-control pay-section" data-dataps="ps-1"
                                                 id="kodeMember" value="" disabled>
                                         </div>
@@ -419,6 +425,7 @@
                 let sisa = $('#sisaPiutang').val();
                 let isLunas = $('#isLunas').val();
                 let saldoAwal = $('#totalText').html();
+                let tanggal = $('#tanggal').val();
 
                 // proses ajax simpan
                 let token = document.head.querySelector('meta[name="csrf-token"]');
@@ -426,7 +433,8 @@
                 axios.post(globalUrl + 'store-piutang', {
                         no_resi: noResi,
                         uang: replaceCurrency(uang),
-                        is_lunas: isLunas
+                        is_lunas: isLunas,
+                        tanggal: tanggal
                     })
                     .then((response) => {
                         let data = response.data.data;

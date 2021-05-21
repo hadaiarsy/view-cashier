@@ -151,7 +151,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php $number = 0; ?>
+                    <?php
+                    $number = 0;
+                    $tsaldoawal = 0;
+                    $tpenambahan = 0;
+                    $tpembayaran = 0;
+                    $tsaldoakhir = 0;
+                    ?>
                     @foreach ($unit as $u)
                         <?php
                         $tsaldoawalunit = 0;
@@ -238,8 +244,34 @@
                                         <strong>{{ $helper->money_format($tsaldoakhirunit) }}</strong>
                                     </td>
                                 </tr>
+                                <?php
+                                $tsaldoawal += $tsaldoawalunit;
+                                $tpenambahan += $tpenambahanunit;
+                                $tpembayaran += $tpembayaranunit;
+                                $tsaldoakhir += $tsaldoakhirunit;
+                                ?>
                             @endif
                         @endforeach
+                        @if ($loop->last)
+                            <tr>
+                                <td colspan="6">-</td>
+                            </tr>
+                            <tr>
+                                <th scope="col" colspan="2">TOTAL SEMUA</th>
+                                <td style="text-align: right">
+                                    <strong>{{ $helper->money_format($tsaldoawal) }}</strong>
+                                </td>
+                                <td style="text-align: right">
+                                    <strong>{{ $helper->money_format($tpenambahan) }}</strong>
+                                </td>
+                                <td style="text-align: right">
+                                    <strong>{{ $helper->money_format($tpembayaran) }}</strong>
+                                </td>
+                                <td style="text-align: right">
+                                    <strong>{{ $helper->money_format($tsaldoakhir) }}</strong>
+                                </td>
+                            </tr>
+                        @endif
                     @endforeach
                 </tbody>
             </table>
