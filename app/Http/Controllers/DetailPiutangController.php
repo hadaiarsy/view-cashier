@@ -88,7 +88,12 @@ class DetailPiutangController extends Controller
             $piutang = new Transaksi;
             $piutang->no_resi = $request->noFaktur == '' ? $noResi : $request->noFaktur;
             $piutang->tanggal = $request->tanggal == '' ? now() : date_format(date_create($request->tanggal), 'Y-m-d H:i:s');
-            $piutang->jenis_transaksi = 'penjualan';
+            if ($request->jenisMMT == "penjualan") {
+                $piutang->jenis_transaksi = 'penjualan';
+            } else {
+                $piutang->jenis_transaksi = 'pengiriman';
+                $piutang->jenis_mmt = $request->jenisMMT;
+            }
             $piutang->kasir_id = $idKasir;
             $piutang->member_id = $request->kodeMember;
             $piutang->total = Helper::replace_money($request->total);

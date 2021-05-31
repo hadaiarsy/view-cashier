@@ -276,9 +276,7 @@ Route::middleware('auth')->group(function () {
         });
     });
 
-    Route::get('just-check-something', function () {
-        return 'ok';
-    });
+    Route::get('just-check-something', [PDFController::class, 'contoh',]);
 
     Route::get('contoh', [PDFController::class, 'contoh']);
 
