@@ -96,7 +96,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Per Tanggal : {{ date('d-m-Y') }}</td>
+                        <td>Per Tanggal : {{ date('d-m-Y', $tanggal) }}</td>
                         <td>No. Cetak : {{ $number }}</td>
                     </tr>
                     <tr>
@@ -134,7 +134,7 @@
                     $tc = 0;
                     ?>
                     @foreach ($data as $transaksi)
-                        @if (date('dmy', strtotime($transaksi->tanggal)) == date('dmy'))
+                        @if (date('dmy', strtotime($transaksi->tanggal)) == date('dmy', $tanggal))
                             <?php
                             $tcicilan = 0;
                             $tscicilan = 0;
@@ -161,6 +161,7 @@
                                     <td rowspan="{{ count($transaksi->detail) }}">-</td>
                                     <?php $tp += $transaksi->total; ?>
                                 @else
+                                    <td rowspan="{{ count($transaksi->detail) }}">-</td>
                                     <td rowspan="{{ count($transaksi->detail) }}">-</td>
                                     <td rowspan="{{ count($transaksi->detail) }}">{{ $transaksi->total }}</td>
                                     @foreach ($transaksi->piutang as $piutang)
@@ -198,9 +199,9 @@
                                 @endfor
                             @endif
                         @endif
-                        @if (date('dmy', strtotime($transaksi->tanggal)) != date('dmy') && count($transaksi->piutang) > 0)
+                        @if (date('dmy', strtotime($transaksi->tanggal)) != date('dmy', $tanggal) && count($transaksi->piutang) > 0)
                             @if (date('dmy', strtotime($transaksi->piutang[count($transaksi->piutang) - 1]->tanggal)) ==
-                            date('dmy'))
+                            date('dmy', $tanggal))
                             <?php
                             $tcicilan = 0;
                             $tscicilan = 0;

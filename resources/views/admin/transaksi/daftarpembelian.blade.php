@@ -135,6 +135,34 @@
 
     </style>
 
+    <style>
+        .event-log {
+            font-family: consolas, Monaco, monospace;
+            margin: 10px 5px;
+            line-height: 2;
+            border: 1px solid #4c4c4c;
+            height: auto;
+            width: 90%;
+            padding: 2px 6px;
+            color: #4c4c4c;
+            white-space: pre;
+        }
+
+        .btn-picker {
+            border: none;
+            background: transparent;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: 16px;
+            padding: 7px 14px;
+            border: 1px solid #ddd;
+            margin: 0 5px;
+            border-color: #016565;
+            color: #016565;
+            font-size: 13px;
+        }
+
+    </style>
+
     <div class="loading" id="loading">Loading&#8230;</div>
     <div id="msg_delete" data-datahapus="{{ session('hapus') }}"></div>
 
@@ -145,43 +173,18 @@
         </div>
     </div>
 
+    <div class="picker-1 mt-5"></div>
     <div class="row mt-3">
         {{-- <div class="d-none"> --}}
-        <div class="col-lg-5 form-inline d-flex">
-            {{-- <input type="date" class="form-control mr-2" name="" id="tanggal_awal" value="{{ date('Y-m-d') }}"> --}}
-            {{-- <span class="d-inline-block mr-2"><i class="fas fa-arrow-alt-circle-right"></i></span> --}}
-            {{-- <input type="date" class="form-control d-inline" name="" id="tanggal_akhir" value="{{ date('Y-m-d') }}"> --}}
-            {{-- <button type="button" class="btn btn-success ml-2" id="kirim">Kirim</button> --}}
+        <div class="col-lg-4 form-inline d-flex mb-4">
 
-            <span>
-                <select name="birth_month">
-                    <?php for ($m = 1; $m <= 12; ++$m) { $month_label=date('F', mktime(0, 0, 0, $m, 1)); ?> <option value="<?php echo $month_label; ?>"><?php echo $month_label; ?></option>
-                        <?php
-                        } ?>
-                </select>
-            </span>
-            {{-- <span>
-                <select name="birth_day">
-                    <?php
-                    $start_date = 1;
-                    $end_date = 31;
-                    for ($j = $start_date; $j <= $end_date; $j++) {
-                        echo '<option value=' . $j . '>' . $j . '</option>';
-                    }
-                    ?> </select>
-            </span> --}}
-            <span>
-                <select name="birth_year">
-                    <?php
-                    $year = date('Y');
-                    $min = $year - date('y');
-                    $max = $year;
-                    for ($i = $max; $i >= $min; $i--) {
-                    echo '<option value=' . $i . '>' . $i . '</option>';
-                    }
-                    ?>
-                </select>
-            </span>
+            <input type="hidden" name="tanggal" id="tanggal">
+            <input type="text" class="form-control" id="test1" readonly /><button type="button"
+                class="btn-picker button-1">Show
+                Picker</button>
+
+            <button type="button" class="btn btn-success ml-3 mt-3" id="btnBuatLaporan">Buat Laporan Harian</button>
+
         </div>
     </div>
 
@@ -285,6 +288,31 @@
         $(document).ready(function() {
             $("#tableTrans").DataTable();
             $('#loading').addClass('d-none');
+
+            let simplepicker1 = new SimplePicker(".picker-1", {
+                zIndex: 10,
+                disableTimeSection: false
+            });
+            const $button1 = document.querySelector('.button-1');
+            $button1.addEventListener('click', (e) => {
+                simplepicker1.open();
+            });
+
+            simplepicker1.on("submit", function(date, readableDate) {
+                var input = document.querySelector('#test1');
+                input.value = readableDate;
+                var tanggal = document.querySelector('#tanggal');
+                tanggal.value = date.getTime();
+            });
+
+            let buatLaporan = document.querySelector('#btnBuatLaporan');
+            buatLaporan.addEventListener('click', (e) => {
+                let tanggal = document.querySelector('#tanggal');
+                console.log(`tanggal: ${tanggal.value.substr(0, 10)}`);
+                let printStruk = window.open(
+                    `${globalUrl}laporan-harian-pembelian/?tanggal=${tanggal.value.substr(0, 10)}`
+                );
+            });
 
             let d = new Date();
             let month = d.getMonth() + 1;

@@ -141,13 +141,23 @@ class PDFController extends Controller
         return $pdf->stream('lpj_harian_' . "_{$jenis}_" . date('d-m-Y_h-i-s') . '.pdf');
     }
 
-    public function lpb_harian()
+    public function lpb_harian(Request $request)
     {
-        $data = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])->where(['jenis_transaksi' => 'pembelian'])->get();
+        $tanggal = $request->input('tanggal', strtotime(now()));
+        $tanggal =  $tanggal == '' ? strtotime(now()) : $tanggal;
+
+        // $data = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])->where(['jenis_transaksi' => 'pembelian'])->get();
+        $data = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])
+            ->whereDate('tanggal', '=', date('Y-m-d', $tanggal))
+            ->whereNull('jenis_mmt')
+            ->where(['jenis_transaksi' => 'pembelian'])->get();
+
+        // return response()->json([$data]);
 
         $pdf = PDF::loadView('admin.transaksi.laporanharianpembelian', [
             'data' => $data,
-            'number' => CetakLaporan::generateNumber(['lpb_harian', date('Y-m-d')])
+            'number' => CetakLaporan::generateNumber(['lpb_harian', date('Y-m-d')]),
+            'tanggal' => $tanggal
         ])->setPaper('a4', 'landscape');
 
         $cetak = new CetakLaporan;

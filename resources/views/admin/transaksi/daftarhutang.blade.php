@@ -144,43 +144,28 @@
         </div>
     </div>
 
-    <div class="row mt-3 d-none">
+    <div class="picker-1 mt-5"></div>
+    <div class="row mt-3">
         {{-- <div class="d-none"> --}}
-        <div class="col-lg-5 form-inline d-flex">
-            {{-- <input type="date" class="form-control mr-2" name="" id="tanggal_awal" value="{{ date('Y-m-d') }}"> --}}
-            {{-- <span class="d-inline-block mr-2"><i class="fas fa-arrow-alt-circle-right"></i></span> --}}
-            {{-- <input type="date" class="form-control d-inline" name="" id="tanggal_akhir" value="{{ date('Y-m-d') }}"> --}}
-            {{-- <button type="button" class="btn btn-success ml-2" id="kirim">Kirim</button> --}}
+        <div class="col-lg-5 form-inline d-flex mb-4">
 
-            <span>
-                <select name="birth_month">
-                    <?php for ($m = 1; $m <= 12; ++$m) { $month_label=date('F', mktime(0, 0, 0, $m, 1)); ?> <option value="<?php echo $month_label; ?>"><?php echo $month_label; ?></option>
-                        <?php
-                        } ?>
-                </select>
-            </span>
-            {{-- <span>
-                <select name="birth_day">
-                    <?php
-                    $start_date = 1;
-                    $end_date = 31;
-                    for ($j = $start_date; $j <= $end_date; $j++) {
-                        echo '<option value=' . $j . '>' . $j . '</option>';
-                    }
-                    ?> </select>
-            </span> --}}
-            <span>
-                <select name="birth_year">
-                    <?php
-                    $year = date('Y');
-                    $min = $year - date('y');
-                    $max = $year;
-                    for ($i = $max; $i >= $min; $i--) {
-                    echo '<option value=' . $i . '>' . $i . '</option>';
-                    }
-                    ?>
-                </select>
-            </span>
+            <input type="hidden" name="tanggal" id="tanggal">
+            <input type="text" class="form-control" id="test1" readonly /><button type="button"
+                class="btn-picker button-1">Show
+                Picker</button>
+
+            <br>
+
+            <select class="form-select col-5 mt-3" aria-label="Default select example" name="jenis_penjualan"
+                id="jenis_penjualan">
+                <option value="" selected>- Jenis Penjualan -</option>
+                <option value="unit">Unit</option>
+                <option value="mmt-reguler">MMT Reguler</option>
+                <option value="mmt-area">MMT Area</option>
+            </select>
+
+            <button type="button" class="btn btn-success ml-3 mt-3" id="btnBuatLaporan">Buat Laporan Harian</button>
+
         </div>
     </div>
 
