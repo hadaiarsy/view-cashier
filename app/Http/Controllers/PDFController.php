@@ -296,6 +296,37 @@ class PDFController extends Controller
         return $pdf->stream('buku_penjualan_' . date('d-m-Y_h-i-s') . '.pdf');
     }
 
+    public function bk_pembelian()
+    {
+        $data = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])
+            ->where('jenis_transaksi', 'pembelian')
+            ->where(function ($queryTanggal) {
+                $queryTanggal->where(function ($query) {
+                    $query->whereMonth('tanggal', '=', date('m', strtotime(now())))
+                        ->whereYear('tanggal', '=', date('Y', strtotime(now())));
+                })
+                    ->orWhere(function ($query) {
+                        $query->whereMonth('tanggal_lunas', '=', date('m', strtotime(now())))
+                            ->whereYear('tanggal_lunas', '=', date('Y', strtotime(now())));
+                    });
+            })
+            ->orderBy('tanggal', 'asc')
+            ->get();
+
+        // return response()->json([
+        //     'akhir_bulan' => date('t'),
+        //     'data' => $data
+        // ]);
+
+        $pdf = PDF::loadView('admin.transaksi.bukupembelian', [
+            'akhir_bulan' => date('t'),
+            'bulan' => date('my'),
+            'data' => $data
+        ])->setPaper('a4', 'landscape');
+
+        return $pdf->stream('buku_pembelian_' . date('d-m-Y_h-i-s') . '.pdf');
+    }
+
     public function contoh()
     {
         $data = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])

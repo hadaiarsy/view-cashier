@@ -239,13 +239,13 @@
         {{-- </div> --}}
         <div class="col-lg d-flex flex-row-reverse">
             <div class="d-block m-2">
-                <a href="{{ route('lpb-harian') }}" target="_blank"><button type="button" class="btn btn-success pl-2"
+                {{-- <a href="{{ route('lpb-harian') }}" target="_blank"><button type="button" class="btn btn-success pl-2"
                         id="laporanHarianPembelian">Generate Laporan
-                        Harian</button></a>
+                        Harian</button></a> --}}
             </div>
             <div class="d-block m-2">
-                <button type="button" class="btn btn-success pl-2" id="laporanPembelian">Laporan
-                    Member</button>
+                <a href="{{ route('buku-pembelian') }}" target="_blank"><button type="button"
+                        class="btn btn-success pl-2" id="">Buat Laporan Buku Penjualan</button></a>
             </div>
         </div>
     </div>

@@ -165,6 +165,7 @@ Route::middleware('auth')->group(function () {
         Route::get('surat-jalan/{any?}', [PDFController::class, 's_jalan'])->name('s-jalan');
 
         Route::get('buku-penjualan', [PDFController::class, 'bk_penjualan'])->name('buku-penjualan');
+        Route::get('buku-pembelian', [PDFController::class, 'bk_pembelian'])->name('buku-pembelian');
     });
 
     Route::get('jenis-barang', [JenisBarangController::class, 'index'])->name('jenis');
