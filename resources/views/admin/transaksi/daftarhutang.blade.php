@@ -135,6 +135,34 @@
 
     </style>
 
+    <style>
+        .event-log {
+            font-family: consolas, Monaco, monospace;
+            margin: 10px 5px;
+            line-height: 2;
+            border: 1px solid #4c4c4c;
+            height: auto;
+            width: 90%;
+            padding: 2px 6px;
+            color: #4c4c4c;
+            white-space: pre;
+        }
+
+        .btn-picker {
+            border: none;
+            background: transparent;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-size: 16px;
+            padding: 7px 14px;
+            border: 1px solid #ddd;
+            margin: 0 5px;
+            border-color: #016565;
+            color: #016565;
+            font-size: 13px;
+        }
+
+    </style>
+
     <div class="loading" id="loading">Loading&#8230;</div>
 
     <div class="row">
@@ -147,7 +175,7 @@
     <div class="picker-1 mt-5"></div>
     <div class="row mt-3">
         {{-- <div class="d-none"> --}}
-        <div class="col-lg-5 form-inline d-flex mb-4">
+        <div class="col-lg-4 form-inline d-flex mb-4">
 
             <input type="hidden" name="tanggal" id="tanggal">
             <input type="text" class="form-control" id="test1" readonly /><button type="button"
@@ -155,14 +183,6 @@
                 Picker</button>
 
             <br>
-
-            <select class="form-select col-5 mt-3" aria-label="Default select example" name="jenis_penjualan"
-                id="jenis_penjualan">
-                <option value="" selected>- Jenis Penjualan -</option>
-                <option value="unit">Unit</option>
-                <option value="mmt-reguler">MMT Reguler</option>
-                <option value="mmt-area">MMT Area</option>
-            </select>
 
             <button type="button" class="btn btn-success ml-3 mt-3" id="btnBuatLaporan">Buat Laporan Harian</button>
 
@@ -220,9 +240,11 @@
         {{-- </div> --}}
         <div class="col-lg d-flex flex-row-reverse">
             <div class="d-block m-2">
-                <a href="{{ route('lp-hutang') }}" target="_blank"><button type="button" class="btn btn-success pl-2"
+                {{-- <a href="{{ route('lp-hutang') }}" target="_blank"><button type="button" class="btn btn-success pl-2"
                         id="laporanPiutang">Generate
-                        Laporan</button></a>
+                        Laporan</button></a> --}}
+                <a href="#" target="_blank"><button type="button" class="btn btn-success pl-2" id="">Laporan
+                        Bulanan</button></a>
             </div>
             <div class="d-block m-2">
                 <a href="{{ route('m-hutang') }}" target="_blank"><button type="button"

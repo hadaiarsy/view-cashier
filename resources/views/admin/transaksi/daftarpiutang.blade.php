@@ -246,9 +246,11 @@
         {{-- </div> --}}
         <div class="col-lg d-flex flex-row-reverse">
             <div class="d-block m-2">
-                <a href="{{ route('lp-piutang') }}" target="_blank"><button type="button" class="btn btn-success pl-2"
+                {{-- <a href="{{ route('lp-piutang') }}" target="_blank"><button type="button" class="btn btn-success pl-2"
                         id="laporanPiutang">Generate
-                        Laporan</button></a>
+                        Laporan</button></a> --}}
+                <a href="#" target="_blank"><button type="button" class="btn btn-success pl-2" id="laporanPiutang">Laporan
+                        Bulanan</button></a>
             </div>
             <div class="d-block m-2">
                 <a href="{{ route('m-piutang') }}" target="_blank"><button type="button"
