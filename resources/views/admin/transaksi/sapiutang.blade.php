@@ -50,11 +50,11 @@
                                             </div>
                                         </div>
                                         <div class="row mb-3">
-                                            <label for="jenisMMT" class="col-sm-5 col-form-label">Jenis MMT</label>
+                                            <label for="jenisMMT" class="col-sm-5 col-form-label">Jenis</label>
                                             <div class="col-sm-7">
                                                 <select class="form-select" name="jenisMMT" id="jenisMMT"
                                                     aria-label="Default select example">
-                                                    <option value="penjualan">Penjualan Biasa</option>
+                                                    <option value="penjualan">Unit</option>
                                                     <option value="mmt-area">MMT Area</option>
                                                     <option value="mmt-reguler">MMT Reguler</option>
                                                 </select>

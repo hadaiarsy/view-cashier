@@ -249,7 +249,8 @@
                 {{-- <a href="{{ route('lp-piutang') }}" target="_blank"><button type="button" class="btn btn-success pl-2"
                         id="laporanPiutang">Generate
                         Laporan</button></a> --}}
-                <a href="#" target="_blank"><button type="button" class="btn btn-success pl-2" id="laporanPiutang">Laporan
+                <a href="{{ route('bln-piutang') }}" target="_blank"><button type="button" class="btn btn-success pl-2"
+                        id="laporanPiutang">Laporan
                         Bulanan</button></a>
             </div>
             <div class="d-block m-2">

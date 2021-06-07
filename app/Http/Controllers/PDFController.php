@@ -360,4 +360,39 @@ class PDFController extends Controller
 
         return $pdf->stream('buku_penjualan_' . date('d-m-Y_h-i-s') . '.pdf');
     }
+
+    public function bln_piutang()
+    {
+        $data = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])
+            ->where(function ($query) {
+                $query->where('jenis_transaksi', 'penjualan')
+                    ->orWhere('jenis_transaksi', 'pengiriman');
+            })
+            ->where(function ($queryTanggal) {
+                $queryTanggal->where(function ($query) {
+                    $query->where('is_lunas', '=', '0')
+                        ->whereMonth('tanggal', '=', date('m', strtotime(now())))
+                        ->whereYear('tanggal', '=', date('Y', strtotime(now())));
+                })->orWhere(function ($query) {
+                    $query->whereMonth('tanggal_lunas', '=', date('m', strtotime(now())))
+                        ->whereYear('tanggal_lunas', '=', date('Y', strtotime(now())));
+                });
+            })
+            ->orderBy('tanggal', 'asc')->get();
+
+        $a = 0;
+        while ($a < count($data)) {
+            $a += 1;
+        }
+
+        // return response()->json([$a]);
+
+        $pdf = PDF::loadView('admin.transaksi.laporanbulananpiutang', [
+            'akhir_bulan' => date('t'),
+            'bulan' => date('m'),
+            'data' => $data
+        ])->setPaper('a4', 'landscape');
+
+        return $pdf->stream('laporan_bulanan_piutang' . date('d-m-Y_h-i-s') . '.pdf');
+    }
 }
