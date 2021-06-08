@@ -101,7 +101,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Tanggal : {{ date('d-m-Y') }}</td>
+                        <td>Tanggal : {{ date('d-m-Y', $tanggal) }}</td>
                         <td>No. Cetak : {{ $number }}</td>
                     </tr>
                     <tr>
@@ -148,20 +148,20 @@
                                     <td>{{ $transaksi->detail[0]->nama_barang }}</td>
                                     <td>{{ $helper->money_format($transaksi->detail[0]->jumlah) . ' ' . $transaksi->detail[0]->satuan }}
                                     </td>
-                                    <td>{{ (int) $transaksi->detail[0]->harga / (int) $transaksi->detail[0]->jumlah }}
+                                    <td>{{ $helper->money_format((int) $transaksi->detail[0]->harga / (int) $transaksi->detail[0]->jumlah) }}
                                     </td>
-                                    <td>{{ $transaksi->detail[0]->harga }}</td>
+                                    <td>{{ $helper->money_format($transaksi->detail[0]->harga) }}</td>
                                 @else
                                     <td colspan="4" style="text-align: center">-</td>
                                 @endif
                                 <td rowspan="{{ count($transaksi->detail) + count($transaksi->piutang) }}">
-                                    {{ $transaksi->total }}</td>
+                                    {{ $helper->money_format($transaksi->total) }}</td>
                                 <td rowspan="{{ count($transaksi->detail) + count($transaksi->piutang) }}">
                                     <?php $sp = 0; ?>
                                     @foreach ($transaksi->piutang as $piutang)
                                         <?php $sp += $piutang->uang; ?>
                                     @endforeach
-                                    {{ $transaksi->total - $sp <= 0 ? '-' : $transaksi->total - $sp }}
+                                    {{ $transaksi->total - $sp <= 0 ? '-' : $helper->money_format($transaksi->total - $sp) }}
                                 </td>
                                 <td rowspan="{{ count($transaksi->detail) + count($transaksi->piutang) }}">
                                     {{ $transaksi->is_lunas == 1 ? date('d/m/y', strtotime($transaksi->piutang[count($transaksi->piutang) - 1]->tanggal)) : '-' }}
@@ -176,9 +176,9 @@
                                         <td>{{ $transaksi->detail[$i]->nama_barang }}</td>
                                         <td>{{ $helper->money_format($transaksi->detail[$i]->jumlah) . ' ' . $transaksi->detail[$i]->satuan }}
                                         </td>
-                                        <td>{{ (int) $transaksi->detail[$i]->harga / (int) $transaksi->detail[$i]->jumlah }}
+                                        <td>{{ $helper->money_format((int) $transaksi->detail[$i]->harga / (int) $transaksi->detail[$i]->jumlah) }}
                                         </td>
-                                        <td>{{ $transaksi->detail[$i]->harga }}</td>
+                                        <td>{{ $helper->money_format($transaksi->detail[$i]->harga) }}</td>
                                     </tr>
                                 @endfor
                             @endif
@@ -195,8 +195,8 @@
                         @if ($loop->last)
                             <tr>
                                 <th colspan="8" style="text-align: right">TOTAL HUTANG (Rp. )</th>
-                                <td style="text-align: center">{{ $tp }}</td>
-                                <td style="text-align: center">{{ $tsp }}</td>
+                                <td style="text-align: center">{{ $helper->money_format($tp) }}</td>
+                                <td style="text-align: center">{{ $helper->money_format($tsp) }}</td>
                                 <td></td>
                                 <td></td>
                             </tr>

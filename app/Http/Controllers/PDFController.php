@@ -189,13 +189,26 @@ class PDFController extends Controller
         return $pdf->stream('lp_piutang_' . date('d-m-Y_h-i-s') . '.pdf');
     }
 
-    public function lp_hutang()
+    public function lp_hutang(Request $request)
     {
-        $data = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])->where(['jenis_transaksi' => 'pembelian'])->whereMonth('created_at', date('m'))->get();
+        $tanggal = $request->input('tanggal', strtotime(now()));
+        $tanggal =  $tanggal == '' ? strtotime(now()) : $tanggal;
+
+        $data = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])
+            ->where(['jenis_transaksi' => 'pembelian'])
+            ->where(function ($query) use ($tanggal) {
+                $query->where(function ($isLunas) use ($tanggal) {
+                    $isLunas->where('is_lunas', '=', '0')
+                        ->whereDate('tanggal', '=', date('Y-m-d', $tanggal));
+                })
+                    ->orWhereDate('tanggal_lunas', '=', date('Y-m-d', $tanggal));
+            })
+            ->get();
 
         $pdf = PDF::loadView('admin.transaksi.laporanhutang', [
             'data' => $data,
-            'number' => CetakLaporan::generateNumber(['lp_hutang', date('m')])
+            'number' => CetakLaporan::generateNumber(['lp_hutang', date('m')]),
+            'tanggal' => $tanggal
         ])->setPaper('a4', 'landscape');
 
         $cetak = new CetakLaporan;
@@ -205,7 +218,7 @@ class PDFController extends Controller
         $cetak->no_cetak = CetakLaporan::generateNumber(['lp_hutang', date('d-m-Y')]);
         $cetak->save();
 
-        return $pdf->stream('lp_hutang_' . date('d-m-Y_h-i-s') . '.pdf');
+        return $pdf->stream('lp_harian_hutang_' . date('d-m-Y_h-i-s') . '.pdf');
     }
 
     public function s_jalan($resi = null)
@@ -361,12 +374,22 @@ class PDFController extends Controller
         return $pdf->stream('buku_penjualan_' . date('d-m-Y_h-i-s') . '.pdf');
     }
 
-    public function bln_piutang()
+    public function bln_piutang(Request $request)
     {
+        $kelompok = $request->input('kelompok', 'unit');
+        $kelompok = $kelompok == '' ? 'unit' : $kelompok;
+
         $data = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])
             ->where(function ($query) {
                 $query->where('jenis_transaksi', 'penjualan')
                     ->orWhere('jenis_transaksi', 'pengiriman');
+            })
+            ->where(function ($query) use ($kelompok) {
+                if ($kelompok == 'unit') {
+                    $query->whereNull('jenis_mmt');
+                } else {
+                    $query->where('jenis_mmt', '=', $kelompok);
+                }
             })
             ->where(function ($queryTanggal) {
                 $queryTanggal->where(function ($query) {
@@ -390,9 +413,43 @@ class PDFController extends Controller
         $pdf = PDF::loadView('admin.transaksi.laporanbulananpiutang', [
             'akhir_bulan' => date('t'),
             'bulan' => date('m'),
-            'data' => $data
+            'data' => $data,
+            'kelompok' => $kelompok
         ])->setPaper('a4', 'landscape');
 
         return $pdf->stream('laporan_bulanan_piutang' . date('d-m-Y_h-i-s') . '.pdf');
+    }
+
+    public function bln_hutang(Request $request)
+    {
+        $data = Transaksi::with(['kasir', 'member', 'detail', 'piutang'])
+            ->where('jenis_transaksi', '=', 'pembelian')
+            ->whereNull('jenis_mmt')
+            ->where(function ($queryTanggal) {
+                $queryTanggal->where(function ($query) {
+                    $query->where('is_lunas', '=', '0')
+                        ->whereMonth('tanggal', '=', date('m', strtotime(now())))
+                        ->whereYear('tanggal', '=', date('Y', strtotime(now())));
+                })->orWhere(function ($query) {
+                    $query->whereMonth('tanggal_lunas', '=', date('m', strtotime(now())))
+                        ->whereYear('tanggal_lunas', '=', date('Y', strtotime(now())));
+                });
+            })
+            ->orderBy('tanggal', 'asc')->get();
+
+        $a = 0;
+        while ($a < count($data)) {
+            $a += 1;
+        }
+
+        // return response()->json([$a]);
+
+        $pdf = PDF::loadView('admin.transaksi.laporanbulananhutang', [
+            'akhir_bulan' => date('t'),
+            'bulan' => date('m'),
+            'data' => $data,
+        ])->setPaper('a4', 'landscape');
+
+        return $pdf->stream('laporan_bulanan_hiutang' . date('d-m-Y_h-i-s') . '.pdf');
     }
 }

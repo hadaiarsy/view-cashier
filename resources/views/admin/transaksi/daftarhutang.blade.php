@@ -243,7 +243,8 @@
                 {{-- <a href="{{ route('lp-hutang') }}" target="_blank"><button type="button" class="btn btn-success pl-2"
                         id="laporanPiutang">Generate
                         Laporan</button></a> --}}
-                <a href="#" target="_blank"><button type="button" class="btn btn-success pl-2" id="">Laporan
+                <a href="{{ route('bln-hutang') }}" target="_blank"><button type="button" class="btn btn-success pl-2"
+                        id="">Laporan
                         Bulanan</button></a>
             </div>
             <div class="d-block m-2">
@@ -292,6 +293,30 @@
         $(document).ready(function() {
             $("#tableTrans").DataTable();
             $('#loading').addClass('d-none');
+
+            let simplepicker1 = new SimplePicker(".picker-1", {
+                zIndex: 10,
+                disableTimeSection: false
+            });
+            const $button1 = document.querySelector('.button-1');
+            $button1.addEventListener('click', (e) => {
+                simplepicker1.open();
+            });
+
+            simplepicker1.on("submit", function(date, readableDate) {
+                var input = document.querySelector('#test1');
+                input.value = readableDate;
+                var tanggal = document.querySelector('#tanggal');
+                tanggal.value = date.getTime();
+            });
+
+            let buatLaporan = document.querySelector('#btnBuatLaporan');
+            buatLaporan.addEventListener('click', (e) => {
+                let tanggal = document.querySelector('#tanggal');
+                let printStruk = window.open(
+                    `${globalUrl}laporan-hutang/?tanggal=${tanggal.value.substr(0, 10)}`
+                );
+            });
 
             let d = new Date();
             let month = d.getMonth() + 1;

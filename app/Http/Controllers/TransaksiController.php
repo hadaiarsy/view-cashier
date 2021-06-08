@@ -439,6 +439,9 @@ class TransaksiController extends Controller
 
         // cek keberhasilan menghapus transaksi
         if ($transaksi->where('no_resi', $newID)->delete()) {
+            // hapus detail piutang
+            $piutang = new DetailPiutang;
+            $piutang->where('transaksi_id', $request->id_hapus)->delete();
             $request->session()->flash('hapus', 'succesful');
             if ($request->jenis_hapus === 'penjualan') {
                 return redirect('daftar-transaksi');

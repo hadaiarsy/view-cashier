@@ -31,7 +31,7 @@
 <body>
     <table style="width: 100%; margin-bottom: 16px;">
         <tr>
-            <td style="text-align: center">LAPORAN BULANAN PIUTANG</td>
+            <td style="text-align: center">LAPORAN BULANAN HUTANG</td>
         </tr>
         <tr>
             <td style="text-align: center">KOPERASI YAMUGHNI</td>
@@ -42,9 +42,6 @@
             <td style="text-align: center">BULAN :
                 PER - {{ $bulan[(int) date('m') - 1] . ' ' . date('Y') }}
             </td>
-        </tr>
-        <tr>
-            <td style="text-align: left">KELOMPOK : {{ strtoupper($kelompok) }}</td>
         </tr>
     </table>
     <table class="border">
@@ -72,7 +69,7 @@
                 <tr>
                     <th scope="col">{{ $loop->iteration }}</th>
                     <td style="text-align: center">{{ date('d/m/y', strtotime($transaksi->tanggal)) }}</td>
-                    <td style="text-align: center">{{ $transaksi->no_resi }}</td>
+                    <td style="text-align: center">{{ $transaksi->no_dpb }}</td>
                     <td style="text-align: center">{{ $transaksi->member->nama }}</td>
                     <td style="text-align: right">{{ $helper->money_format($transaksi->total, 'Rp ') }}</td>
                     <?php $totalfaktur += $transaksi->total; ?>

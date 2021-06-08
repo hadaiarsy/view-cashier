@@ -115,22 +115,21 @@
             }
         }
 
-        @keyframes spinner {
-            0% {
-                -webkit-transform: rotate(0deg);
-                -moz-transform: rotate(0deg);
-                -ms-transform: rotate(0deg);
-                -o-transform: rotate(0deg);
-                transform: rotate(0deg);
-            }
+        <blade keyframes|%20spinner%20%7B%0D>0% {
+            -webkit-transform: rotate(0deg);
+            -moz-transform: rotate(0deg);
+            -ms-transform: rotate(0deg);
+            -o-transform: rotate(0deg);
+            transform: rotate(0deg);
+        }
 
-            100% {
-                -webkit-transform: rotate(360deg);
-                -moz-transform: rotate(360deg);
-                -ms-transform: rotate(360deg);
-                -o-transform: rotate(360deg);
-                transform: rotate(360deg);
-            }
+        100% {
+            -webkit-transform: rotate(360deg);
+            -moz-transform: rotate(360deg);
+            -ms-transform: rotate(360deg);
+            -o-transform: rotate(360deg);
+            transform: rotate(360deg);
+        }
         }
 
     </style>
@@ -222,11 +221,12 @@
                             <td>{{ $t->kasir->name }}</td>
                             <td>{{ $t->member->kode_member }}</td>
                             <td>{{ $t->member->nama }}</td>
-                            <td>{{ date('d/m/y', strtotime('+30 days', strtotime($t->tanggal))) }}</td>
+                            <td>{{ date('d/m/y', strtotime('+30 days', strtotime($t->tanggal))) }}
+                            </td>
                             <td>-</td>
                             <td>
-                                {{-- <a href="show-transaksi/{{ $t->no_resi }}" class="btn btn-primary btn-sm" id="btnShow"><i
-                                        class="far fa-eye"></i></i></a> --}}
+                                {{-- <a href="show-transaksi/{{ $t->no_resi }}" class="btn
+                            btn-primary btn-sm" id="btnShow"><i class="far fa-eye"></i></i></a> --}}
                                 <a href="edit-transaksi/{{ $t->no_resi }}" class="btn btn-warning btn-sm" id="btnShow"><i
                                         class="fas fa-edit"></i></i></a>
                                 @if ($level != 5)
@@ -246,12 +246,29 @@
         {{-- </div> --}}
         <div class="col-lg d-flex flex-row-reverse">
             <div class="d-block m-2">
-                {{-- <a href="{{ route('lp-piutang') }}" target="_blank"><button type="button" class="btn btn-success pl-2"
-                        id="laporanPiutang">Generate
-                        Laporan</button></a> --}}
-                <a href="{{ route('bln-piutang') }}" target="_blank"><button type="button" class="btn btn-success pl-2"
+                {{-- <a href="{{ route('lp-piutang') }}" target="_blank"><button
+                type="button" class="btn btn-success pl-2" id="laporanPiutang">Generate
+                Laporan</button></a> --}}
+                {{-- <a href="{{ route('bln-piutang') }}" target="_blank"><button type="button" class="btn btn-success pl-2"
                         id="laporanPiutang">Laporan
-                        Bulanan</button></a>
+                        Bulanan</button></a> --}}
+                <div class="dropdown">
+                    <a class="btn btn-success dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Laporan Bulanan
+                    </a>
+
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <li><a class="dropdown-item" target="_blank"
+                                href="{{ route('bln-piutang') }}?kelompok=unit">UNIT</a></li>
+                        <li><a class="dropdown-item" target="_blank"
+                                href="{{ route('bln-piutang') }}?kelompok=mmt-area">MMT AREA</a>
+                        </li>
+                        <li><a class="dropdown-item" target="_blank"
+                                href="{{ route('bln-piutang') }}?kelompok=mmt-reguler">MMT
+                                REGULER</a></li>
+                    </ul>
+                </div>
             </div>
             <div class="d-block m-2">
                 <a href="{{ route('m-piutang') }}" target="_blank"><button type="button"
